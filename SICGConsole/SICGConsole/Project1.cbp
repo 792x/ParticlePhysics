@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Project1"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="project1">
+				<Option output="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/bin/project1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/include/linux"/>
+					<Add directory="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/include"/>
+					<Add directory="/usr/local/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 project1"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="project1/fast">
+				<Option output="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/bin/project1" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/include/linux"/>
+					<Add directory="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/include"/>
+					<Add directory="/usr/local/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 project1/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/CircularWireConstraint.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/CircularWireConstraint.h">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Particle.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Particle.h">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/ParticleToy.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/RodConstraint.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/RodConstraint.h">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/SICGConsole.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/Solver.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/SpringForce.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/SpringForce.h">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/imageio.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/imageio.h">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/linearSolver.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/linearSolver.h">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/stdafx.cpp">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/stdafx.h">
+			<Option target="project1"/>
+		</Unit>
+		<Unit filename="/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

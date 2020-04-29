@@ -1,0 +1,3 @@
+/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/CMakeFiles/rebuild_cache.dir
+/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/CMakeFiles/edit_cache.dir
+/Users/falker/Downloads/skel_code_msvc/SICGConsole/SICGConsole/CMakeFiles/project1.dir

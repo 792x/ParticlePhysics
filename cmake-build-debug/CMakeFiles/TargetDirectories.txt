@@ -1,3 +1,0 @@
-/Users/falker/Documents/University/2IMV15/Assignment/2IMV15-Simulation-in-Computer-Graphics/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/falker/Documents/University/2IMV15/Assignment/2IMV15-Simulation-in-Computer-Graphics/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/falker/Documents/University/2IMV15/Assignment/2IMV15-Simulation-in-Computer-Graphics/cmake-build-debug/CMakeFiles/project1.dir

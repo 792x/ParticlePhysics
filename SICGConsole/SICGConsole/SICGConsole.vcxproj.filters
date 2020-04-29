@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\include">
+      <UniqueIdentifier>{04570e26-3fd8-4cec-877b-31271475a409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\include\gfx">
+      <UniqueIdentifier>{cac98396-b19c-4371-8c94-f6ec3ebca932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GL">
+      <UniqueIdentifier>{b87e7de3-dee4-4839-8473-10e32a7890d3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularWireConstraint.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="linearSolver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RodConstraint.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpringForce.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\config.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\geom3d.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\geom4d.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\gfx.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\mat2.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\mat3.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\mat4.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\quat.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\symmat2.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\symmat3.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\symmat4.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\vec3.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\vec4.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gfx\vec2.h">
+      <Filter>Source Files\include\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\fgl.h">
+      <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\fglu.h">
+      <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\fglut.h">
+      <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glsmap.h">
+      <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glut.h">
+      <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\tube.h">
+      <Filter>Source Files\GL</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SICGConsole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularWireConstraint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="linearSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleToy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RodConstraint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Solver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpringForce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
