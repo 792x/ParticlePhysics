@@ -2,7 +2,7 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
-#include <GL/glut.h>
+#include "GL/glut.h"
 #endif
 RodConstraint::RodConstraint(Particle *p1, Particle * p2, double dist) :
   m_p1(p1), m_p2(p2), m_dist(dist) {}
