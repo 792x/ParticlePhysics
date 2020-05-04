@@ -3,17 +3,16 @@
 #include "Particle.h"
 #include "Force.h"
 
-class SpringForce : public Force{
- public:
-  SpringForce(Particle *p1, Particle * p2, double dist, double ks, double kd);
+class SpringForce : public Force {
+  public:
+	SpringForce(Particle *p1, Particle *p2, float dist, float ks, float kd);
+	SpringForce(std::vector<Particle*> particles, float dist, float ks, float kd);
 
-  void draw() override;
-  void apply() override;
+	void target(std::vector<Particle *> particles) override;
+	void draw() override;
+	void apply() override;
 
- private:
-
-  Particle * const m_p1;   // particle 1
-  Particle * const m_p2;   // particle 2 
-  double const m_dist;     // rest length
-  double const m_ks, m_kd; // spring strength constants
+  private:
+	float const m_dist;     // rest length
+	float const m_ks, m_kd; // spring strength constants
 };
