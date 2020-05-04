@@ -57,3 +57,4 @@ test/test_runner
 /.vs
 /SICGConsole/.vs
 /SICGConsole/SICGConsole/.vs
+.idea
