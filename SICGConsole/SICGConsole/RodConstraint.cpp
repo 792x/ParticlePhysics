@@ -14,22 +14,22 @@ float RodConstraint::m_C() {
 }
 
 float RodConstraint::m_Cd() {
-	Vec3f pDiff = (m_p1->m_Position - m_p2->m_Position)*2;
-	Vec3f vDiff = (m_p1->m_Velocity - m_p2->m_Velocity)*2;
+	Vec3f pDiff = (m_p1->m_Position - m_p2->m_Position)*float(2);
+	Vec3f vDiff = (m_p1->m_Velocity - m_p2->m_Velocity)*float(2);
 	return pDiff*vDiff;
 }
 
 std::vector<Vec3f> RodConstraint::m_j() {
 	std::vector<Vec3f> j;
-	j.push_back((m_p1->m_Position - m_p2->m_Position)*2);
-	j.push_back((m_p2->m_Position - m_p1->m_Position)*2);
+	j.push_back((m_p1->m_Position - m_p2->m_Position)*float(2));
+	j.push_back((m_p2->m_Position - m_p1->m_Position)*float(2));
 	return j;
 }
 
 std::vector<Vec3f> RodConstraint::m_jd() {
 	std::vector<Vec3f> jd;
-	jd.push_back((m_p1->m_Velocity - m_p2->m_Velocity)*2);
-	jd.push_back((m_p2->m_Velocity - m_p1->m_Velocity)*2);
+	jd.push_back((m_p1->m_Velocity - m_p2->m_Velocity)*float(2));
+	jd.push_back((m_p2->m_Velocity - m_p1->m_Velocity)*float(2));
 	return jd;
 }
 
