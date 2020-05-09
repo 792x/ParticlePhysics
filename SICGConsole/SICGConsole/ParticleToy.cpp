@@ -7,6 +7,8 @@
 #include "Force.h"
 #include "Constraint.h"
 #include "GravityForce.h"
+#include "solvers/Euler.h"
+
 //#include "imageio.h"
 
 #include <vector>
@@ -17,11 +19,6 @@
 #else
 #include "GL/glut.h"
 #endif
-
-/* macros */
-
-/* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> pVector, float dt);
 
 /* global variables */
 
@@ -43,6 +40,9 @@ static int mouse_release[3];
 static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
+
+// solvers
+static Euler EulerSolver;
 
 /*
 ----------------------------------------------------------------------
@@ -258,7 +258,7 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func() {
-	if (dsim) simulation_step(pVector, dt);
+	if (dsim) EulerSolver.simulation_step(pVector, dt);
 	else {
 		get_from_UI();
 		remap_GUI();
