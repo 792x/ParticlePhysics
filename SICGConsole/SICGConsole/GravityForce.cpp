@@ -27,4 +27,3 @@ void GravityForce::apply() {
 
 void GravityForce::draw() {
 }
-

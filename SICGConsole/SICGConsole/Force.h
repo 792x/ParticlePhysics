@@ -11,4 +11,9 @@ class Force {
 	virtual void draw() = 0;
 	virtual void apply() = 0;
 	std::vector<Particle *> particles;
+	void reset() {
+		for (Particle* p : particles) {
+			p->m_Force = Vec3f(0.0, 0.0, 0.0);
+		}
+	}
 };

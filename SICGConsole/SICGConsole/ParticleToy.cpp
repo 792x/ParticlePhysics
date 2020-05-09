@@ -74,6 +74,7 @@ static void clear_data() {
 	for (ii = 0; ii < size; ii++) {
 		pVector[ii]->reset();
 	}
+
 }
 
 static void init_system() {
@@ -83,7 +84,6 @@ static void init_system() {
 
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
-
 	pVector.push_back(new Particle(center + offset, 1.0f, 0));
 	pVector.push_back(new Particle(center + offset + offset, 1.0f, 0));
 	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 0));
@@ -94,7 +94,6 @@ static void init_system() {
 
 	cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
 	cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
-
 }
 
 /*
@@ -137,6 +136,26 @@ static void post_display() {
 	glutSwapBuffers();
 }
 
+static void apply_forces() {
+	// Reset all the forces.
+	for (Force* f : fVector) {
+		f->reset();
+	}
+
+	// Compute and apply all the new forces.
+	for (Force* f : fVector) {
+		f->apply();
+	}
+
+}
+
+static void apply_constraints() {
+
+	for (Constraint* c : cVector) {
+		//TODO: to be implemented
+	}
+};
+
 static void draw_particles() {
 	int size = pVector.size();
 
@@ -153,6 +172,7 @@ static void draw_forces() {
 }
 
 static void draw_constraints() {
+
 	for (Constraint *c : cVector) {
 		c->draw();
 	}
@@ -258,8 +278,11 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func() {
-	if (dsim) EulerSolver.simulation_step(pVector, dt);
-	else {
+	if (dsim) {
+		apply_forces();
+		apply_constraints();
+		EulerSolver.simulation_step(pVector, dt);
+	} else {
 		get_from_UI();
 		remap_GUI();
 	}
@@ -321,7 +344,7 @@ int main(int argc, char **argv) {
 
 	if (argc==1) {
 		N = 64;
-		dt = 0.1f;
+		dt = 0.01f;
 		d = 5.f;
 		fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
 				N, dt, d);

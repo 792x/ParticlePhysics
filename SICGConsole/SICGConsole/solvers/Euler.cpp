@@ -9,7 +9,7 @@ void Euler::simulation_step(std::vector<Particle*> pVector, float dt) {
 	for (int i = 0; i < int(pVector.size()); i++) {
 		Vec3f oldPosition = pVector[i]->m_Position;
 		Vec3f oldVelocity = pVector[i]->m_Velocity;
-		Vec3f acceleration = pVector[i]->m_Force/pVector[i]->m_Mass;
+		Vec3f acceleration = pVector[i]->m_Force / pVector[i]->m_Mass;
 
 		Vec3f newVelocity = oldVelocity + acceleration * dt;
 		Vec3f newPosition = oldPosition + newVelocity * dt;
