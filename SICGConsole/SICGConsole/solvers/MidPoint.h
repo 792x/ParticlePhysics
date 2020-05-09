@@ -2,8 +2,8 @@
 
 #include "Solver.h"
 
-class MidPoint : Solver
+class MidPoint : public Solver
 {
 public:
-	void simulation_step(std::vector<Particle*> pVector, float dt) override;
+	void simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, float dt) override;
 };

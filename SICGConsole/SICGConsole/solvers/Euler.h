@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Solver.h"
+#include "../Force.h"
 #include "../Particle.h"
 
-class Euler : Solver
+class Euler : public Solver
 {
 public:
-	void simulation_step(std::vector<Particle*> pVector, float dt) override;
+	void simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, float dt) override;
 };

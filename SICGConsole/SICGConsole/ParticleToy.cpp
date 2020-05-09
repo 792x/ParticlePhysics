@@ -7,7 +7,9 @@
 #include "Force.h"
 #include "Constraint.h"
 #include "GravityForce.h"
+#include "solvers/Solver.h"
 #include "solvers/Euler.h"
+#include "solvers/MidPoint.h"
 
 //#include "imageio.h"
 
@@ -41,8 +43,11 @@ static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
 
-// solvers
+// global variables used for solvers
 static Euler EulerSolver;
+static MidPoint MidPointSolver;
+static Solver* solvers[2] = {&EulerSolver, &MidPointSolver};
+static int solverIndex = 0;
 
 /*
 ----------------------------------------------------------------------
@@ -231,6 +236,14 @@ GLUT callback routines
 
 static void key_func(unsigned char key, int x, int y) {
 	switch (key) {
+		case '1': solverIndex = 0;
+			printf("\t Using solver 1. Explicit Euler\n");
+			break;
+
+		case '2': solverIndex = 1;
+			printf("\t Using solver 2. Explicit MidPoint\n");
+			break;
+
 		case 'c':
 		case 'C': clear_data();
 			break;
@@ -281,7 +294,7 @@ static void idle_func() {
 	if (dsim) {
 		apply_forces();
 		apply_constraints();
-		EulerSolver.simulation_step(pVector, dt);
+		solvers[solverIndex]->simulation_step(pVector, fVector, dt);
 	} else {
 		get_from_UI();
 		remap_GUI();
@@ -356,6 +369,10 @@ int main(int argc, char **argv) {
 
 	printf("\n\nHow to use this application:\n\n");
 	printf("\t Toggle construction/simulation display with the spacebar key\n");
+	printf("\t Switch between solvers by pressing the keys '1' and '2'\n");
+	printf("\t Available solvers:\n");
+	printf("\t 1. Explicit Euler\n");
+	printf("\t 2. Explicit MidPoint\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
 
