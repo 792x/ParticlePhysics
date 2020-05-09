@@ -5,6 +5,12 @@
 #include "SpringForce.h"
 #include "RodConstraint.h"
 #include "CircularWireConstraint.h"
+#include "Force.h"
+#include "Constraint.h"
+#include "GravityForce.h"
+#include "solvers/Euler.h"
+#include "AngularSpringForce.h"
+
 //#include "imageio.h"
 
 #include <vector>
@@ -86,15 +92,25 @@ static void init_system(void)
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
 
-	pVector.push_back(new Particle(center + offset));
-	pVector.push_back(new Particle(center + offset + offset));
-	pVector.push_back(new Particle(center + offset + offset + offset));
-	
-	// You shoud replace these with a vector generalized forces and one of
-	// constraints...
-	delete_this_dummy_spring = new SpringForce(pVector[0], pVector[1], dist, 1.0, 1.0);
-	delete_this_dummy_rod = new RodConstraint(pVector[1], pVector[2], dist);
-	delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
+
+	pVector.push_back(new Particle(center + offset, 1.0f, 0));
+	pVector.push_back(new Particle(center + offset + offset, 1.0f, 0));
+	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 0));
+
+	fVector.push_back(new GravityForce(pVector));
+	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 1, 1));
+	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 1, 1));
+
+	cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
+	cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+
+	GravityForce gravity_force = GravityForce(pVector);
+	SpringForce spring1 = SpringForce(pVector[0], pVector[1], dist, 1, 1);
+	SpringForce spring2 = SpringForce(pVector[1], pVector[2], dist, 1, 1);
+	AngularSpringForce asf = AngularSpringForce(pVector, dist, 120.0, 100.0);
+
+	gravity_force.apply();
+
 }
 
 /*
