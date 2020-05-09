@@ -74,6 +74,9 @@ static void clear_data() {
 	for (ii = 0; ii < size; ii++) {
 		pVector[ii]->reset();
 	}
+	GravityForce gravity_force = GravityForce(pVector);
+	gravity_force.apply();
+
 }
 
 static void init_system() {
@@ -94,6 +97,12 @@ static void init_system() {
 
 	cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
 	cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+
+	GravityForce gravity_force = GravityForce(pVector);
+	SpringForce spring1 = SpringForce(pVector[0], pVector[1], dist, 1, 1);
+	SpringForce spring2 = SpringForce(pVector[1], pVector[2], dist, 1, 1);
+
+	gravity_force.apply();
 
 }
 
@@ -321,7 +330,7 @@ int main(int argc, char **argv) {
 
 	if (argc==1) {
 		N = 64;
-		dt = 0.1f;
+		dt = 0.01f;
 		d = 5.f;
 		fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
 				N, dt, d);

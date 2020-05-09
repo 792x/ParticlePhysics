@@ -192,7 +192,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SICGConsole.cpp" />
-    <ClCompile Include="OldSolver.cpp" />
     <ClCompile Include="solvers\Euler.cpp" />
     <ClCompile Include="solvers\linearSolver.cpp" />
     <ClCompile Include="solvers\MidPoint.cpp" />

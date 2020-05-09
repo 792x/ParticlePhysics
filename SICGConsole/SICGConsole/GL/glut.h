@@ -49,7 +49,7 @@ typedef unsigned short wchar_t;
 #pragma comment (lib, "opengl32.lib")  /* link with Microsoft OpenGL lib */
 #pragma comment (lib, "glu32.lib")     /* link with OpenGL Utility lib */
 #pragma comment (lib, "glut32.lib")    /* link with Win32 GLUT lib */
-
+#pragma comment (lib, "freeglut.lib")    /* link with Win32 GLUT lib */
 #pragma warning (disable:4244)	/* Disable bogus conversion warnings. */
 #pragma warning (disable:4305)  /* VC++ 5.0 version of above warning. */
 
