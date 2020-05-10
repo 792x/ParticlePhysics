@@ -31,8 +31,12 @@ void AngularSpringForce::apply()
 
 	double b = norm(l1);
 	double c = norm(l2);
-	Vec3f f = -(ks * (norm(l) - sqrt(b * b + c * c - 2 * b * c * cos(dist))) 
-		+ kd * ((l * ld) / norm(l))) * (l / norm(l));
+	//Vec3f f = -(ks * (norm(l) - sqrt(b * b + c * c - 2 * b * c * cos(dist))) 
+	//	+ kd * ((l * ld) / norm(l))) * (l / norm(l));
+	Vec3f f = -(ks * (norm(l) - sqrt(b * b + c * c - 2 * b * c * cos(dist))) +
+		kd * ((l * ld) / norm(l)));
+	f = f * l ;
+	f /= norm(l);
 
 	particles[0]->m_Force += f;
 	particles[2]->m_Force -= f;
