@@ -4,16 +4,12 @@
 #include "Particle.h"
 #include "Force.h"
 
-using namespace std;
-
-class GravityForce : public Force{
-public:
-    GravityForce(vector<Particle*> ps);
-
-    void draw() override;
-    void apply() override;
-private:
-    vector<Particle*> particles;
-    Vec2f const g(0,-9.8);
+class GravityForce : public Force {
+  public:
+	explicit GravityForce(std::vector<Particle *> particles);
+	void target(std::vector<Particle *> particles) override;
+	void apply() override;
+	void draw() override;
+  private:
+	static const Vec3f standard_gravity;
 };
-

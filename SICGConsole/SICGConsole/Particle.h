@@ -1,27 +1,26 @@
 #pragma once
 
 #ifdef __APPLE__
-#include "include/linux/gfx/vec2.h"
+
+#include "include/linux/gfx/vec3.h"
+
 #else
-#include "include\gfx\vec2.h"
+
+#include "include\gfx\vec3.h"
 #endif
 
-
-
-class Particle
-{
-public:
-
-	Particle(const Vec2f & ConstructPos);
-	virtual ~Particle(void);
+class Particle {
+  public:
+	Particle(const Vec3f &constructPos, float mass, int index);
+	virtual ~Particle() = default;
 
 	void reset();
 	void draw();
 
-	Vec2f m_ConstructPos;
-	Vec2f m_Position;
-	Vec2f m_Velocity;
-	Vec2f m_Force;
-
-	float mass;
+	Vec3f m_ConstructPos;
+	Vec3f m_Position;
+	Vec3f m_Velocity;
+	Vec3f m_Force;
+	int m_Index;
+	float m_Mass;
 };

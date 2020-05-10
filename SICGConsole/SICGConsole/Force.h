@@ -1,14 +1,19 @@
 #pragma once
-
-#include <vector>
 #include "Particle.h"
+#include <vector>
 
-using namespace std;
-class Force{
-public:
-	virtual void apply()=0;
-	virtual void draw()=0;
-//private;
-//	vector<Particle*> particles;
+// Abstract class
+class Force {
+  public:
+	virtual ~Force() = default;
 
+	virtual void target(std::vector<Particle *> particles) = 0;
+	virtual void draw() = 0;
+	virtual void apply() = 0;
+	std::vector<Particle *> particles;
+	void reset() {
+		for (Particle* p : particles) {
+			p->m_Force = Vec3f(0.0, 0.0, 0.0);
+		}
+	}
 };
