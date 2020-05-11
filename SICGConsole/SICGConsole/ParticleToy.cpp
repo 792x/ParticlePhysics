@@ -11,6 +11,7 @@
 #include "solvers/Solver.h"
 #include "solvers/Euler.h"
 #include "solvers/MidPoint.h"
+#include "solvers/RungeKutta.h"
 
 //#include "imageio.h"
 
@@ -48,7 +49,8 @@ static int hmx, hmy;
 static Euler explEuler = Euler(Euler::expl) ;
 static Euler semiEuler = Euler(Euler::semi) ;
 static MidPoint MidPointSolver;
-static Solver* solvers[3] = {&explEuler, &semiEuler, &MidPointSolver};
+static RungeKutta RungeKuttaSolver;
+static Solver* solvers[4] = {&explEuler, &semiEuler, &MidPointSolver, &RungeKuttaSolver };
 static int solverIndex = 0;
 
 /*
@@ -259,6 +261,10 @@ static void key_func(unsigned char key, int x, int y) {
 			printf("\t Using solver 3. Explicit MidPoint\n");
 			break;
 
+		case '4': solverIndex = 3;
+			printf("\t Using solver 4. Explicit Runge Kutta\n");
+			break;
+
 		case 'c':
 		case 'C': clear_data();
 			break;
@@ -389,6 +395,7 @@ int main(int argc, char **argv) {
 	printf("\t 1. Explicit Euler\n");
 	printf("\t 2. Semi Implicit Euler\n");
 	printf("\t 3. Explicit MidPoint\n");
+	printf("\t 4. Explicit Runge Kutta\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
 
