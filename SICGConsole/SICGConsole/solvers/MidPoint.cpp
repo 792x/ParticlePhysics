@@ -17,15 +17,7 @@ void MidPoint::simulation_step(std::vector<Particle*> pVector, std::vector<Force
 	// Do an Euler step with half the size of the simulations stepsize dt.
 	EulerSolver.simulation_step(pVector, fVector, 0.5f*dt);
 
-	// Reset all the forces.
-	for (Force* f : fVector) {
-		f->reset();
-	}
-
-	// Compute and apply all the new forces.
-	for (Force* f : fVector) {
-		f->apply();
-	}
+	compute_forces(fVector);
 
 	// Compute the new positions and velocities for all the particles.
 	for (int i = 0; i < int(pVector.size()); i++) {
