@@ -7,6 +7,11 @@
 #include "Force.h"
 #include "Constraint.h"
 #include "GravityForce.h"
+#include "AngularSpringForce.h"
+#include "solvers/Solver.h"
+#include "solvers/Euler.h"
+#include "solvers/MidPoint.h"
+
 //#include "imageio.h"
 
 #include <vector>
@@ -17,11 +22,6 @@
 #else
 #include "GL/glut.h"
 #endif
-
-/* macros */
-
-/* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> pVector, float dt);
 
 /* global variables */
 
@@ -43,6 +43,13 @@ static int mouse_release[3];
 static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
+
+// global variables used for solvers
+static Euler explEuler = Euler(Euler::expl) ;
+static Euler semiEuler = Euler(Euler::semi) ;
+static MidPoint MidPointSolver;
+static Solver* solvers[3] = {&explEuler, &semiEuler, &MidPointSolver};
+static int solverIndex = 0;
 
 /*
 ----------------------------------------------------------------------
@@ -74,6 +81,7 @@ static void clear_data() {
 	for (ii = 0; ii < size; ii++) {
 		pVector[ii]->reset();
 	}
+
 }
 
 static void init_system() {
@@ -83,7 +91,6 @@ static void init_system() {
 
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
-
 	pVector.push_back(new Particle(center + offset, 1.0f, 0));
 	pVector.push_back(new Particle(center + offset + offset, 1.0f, 0));
 	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 0));
@@ -92,8 +99,16 @@ static void init_system() {
 	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 1, 1));
 	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 1, 1));
 
+
 	cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
 	cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+
+	//GravityForce gravity_force = GravityForce(pVector);
+	SpringForce spring1 = SpringForce(pVector[0], pVector[1], dist, 1, 1);
+	SpringForce spring2 = SpringForce(pVector[1], pVector[2], dist, 1, 1);
+	AngularSpringForce asf = AngularSpringForce(pVector, dist, 120.0, 100.0);
+
+	//gravity_force.apply();
 
 }
 
@@ -137,6 +152,26 @@ static void post_display() {
 	glutSwapBuffers();
 }
 
+static void apply_forces() {
+	// Reset all the forces.
+	for (Force* f : fVector) {
+		f->reset();
+	}
+
+	// Compute and apply all the new forces.
+	for (Force* f : fVector) {
+		f->apply();
+	}
+
+}
+
+static void apply_constraints() {
+
+	for (Constraint* c : cVector) {
+		//TODO: to be implemented
+	}
+};
+
 static void draw_particles() {
 	int size = pVector.size();
 
@@ -153,6 +188,7 @@ static void draw_forces() {
 }
 
 static void draw_constraints() {
+
 	for (Constraint *c : cVector) {
 		c->draw();
 	}
@@ -211,6 +247,18 @@ GLUT callback routines
 
 static void key_func(unsigned char key, int x, int y) {
 	switch (key) {
+		case '1': solverIndex = 0;
+			printf("\t Using solver 1. Explicit Euler\n");
+			break;
+
+		case '2': solverIndex = 1;
+			printf("\t Using solver 2. Semi-implicit Euler\n");
+			break;
+
+		case '3': solverIndex = 2;
+			printf("\t Using solver 3. Explicit MidPoint\n");
+			break;
+
 		case 'c':
 		case 'C': clear_data();
 			break;
@@ -258,8 +306,11 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func() {
-	if (dsim) simulation_step(pVector, dt);
-	else {
+	if (dsim) {
+		apply_forces();
+		apply_constraints();
+		solvers[solverIndex]->simulation_step(pVector, fVector, dt);
+	} else {
 		get_from_UI();
 		remap_GUI();
 	}
@@ -321,7 +372,7 @@ int main(int argc, char **argv) {
 
 	if (argc==1) {
 		N = 64;
-		dt = 0.1f;
+		dt = 0.01f;
 		d = 5.f;
 		fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
 				N, dt, d);
@@ -333,6 +384,11 @@ int main(int argc, char **argv) {
 
 	printf("\n\nHow to use this application:\n\n");
 	printf("\t Toggle construction/simulation display with the spacebar key\n");
+	printf("\t Switch between solvers by pressing the keys '1' and '2'\n");
+	printf("\t Available solvers:\n");
+	printf("\t 1. Explicit Euler\n");
+	printf("\t 2. Semi Implicit Euler\n");
+	printf("\t 3. Explicit MidPoint\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
 

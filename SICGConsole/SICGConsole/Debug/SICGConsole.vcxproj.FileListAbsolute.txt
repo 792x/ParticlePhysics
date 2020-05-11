@@ -1,0 +1,2 @@
+C:\Users\s144740\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\Debug\SICGConsole.exe
+C:\Users\s144740\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\Debug\SICGConsole.pdb

@@ -22,6 +22,9 @@
     <Filter Include="Source Files\GL">
       <UniqueIdentifier>{b87e7de3-dee4-4839-8473-10e32a7890d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\solvers">
+      <UniqueIdentifier>{cdff6839-ccf9-4536-b1e1-910efe3bbd63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -34,9 +37,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CircularWireConstraint.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="linearSolver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
@@ -108,18 +108,27 @@
     <ClInclude Include="GL\tube.h">
       <Filter>Source Files\GL</Filter>
     </ClInclude>
+    <ClInclude Include="GravityForce.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="solvers\Euler.h">
+      <Filter>Source Files\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="solvers\linearSolver.h">
+      <Filter>Source Files\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="solvers\MidPoint.h">
+      <Filter>Source Files\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="solvers\Solver.h">
+      <Filter>Source Files\solvers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SICGConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CircularWireConstraint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="linearSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
@@ -131,10 +140,22 @@
     <ClCompile Include="RodConstraint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Solver.cpp">
+    <ClCompile Include="SpringForce.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SpringForce.cpp">
+    <ClCompile Include="GravityForce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="solvers\Euler.cpp">
+      <Filter>Source Files\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="solvers\linearSolver.cpp">
+      <Filter>Source Files\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="solvers\MidPoint.cpp">
+      <Filter>Source Files\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="OldSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

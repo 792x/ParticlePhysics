@@ -1,11 +1,12 @@
-#include "GravityForce.h"
-#ifdef __APPLE__
+#/*ifdef __APPLE__
 #include <GLUT/glut.h>
 
 #include <utility>
-#else
+#else*/
+#include "stdafx.h"
+#include "GravityForce.h"
 #include "GL/glut.h"
-#endif
+//#endif
 
 const Vec3f GravityForce::standard_gravity = Vec3f(0.0, -9.81f, 0.0);
 
@@ -26,4 +27,3 @@ void GravityForce::apply() {
 
 void GravityForce::draw() {
 }
-
