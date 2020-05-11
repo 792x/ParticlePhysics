@@ -45,9 +45,10 @@ static int omx, omy, mx, my;
 static int hmx, hmy;
 
 // global variables used for solvers
-static Euler EulerSolver;
+static Euler explEuler = Euler(Euler::expl) ;
+static Euler semiEuler = Euler(Euler::semi) ;
 static MidPoint MidPointSolver;
-static Solver* solvers[2] = {&EulerSolver, &MidPointSolver};
+static Solver* solvers[3] = {&explEuler, &semiEuler, &MidPointSolver};
 static int solverIndex = 0;
 
 /*
@@ -94,7 +95,7 @@ static void init_system() {
 	pVector.push_back(new Particle(center + offset + offset, 1.0f, 0));
 	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 0));
 
-	//fVector.push_back(new GravityForce(pVector));
+	fVector.push_back(new GravityForce(pVector));
 	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 1, 1));
 	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 1, 1));
 
@@ -251,7 +252,11 @@ static void key_func(unsigned char key, int x, int y) {
 			break;
 
 		case '2': solverIndex = 1;
-			printf("\t Using solver 2. Explicit MidPoint\n");
+			printf("\t Using solver 2. Semi-implicit Euler\n");
+			break;
+
+		case '3': solverIndex = 2;
+			printf("\t Using solver 3. Explicit MidPoint\n");
 			break;
 
 		case 'c':
@@ -382,7 +387,8 @@ int main(int argc, char **argv) {
 	printf("\t Switch between solvers by pressing the keys '1' and '2'\n");
 	printf("\t Available solvers:\n");
 	printf("\t 1. Explicit Euler\n");
-	printf("\t 2. Explicit MidPoint\n");
+	printf("\t 2. Semi Implicit Euler\n");
+	printf("\t 3. Explicit MidPoint\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
 

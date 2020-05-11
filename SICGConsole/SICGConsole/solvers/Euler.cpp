@@ -3,6 +3,7 @@
 #include "../include/gfx/vec2.h"
 
 #include "Euler.h"
+Euler::Euler(Euler::TYPE type) : type(type) {}
 
 void Euler::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, float dt) {
 	
@@ -12,11 +13,20 @@ void Euler::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> 
 		Vec3f initVel = pVector[i]->m_Velocity;
 		Vec3f initAcc = pVector[i]->m_Force / pVector[i]->m_Mass;
 
-		Vec3f finalVelocity = initVel + initAcc * dt;
-		Vec3f finalPosition = initPos + initVel * dt + float(0.5) * initAcc * dt * dt;
-		
-		pVector[i]->m_Position = finalPosition;
-		pVector[i]->m_Velocity = finalVelocity;
+		Vec3f newVelocity = initVel + initAcc * dt;
+
+		Vec3f newPosition = initPos + initVel * dt;
+
+		if (type == semi) {
+			Vec3f newPosition = initPos + newVelocity * dt;
+		}
+		//if (type == impl) {
+			//to do
+		//}
+
+
+		pVector[i]->m_Position = newPosition;
+		pVector[i]->m_Velocity = newVelocity;
 	}
 
 }

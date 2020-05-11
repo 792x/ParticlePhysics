@@ -2,7 +2,7 @@
 #include "Euler.h"
 #include "MidPoint.h"
 
-static Euler EulerSolver;
+static Euler EulerSolver = Euler(Euler::semi);
 
 void MidPoint::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, float dt) {
 
