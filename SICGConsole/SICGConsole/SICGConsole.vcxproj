@@ -154,6 +154,7 @@
     <ClInclude Include="GL\tube.h" />
     <ClInclude Include="GravityForce.h" />
     <ClInclude Include="AngularSpringForce.h" />
+    <ClInclude Include="Cloth.h" />
     <ClInclude Include="include\gfx\config.h" />
     <ClInclude Include="include\gfx\geom3d.h" />
     <ClInclude Include="include\gfx\geom4d.h" />
@@ -184,6 +185,7 @@
     </ClCompile>
     <ClCompile Include="GravityForce.cpp" />
     <ClCompile Include="AngularSpringForce.cpp" />
+    <ClCompile Include="Cloth.cpp" />
     <ClCompile Include="Particle.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
