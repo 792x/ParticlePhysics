@@ -21,7 +21,7 @@ public:
 	// create cloth particles and add to pVector
 	Cloth(int x, int y, Vec3f bottom_left_pos, vector<Particle*> &ps, 
 		vector<Force*>& fs, vector<Constraint*> &cs, float mass=4.0, float dist = 0.5,
-		float ks=0.45, float kd=0.48);
+		float ks=0.4f, float kd=0.4f);
 	
 	// cloth particles will be created add to ps
 	void init(vector<Particle*>& ps, vector<Force*> &fs, vector<Constraint*>& cs, float mass);

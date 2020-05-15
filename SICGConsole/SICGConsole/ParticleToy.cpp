@@ -96,7 +96,9 @@ static void init_system() {
 	pVector.push_back(new Particle(center + offset + offset, 1.0f, 0));
 	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 0));
 
-	//fVector.push_back(new GravityForce(pVector));
+	Cloth c = Cloth(5, 7, Vec3f( 0.2f,0.2f,0.2f ), pVector, fVector, cVector,1.0f,0.08f);
+
+	fVector.push_back(new GravityForce(pVector));
 	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 1, 1));
 	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 1, 1));
 
@@ -109,7 +111,6 @@ static void init_system() {
 	SpringForce spring2 = SpringForce(pVector[1], pVector[2], dist, 1, 1);
 	AngularSpringForce asf = AngularSpringForce(pVector, dist, 120.0, 100.0);
 
-	Cloth c = Cloth(3, 4, Vec3f( 0.2f,0.2f,0.2f ), pVector, fVector, cVector,1.0f,0.1f);
 
 	//gravity_force.apply();
 

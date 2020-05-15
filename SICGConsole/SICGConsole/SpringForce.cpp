@@ -31,7 +31,7 @@ void SpringForce::draw() {
 
 void SpringForce::apply() {
 	Vec3f x = particles[0]->m_Position - particles[1]->m_Position;
-	Vec3f v = particles[0]->m_Velocity - particles[1]->m_Position;
+	Vec3f v = particles[0]->m_Velocity - particles[1]->m_Velocity;
 	Vec3f f = x/norm(x);
 	f *= (m_ks*(norm(x) - m_dist) + m_kd*((x*v)/norm(x)));
 //	Vec3f f = -(m_ks * (norm(x) - m_dist) + m_kd * ((x * v) / norm(x))) * (x / norm(x));
