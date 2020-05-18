@@ -1,10 +1,11 @@
 #include "../Force.h"
 #include "Euler.h"
 #include "MidPoint.h"
+#include "ConstraintSolver.h"
 
 static Euler EulerSolver = Euler(Euler::semi);
 
-void MidPoint::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, float dt) {
+void MidPoint::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {
 
 	std::vector<Vec3f> initPosVec, initVelVec;
 
@@ -15,9 +16,11 @@ void MidPoint::simulation_step(std::vector<Particle*> pVector, std::vector<Force
 	}
 
 	// Do an Euler step with half the size of the simulations stepsize dt.
-	EulerSolver.simulation_step(pVector, fVector, 0.5f*dt);
+	EulerSolver.simulation_step(pVector, fVector, cVector, float(0.5)*dt);
 
 	compute_forces(fVector);
+
+	ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
 
 	// Compute the new positions and velocities for all the particles.
 	for (int i = 0; i < int(pVector.size()); i++) {

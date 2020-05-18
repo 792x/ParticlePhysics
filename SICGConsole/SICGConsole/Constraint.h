@@ -15,6 +15,10 @@ class Constraint {
 	virtual std::vector<Vec3f> m_j() = 0;
 	virtual std::vector<Vec3f> m_jd() = 0;
 
+	std::vector<Particle*> get_particles() {
+		return particles;
+	};
+
   protected:
 	std::vector<Particle *> particles;
 };

@@ -9,12 +9,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 #Bring the headers, such as Student.h into the project
 include_directories(include/linux)
-
+include_directories(include/Eigen)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -Wno-sign-compare -DHAVE_CONFIG_H")
 
 
 #However, the file(GLOB...) allows for wildcard additions:
-file(GLOB SOURCES "./*.cpp")
+file(GLOB SOURCES "./solvers/*.cpp" "./*.cpp")
 list(REMOVE_ITEM SOURCES "./stdafx.cpp")
 
 add_executable(project1 ${SOURCES})

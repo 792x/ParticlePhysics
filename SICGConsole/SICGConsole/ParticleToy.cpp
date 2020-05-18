@@ -12,6 +12,7 @@
 #include "solvers/Euler.h"
 #include "solvers/MidPoint.h"
 #include "Cloth.h"
+#include "solvers/ConstraintSolver.h"
 #include "solvers/RungeKutta.h"
 #include "solvers/BasicVerlet.h"
 
@@ -54,7 +55,7 @@ static MidPoint MidPointSolver;
 static RungeKutta RungeKuttaSolver;
 static BasicVerlet BasicVerletSolver;
 static Solver* solvers[5] = {&explEuler, &semiEuler, &MidPointSolver, &RungeKuttaSolver, &BasicVerletSolver};
-static int solverIndex = 0;
+static int solverIndex = 2;
 
 /*
 ----------------------------------------------------------------------
@@ -97,8 +98,8 @@ static void init_system() {
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
 	pVector.push_back(new Particle(center + offset, 1.0f, 0));
-	pVector.push_back(new Particle(center + offset + offset, 1.0f, 0));
-	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 0));
+	pVector.push_back(new Particle(center + offset + offset, 1.0f, 1));
+	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 2));
 
 	Cloth c = Cloth(5, 7, Vec3f( 0.2f,0.2f,0.2f ), pVector, fVector, cVector,1.0f,0.08f);
 
@@ -174,13 +175,10 @@ static void apply_forces() {
 	}
 
 }
-
-static void apply_constraints() {
-
-	for (Constraint* c : cVector) {
-		//TODO: to be implemented
-	}
-};
+//
+//static void apply_constraints() {
+//	ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
+//};
 
 static void draw_particles() {
 	int size = pVector.size();
@@ -326,8 +324,8 @@ static void reshape_func(int width, int height) {
 static void idle_func() {
 	if (dsim) {
 		apply_forces();
-		apply_constraints();
-		solvers[solverIndex]->simulation_step(pVector, fVector, dt);
+//		apply_constraints();
+		solvers[solverIndex]->simulation_step(pVector, fVector, cVector, dt);
 	} else {
 		get_from_UI();
 		remap_GUI();
