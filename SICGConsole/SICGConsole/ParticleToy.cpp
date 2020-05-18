@@ -12,6 +12,7 @@
 #include "solvers/Euler.h"
 #include "solvers/MidPoint.h"
 #include "solvers/RungeKutta.h"
+#include "solvers/BasicVerlet.h"
 
 //#include "imageio.h"
 
@@ -46,11 +47,12 @@ static int omx, omy, mx, my;
 static int hmx, hmy;
 
 // global variables used for solvers
-static Euler explEuler = Euler(Euler::expl) ;
-static Euler semiEuler = Euler(Euler::semi) ;
+static Euler explEuler = Euler(Euler::expl);
+static Euler semiEuler = Euler(Euler::semi);
 static MidPoint MidPointSolver;
 static RungeKutta RungeKuttaSolver;
-static Solver* solvers[4] = {&explEuler, &semiEuler, &MidPointSolver, &RungeKuttaSolver };
+static BasicVerlet BasicVerletSolver;
+static Solver* solvers[5] = {&explEuler, &semiEuler, &MidPointSolver, &RungeKuttaSolver, &BasicVerletSolver};
 static int solverIndex = 0;
 
 /*
@@ -106,9 +108,9 @@ static void init_system() {
 	cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
 
 	//GravityForce gravity_force = GravityForce(pVector);
-	SpringForce spring1 = SpringForce(pVector[0], pVector[1], dist, 1, 1);
+	/*SpringForce spring1 = SpringForce(pVector[0], pVector[1], dist, 1, 1);
 	SpringForce spring2 = SpringForce(pVector[1], pVector[2], dist, 1, 1);
-	AngularSpringForce asf = AngularSpringForce(pVector, dist, 120.0, 100.0);
+	AngularSpringForce asf = AngularSpringForce(pVector, dist, 120.0, 100.0);*/
 
 	//gravity_force.apply();
 
@@ -265,6 +267,10 @@ static void key_func(unsigned char key, int x, int y) {
 			printf("\t Using solver 4. Explicit Runge Kutta\n");
 			break;
 
+		case '5': solverIndex = 4;
+			printf("\t Using solver 5. Basic Verlet\n");
+			break;
+
 		case 'c':
 		case 'C': clear_data();
 			break;
@@ -396,6 +402,7 @@ int main(int argc, char **argv) {
 	printf("\t 2. Semi Implicit Euler\n");
 	printf("\t 3. Explicit MidPoint\n");
 	printf("\t 4. Explicit Runge Kutta\n");
+	printf("\t 5. Basic Verlet\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
 
