@@ -32,6 +32,8 @@ static int dsim;
 static int dump_frames;
 static int frame_number;
 
+static const double PI = 2 * acos(0.0);
+
 // static Particle *pList;
 static std::vector<Particle *> pVector;
 static std::vector<Force *> fVector;
@@ -92,25 +94,27 @@ static void init_system() {
 
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
-	pVector.push_back(new Particle(center + offset, 1.0f, 0));
-	pVector.push_back(new Particle(center + offset + offset, 1.0f, 0));
-	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 0));
-
-	Cloth c = Cloth(5, 7, Vec3f( 0.2f,0.2f,0.2f ), pVector, fVector, cVector,1.0f,0.08f);
-
-	fVector.push_back(new GravityForce(pVector));
-	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 1, 1));
-	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 1, 1));
+	//pVector.push_back(new Particle(center + offset, 1.0f, 0));
+	//pVector.push_back(new Particle(center + offset + offset, 1.0f, 1));
+	//pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 2));
 
 
-	cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
-	cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+	Cloth c = Cloth(5, 7, Vec3f( 0.2f,0.2f,0.2f ), pVector, fVector, cVector);
+
+	//fVector.push_back(new GravityForce(pVector));
+	//fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 1, 1));
+	//fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 1, 1));
+	//fVector.push_back(new AngularSpringForce({ pVector[0],pVector[1],pVector[2] }, PI, 0.5, 0.5));
+
+	//cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
+	//cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+
+
 
 	//GravityForce gravity_force = GravityForce(pVector);
-	SpringForce spring1 = SpringForce(pVector[0], pVector[1], dist, 1, 1);
-	SpringForce spring2 = SpringForce(pVector[1], pVector[2], dist, 1, 1);
-	AngularSpringForce asf = AngularSpringForce(pVector, dist, 120.0, 100.0);
-
+	//SpringForce spring1 = SpringForce(pVector[0], pVector[1], dist, 1, 1);
+	//SpringForce spring2 = SpringForce(pVector[1], pVector[2], dist, 1, 1);
+	//AngularSpringForce asf = AngularSpringForce(pVector, dist, 120.0, 100.0);
 
 	//gravity_force.apply();
 
@@ -378,7 +382,7 @@ int main(int argc, char **argv) {
 
 	if (argc==1) {
 		N = 64;
-		dt = 0.01f;
+		dt = 0.001f;
 		d = 5.f;
 		fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
 				N, dt, d);

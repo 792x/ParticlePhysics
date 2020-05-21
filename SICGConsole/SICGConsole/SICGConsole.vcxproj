@@ -88,6 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>L:\learning\academy\TUeM1\Q4\Simulation\eigen\eigen-eigen-94875feeeeb9;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -175,6 +176,9 @@
     <ClInclude Include="solvers\linearSolver.h" />
     <ClInclude Include="solvers\MidPoint.h" />
     <ClInclude Include="solvers\Solver.h" />
+    <ClInclude Include="solvers\BasicVerlet.h" />
+    <ClInclude Include="solvers\RungeKutta.h" />
+    <ClInclude Include="solvers\ConstraintSolver.h" />
     <ClInclude Include="SpringForce.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -199,6 +203,9 @@
     <ClCompile Include="solvers\Euler.cpp" />
     <ClCompile Include="solvers\linearSolver.cpp" />
     <ClCompile Include="solvers\MidPoint.cpp" />
+    <ClCompile Include="solvers\BasicVerlet.cpp" />
+    <ClCompile Include="solvers\RungeKutta.cpp" />
+    <ClCompile Include="solvers\ConstraintSolver.cpp" />
     <ClCompile Include="SpringForce.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>

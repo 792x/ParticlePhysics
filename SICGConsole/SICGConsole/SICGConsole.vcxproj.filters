@@ -123,6 +123,21 @@
     <ClInclude Include="solvers\Solver.h">
       <Filter>Source Files\solvers</Filter>
     </ClInclude>
+    <ClInclude Include="AngularSpringForce.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cloth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="solvers\BasicVerlet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="solvers\RungeKutta.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="solvers\ConstraintSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SICGConsole.cpp">
@@ -155,7 +170,19 @@
     <ClCompile Include="solvers\MidPoint.cpp">
       <Filter>Source Files\solvers</Filter>
     </ClCompile>
-    <ClCompile Include="OldSolver.cpp">
+    <ClCompile Include="AngularSpringForce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cloth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="solvers\BasicVerlet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="solvers\RungeKutta.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="solvers\ConstraintSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

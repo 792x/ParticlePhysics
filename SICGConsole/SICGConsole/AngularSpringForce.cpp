@@ -24,7 +24,7 @@ void AngularSpringForce::apply()
 	Vec3f l1 = particles[0]->m_Position - particles[1]->m_Position;
 	Vec3f l2 = particles[1]->m_Position - particles[2]->m_Position;
 
-	double cosine = (l1 * l2) / (norm(l1) * norm(l2));
+	//double cosine = (l1 * l2) / (norm(l1) * norm(l2));
 
 	Vec3f l = particles[0]->m_Position - particles[2]->m_Position;
 	Vec3f ld = particles[0]->m_Velocity - particles[2]->m_Velocity;
@@ -33,6 +33,7 @@ void AngularSpringForce::apply()
 	double c = norm(l2);
 	//Vec3f f = -(ks * (norm(l) - sqrt(b * b + c * c - 2 * b * c * cos(dist))) 
 	//	+ kd * ((l * ld) / norm(l))) * (l / norm(l));
+	// Anugalar force try to maintain the dist, which is the angle of l1 and l2
 	Vec3f f = -(ks * (norm(l) - sqrt(b * b + c * c - 2 * b * c * cos(dist))) +
 		kd * ((l * ld) / norm(l)));
 	f = f * l ;
