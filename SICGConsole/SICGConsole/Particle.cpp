@@ -7,7 +7,8 @@
 
 Particle::Particle(const Vec3f &constructPos, float mass, int index) :
 	m_ConstructPos(constructPos),
-	m_Position(Vec3f(0.0, 0.0, 0.0)),
+	m_Position(constructPos),
+	m_OldPosition(constructPos),
 	m_Velocity(Vec3f(0.0, 0.0, 0.0)),
 	m_Force(Vec3f(0.0, 0.0, 0.0)),
 	m_Index(index),
@@ -15,6 +16,7 @@ Particle::Particle(const Vec3f &constructPos, float mass, int index) :
 
 void Particle::reset() {
 	m_Position = m_ConstructPos;
+	m_OldPosition = m_ConstructPos;
 	m_Velocity = Vec3f(0.0, 0.0, 0.0);
 	m_Force = Vec3f(0.0, 0.0, 0.0);
 }

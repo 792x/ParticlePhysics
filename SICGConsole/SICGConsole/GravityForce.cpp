@@ -1,12 +1,12 @@
-#/*ifdef __APPLE__
+#ifdef __APPLE__
 #include <GLUT/glut.h>
+#else
+#include "stdafx.h"
+#include "GL/glut.h"
+#endif
 
 #include <utility>
-#else*/
-#include "stdafx.h"
 #include "GravityForce.h"
-#include "GL/glut.h"
-//#endif
 
 const Vec3f GravityForce::standard_gravity = Vec3f(0.0, -9.81f, 0.0);
 

@@ -2,12 +2,10 @@
 // SICGConsole.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 
-/*#ifdef __APPLE__
+#ifdef __APPLE__
 #else
 #include "stdafx.h"
-#endif*/
-
-#include "stdafx.h"
+#endif
 
 
 // TODO: reference any additional headers you need in STDAFX.H

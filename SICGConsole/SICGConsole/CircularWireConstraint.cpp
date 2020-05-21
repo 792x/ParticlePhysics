@@ -33,17 +33,17 @@ float CircularWireConstraint::m_Cd() {
 	Vec3f p = (m_p->m_Position - m_center);
 	Vec3f v = m_p->m_Velocity;
 
-	return float(2)*p*v;
+	return 2.f*p*v;
 }
 
 std::vector<Vec3f> CircularWireConstraint::m_j() {
 	std::vector<Vec3f> j;
-	j.push_back((m_p->m_Position - m_center)*float(2));
+	j.push_back((m_p->m_Position - m_center)*2.f);
 	return j;
 }
 
 std::vector<Vec3f> CircularWireConstraint::m_jd() {
 	std::vector<Vec3f> jd;
-	jd.push_back(m_p->m_Velocity*float(2));
+	jd.push_back(m_p->m_Velocity*2.f);
 	return jd;
 }

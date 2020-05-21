@@ -1,12 +1,11 @@
-#/*ifdef __APPLE__
+#ifdef __APPLE__
 #include <GLUT/glut.h>
-
 #include <utility>
-#else*/
-#include "AngularSpringForce.h"
+#else
 #include "GL/glut.h"
-//#endif
+#endif
 
+#include "AngularSpringForce.h"
 using namespace std;
 
 AngularSpringForce::AngularSpringForce(std::vector<Particle*> ps, float dist, float ks, float kd):

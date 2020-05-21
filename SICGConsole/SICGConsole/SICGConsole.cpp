@@ -1,7 +1,11 @@
 // SICGConsole.cpp : Defines the entry point for the console application.
 //
 
+#ifdef __APPLE__
+
+#else
 #include "stdafx.h"
+#endif
 
 /* Removed SICGConsole's main function in order for ParticleToy to function.
  * 
