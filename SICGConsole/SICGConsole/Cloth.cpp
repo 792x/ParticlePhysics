@@ -83,7 +83,7 @@ void Cloth::addForces(vector<Particle *> ps, vector<Force *> &fs) {
 }
 
 void Cloth::addConstraints(vector<Particle *> ps, vector<Constraint *> &cs) {
-	double r = 0.2f;
+	double r = 0.0002f;
 	Vec3f o_pos = this->bot_left_pos;
 
 	//the top left and right point to fix the cloth
@@ -109,9 +109,10 @@ void Cloth::addConstraints(vector<Particle *> ps, vector<Constraint *> &cs) {
 }
 
 void Cloth::draw() {
-	for (auto p : particles) {
-		p->draw();
-	}
+	//for (auto p : particles) {
+	//	p->draw();
+	//}
+	//this should be done in global drawing
 }
 
 Cloth::~Cloth() {

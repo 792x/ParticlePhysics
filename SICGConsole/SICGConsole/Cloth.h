@@ -11,11 +11,12 @@
 #include "Particle.h"
 #include "Force.h"
 #include "Constraint.h"
+#include "Object.h"
 
 #include<vector>
 
 using namespace std;
-class Cloth
+class Cloth: public Object
 {
 public:
 	// create cloth particles and add to pVector
@@ -27,10 +28,9 @@ public:
 	void init(vector<Particle*>& ps, vector<Force*> &fs, vector<Constraint*>& cs, float mass);
 	void addForces(vector<Particle*> ps, vector<Force*>& fs);
 	void addConstraints(vector<Particle*> ps, vector<Constraint*>& cs);
-	void draw();
+	void draw() override;
 	~Cloth();
 private:
-	vector<Particle*> particles;
 	int xn, yn; //width and high
 	Vec3f bot_left_pos;
 	float dist = 0.5; // distance between each particle
