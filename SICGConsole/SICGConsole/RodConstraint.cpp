@@ -13,7 +13,7 @@ float RodConstraint::m_C() {
 	return diff*diff - m_dist*m_dist;
 }
 
-float RodConstraint::m_Cd() {
+float RodConstraint::m_C_dot() {
 	Vec3f pDiff = (m_p1->m_Position - m_p2->m_Position)*2.f;
 	Vec3f vDiff = (m_p1->m_Velocity - m_p2->m_Velocity)*2.f;
 	return pDiff*vDiff;
@@ -26,11 +26,11 @@ std::vector<Vec3f> RodConstraint::m_j() {
 	return j;
 }
 
-std::vector<Vec3f> RodConstraint::m_jd() {
-	std::vector<Vec3f> jd;
-	jd.push_back((m_p1->m_Velocity - m_p2->m_Velocity)*2.f);
-	jd.push_back((m_p2->m_Velocity - m_p1->m_Velocity)*2.f);
-	return jd;
+std::vector<Vec3f> RodConstraint::m_j_dot() {
+	std::vector<Vec3f> j_dot;
+	j_dot.push_back((m_p1->m_Velocity - m_p2->m_Velocity)*2.f);
+	j_dot.push_back((m_p2->m_Velocity - m_p1->m_Velocity)*2.f);
+	return j_dot;
 }
 
 void RodConstraint::draw() {

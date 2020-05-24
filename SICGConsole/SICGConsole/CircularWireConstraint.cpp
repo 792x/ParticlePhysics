@@ -29,7 +29,7 @@ float CircularWireConstraint::m_C() {
 	return diff*diff - m_radius*m_radius;
 }
 
-float CircularWireConstraint::m_Cd() {
+float CircularWireConstraint::m_C_dot() {
 	Vec3f p = (m_p->m_Position - m_center);
 	Vec3f v = m_p->m_Velocity;
 
@@ -42,8 +42,8 @@ std::vector<Vec3f> CircularWireConstraint::m_j() {
 	return j;
 }
 
-std::vector<Vec3f> CircularWireConstraint::m_jd() {
-	std::vector<Vec3f> jd;
-	jd.push_back(m_p->m_Velocity*2.f);
-	return jd;
+std::vector<Vec3f> CircularWireConstraint::m_j_dot() {
+	std::vector<Vec3f> j_dot;
+	j_dot.push_back(m_p->m_Velocity*2.f);
+	return j_dot;
 }

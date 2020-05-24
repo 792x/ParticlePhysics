@@ -11,9 +11,9 @@ class Constraint {
 
 	virtual void draw() = 0;
 	virtual float m_C() = 0;
-	virtual float m_Cd() = 0;
+	virtual float m_C_dot() = 0;
 	virtual std::vector<Vec3f> m_j() = 0;
-	virtual std::vector<Vec3f> m_jd() = 0;
+	virtual std::vector<Vec3f> m_j_dot() = 0;
 
 	std::vector<Particle*> get_particles() {
 		return particles;
