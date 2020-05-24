@@ -21,16 +21,16 @@ void Cloth::init(vector<Particle *> &ps,
 	for (int j = 0; j < yn; j++) {
 		for (int i = 0; i < xn; i++) {
 			Vec3f pos = o_pos + Vec3f(i*dist, j*dist, 0);
-			Particle *p = new Particle(pos, mass, j + i*xn);
+			Particle *p = new Particle(pos, mass, ps.size());
 			ps.push_back(p);
 			this->particles.push_back(p);
 		}
 	}
-//	addConstraints(ps, cs);
 	addForces(ps, fs);
+	addConstraints(ps, cs);
 }
 
-void Cloth::addForces(vector<Particle *> ps, vector<Force *> &fs) {
+void Cloth::addForces(vector<Particle *> &ps, vector<Force *> &fs) {
 	for (int i = 0; i < xn; i++) {
 		for (int j = 0; j < yn; j++) {
 
@@ -79,35 +79,28 @@ void Cloth::addForces(vector<Particle *> ps, vector<Force *> &fs) {
 	}
 }
 
-void Cloth::addConstraints(vector<Particle *> ps, vector<Constraint *> &cs) {
-	double r = 0.2f;
+void Cloth::addConstraints(vector<Particle *> &ps, vector<Constraint *> &cs) {
+	double r = 0.03f;
 	Vec3f o_pos = this->bot_left_pos;
+	const Vec3f mini_offset(0.0, 0.02, 0.0);
 
 	//the top left and right point to fix the cloth
-	auto c_left = new CircularWireConstraint(particles[yn - 1],
-											 o_pos + Vec3f((xn - 1)*dist, (yn - 1)*dist, 0), r);
-	auto c_right = new CircularWireConstraint(particles[particles.size() - 1],
-											  o_pos + Vec3f(dist*(xn - 1), dist*(yn - 1), 0), r);
+	for (Particle *p: ps) {
+		std::cout<< p->m_Index << std::endl;
+	}
+
+//	auto c_left = new CircularWireConstraint(ps[ps.size()-1-xn],
+//											 o_pos +	 Vec3f(0, dist*(yn - 1), 0), r);
+
+
+	auto c_left = new CircularWireConstraint(ps[xn*yn + (ps.size()-this->particles.size())-xn],
+											  o_pos + Vec3f(0, dist*(yn - 1), 0) + mini_offset, r);
+	auto c_right = new CircularWireConstraint(ps[xn*yn + (ps.size()-this->particles.size())-1],
+											  o_pos + Vec3f(dist*(xn-1), dist*(yn - 1), 0) + mini_offset, r);
 	cs.push_back(c_left);
 	cs.push_back(c_right);
-
-	for (int i = 0; i < xn; i++) {
-		for (int j = 0; j < yn; j++) {
-			Vec3f pos = o_pos + Vec3f(i*dist, j*dist, 0);
-			//Particle* p = new Particle(pos, mass, j+i*xn);
-			//ps.push_back(p);
-			//this->particles.push_back(p);
-			//auto p = particles[j * xn + i];
-			//auto c = new 
-		}
-	}
 }
 
-void Cloth::draw() {
-	for (auto p : particles) {
-		p->draw();
-	}
-}
 
 Cloth::~Cloth() {
 }
