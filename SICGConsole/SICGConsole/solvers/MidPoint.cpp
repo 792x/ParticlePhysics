@@ -7,6 +7,9 @@ static Euler EulerSolver = Euler(Euler::semi);
 
 void MidPoint::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {
 
+	compute_forces(fVector);
+	compute_constraints(pVector, cVector);
+
 	std::vector<Vec3f> initPosVec, initVelVec;
 
 	// Store the initial positions and velocities of the particles.
@@ -19,8 +22,7 @@ void MidPoint::simulation_step(std::vector<Particle*> pVector, std::vector<Force
 	EulerSolver.simulation_step(pVector, fVector, cVector, float(0.5)*dt);
 
 	compute_forces(fVector);
-
-	ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
+	compute_constraints(pVector, cVector);
 
 	// Compute the new positions and velocities for all the particles.
 	for (int i = 0; i < int(pVector.size()); i++) {

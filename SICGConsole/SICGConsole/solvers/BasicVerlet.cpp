@@ -6,6 +6,9 @@
 
 void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {
 	
+	compute_forces(fVector);
+	compute_constraints(pVector, cVector);
+
 	Vec3f newPos, initPos, initVel, initAcc, prevPos;
 
 	// loop through all the particles

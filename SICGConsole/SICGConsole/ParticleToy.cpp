@@ -163,23 +163,6 @@ static void post_display() {
 	glutSwapBuffers();
 }
 
-static void apply_forces() {
-	// Reset all the forces.
-	for (Force* f : fVector) {
-		f->reset();
-	}
-
-	// Compute and apply all the new forces.
-	for (Force* f : fVector) {
-		f->apply();
-	}
-
-}
-//
-//static void apply_constraints() {
-//	ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
-//};
-
 static void draw_particles() {
 	int size = pVector.size();
 
@@ -323,8 +306,6 @@ static void reshape_func(int width, int height) {
 
 static void idle_func() {
 	if (dsim) {
-		apply_forces();
-//		apply_constraints();
 		solvers[solverIndex]->simulation_step(pVector, fVector, cVector, dt);
 	} else {
 		get_from_UI();

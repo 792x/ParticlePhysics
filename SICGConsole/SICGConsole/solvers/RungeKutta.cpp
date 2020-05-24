@@ -4,6 +4,9 @@
 
 void RungeKutta::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {
 
+	compute_forces(fVector);
+	compute_constraints(pVector, cVector);
+
 	// Declaration position, velocity and acceleration vectors.
 	std::vector<Vec3f> k1PosVec, k1VelVec, k1AccVec;
 	std::vector<Vec3f> k2PosVec, k2VelVec, k2AccVec;
@@ -28,7 +31,7 @@ void RungeKutta::simulation_step(std::vector<Particle*> pVector, std::vector<For
 	}
 
 	compute_forces(fVector);
-	ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
+	compute_constraints(pVector, cVector);
 
 	// Compute the accelerations at the new points (k2).
 	for (int i = 0; i < int(pVector.size()); i++) {
@@ -45,6 +48,7 @@ void RungeKutta::simulation_step(std::vector<Particle*> pVector, std::vector<For
 	}
 
 	compute_forces(fVector);
+	compute_constraints(pVector, cVector);
 
 	// Compute the accelerations at the new points (k3).
 	for (int i = 0; i < int(pVector.size()); i++) {
@@ -61,6 +65,7 @@ void RungeKutta::simulation_step(std::vector<Particle*> pVector, std::vector<For
 	}
 
 	compute_forces(fVector);
+	compute_constraints(pVector, cVector);
 
 	// Compute the accelerations at the new points (k4).
 	for (int i = 0; i < int(pVector.size()); i++) {

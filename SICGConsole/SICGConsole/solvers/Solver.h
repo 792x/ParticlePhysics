@@ -3,6 +3,7 @@
 #include "../Force.h"
 #include "../Constraint.h"
 #include "../Particle.h"
+#include "ConstraintSolver.h"
 
 class Solver
 {
@@ -20,4 +21,8 @@ public:
 			f->apply();
 		}
 	}
+
+	 void compute_constraints(std::vector<Particle*> pVector, std::vector<Constraint*> cVector) {
+		ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
+	};
 };
