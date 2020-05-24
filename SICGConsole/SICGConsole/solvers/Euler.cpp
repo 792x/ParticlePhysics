@@ -1,9 +1,5 @@
-#include "../Particle.h"
-#include "../Force.h"
-#include "../include/gfx/vec2.h"
-#include "./ConstraintSolver.h"
-
 #include "Euler.h"
+
 Euler::Euler(Euler::TYPE type) : type(type) {}
 
 void Euler::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {

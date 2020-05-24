@@ -1,7 +1,3 @@
-#include "../Particle.h"
-#include "../Force.h"
-#include "../include/gfx/vec2.h"
-#include "ConstraintSolver.h"
 #include "BasicVerlet.h"
 
 void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {

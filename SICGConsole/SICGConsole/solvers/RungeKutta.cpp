@@ -1,6 +1,4 @@
-#include "Euler.h"
 #include "RungeKutta.h"
-#include "ConstraintSolver.h"
 
 void RungeKutta::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {
 

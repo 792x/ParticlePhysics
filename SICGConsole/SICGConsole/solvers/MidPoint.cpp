@@ -1,7 +1,5 @@
-#include "../Force.h"
 #include "Euler.h"
 #include "MidPoint.h"
-#include "ConstraintSolver.h"
 
 static Euler EulerSolver = Euler(Euler::semi);
 
