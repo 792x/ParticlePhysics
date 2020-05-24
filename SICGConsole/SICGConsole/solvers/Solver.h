@@ -23,6 +23,7 @@ public:
 	}
 
 	 void compute_constraints(std::vector<Particle*> pVector, std::vector<Constraint*> cVector) {
+		// Compute the constraint forces.
 		ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
 	};
 };

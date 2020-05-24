@@ -6,6 +6,7 @@
 
 void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {
 	
+	// Compute forces + constraints
 	compute_forces(fVector);
 	compute_constraints(pVector, cVector);
 
@@ -13,9 +14,6 @@ void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Fo
 
 	// loop through all the particles
 	for (int i = 0; i < int(pVector.size()); i++) {
-
-		compute_forces(fVector);
-		ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
 		prevPos = pVector[i]->m_OldPosition;
 		initPos = pVector[i]->m_Position;
 		initVel = pVector[i]->m_Velocity;
