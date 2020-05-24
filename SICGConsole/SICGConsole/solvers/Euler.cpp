@@ -1,12 +1,12 @@
-#include "../Particle.h"
-#include "../Force.h"
-#include "../include/gfx/vec2.h"
-#include "./ConstraintSolver.h"
-
 #include "Euler.h"
+
 Euler::Euler(Euler::TYPE type) : type(type) {}
 
 void Euler::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {
+
+	// Compute forces + constraints
+	compute_forces(fVector);
+	compute_constraints(pVector, cVector);
 
 	// loop through all the particles
 	for (int i = 0; i < int(pVector.size()); i++) {
@@ -29,6 +29,6 @@ void Euler::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> 
 		pVector[i]->m_Position = newPosition;
 		pVector[i]->m_Velocity = newVelocity;
 	}
-
+	
 
 }

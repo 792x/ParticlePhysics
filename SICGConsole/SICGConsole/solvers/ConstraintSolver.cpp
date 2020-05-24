@@ -4,72 +4,85 @@
 void ConstraintSolver::solve(std::vector<Particle *> particles, std::vector<Constraint *> constraints, float Ks, float Kd) {
 
 	if (!constraints.empty()){
-		int dims = 3;
-		unsigned int pSize = particles.size() * dims;
-		unsigned int cSize = constraints.size();
+		int dimensions = 3;
 
-		Eigen::VectorXf qd = Eigen::VectorXf::Zero(pSize);
-		Eigen::VectorXf Q = Eigen::VectorXf::Zero(pSize);
-		Eigen::MatrixXf M = Eigen::MatrixXf::Zero(pSize, pSize);
-		Eigen::MatrixXf W = Eigen::MatrixXf::Zero(pSize, pSize);
+		// Velocity vector
+		Eigen::VectorXf q_dot = Eigen::VectorXf::Zero(particles.size() * dimensions);
+		// Force vector
+		Eigen::VectorXf Q = Eigen::VectorXf::Zero(particles.size() * dimensions);
+		// Constraint vector
+		Eigen::VectorXf C = Eigen::VectorXf::Zero(constraints.size());
+		// Jacobian of C * q
+		Eigen::VectorXf C_dot = Eigen::VectorXf::Zero(constraints.size());
 
-		for (int i = 0; i < pSize; i += dims) {
-			Particle *p = particles[i / dims];
-			for (int d = 0; d < dims; d++) {
-				M(i + d, i + d) = p->m_Mass;
-				W(i + d, i + d) = 1 / p->m_Mass;
-				Q[i + d] = p->m_Force[d];
-				qd[i + d] = p->m_Velocity[d];
+		// Mass matrix
+		Eigen::MatrixXf M = Eigen::MatrixXf::Zero(particles.size() * dimensions, particles.size() * dimensions);
+		// Inverse mass matrix
+		Eigen::MatrixXf W = Eigen::MatrixXf::Zero(particles.size() * dimensions, particles.size() * dimensions);
+		// Jacobian of constraint vector
+		Eigen::MatrixXf J = Eigen::MatrixXf::Zero(constraints.size(), particles.size() * dimensions);
+		// Transposition of J
+		Eigen::MatrixXf J_T = Eigen::MatrixXf::Zero(particles.size() * dimensions, constraints.size());
+		// Time derivative of the Jacobian
+		Eigen::MatrixXf J_dot = Eigen::MatrixXf::Zero(constraints.size(), particles.size() * dimensions);
+
+
+		// Fill matrices and vectors for all particles
+		for (int i = 0; i < particles.size() * dimensions; i += dimensions) {
+			Particle *p = particles[i / dimensions];
+			for (int dim = 0; dim < dimensions; dim++) {
+				M(i + dim, i + dim) = p->m_Mass;
+				W(i + dim, i + dim) = 1 / p->m_Mass;
+				Q[i + dim] = p->m_Force[dim];
+				q_dot[i + dim] = p->m_Velocity[dim];
 			}
 		}
 
-
-		Eigen::VectorXf C = Eigen::VectorXf::Zero(cSize);
-		Eigen::VectorXf Cd = Eigen::VectorXf::Zero(cSize);
-		Eigen::MatrixXf J = Eigen::MatrixXf::Zero(cSize, pSize);
-		Eigen::MatrixXf Jt = Eigen::MatrixXf::Zero(pSize, cSize);
-		Eigen::MatrixXf Jd = Eigen::MatrixXf::Zero(cSize, pSize);
-
-		for (int i = 0; i < cSize; i++) {
+		// Fill matrices and vectors for all constraints
+		for (int i = 0; i < constraints.size(); i++) {
 			Constraint* c = constraints[i];
 			C[i] = c->m_C();
-			Cd[i] = c->m_Cd();
+			C_dot[i] = c->m_C_dot();
 			std::vector<Vec3f> j = c->m_j();
-			std::vector<Vec3f> jd = c->m_jd();
+			std::vector<Vec3f> j_dot = c->m_j_dot();
 			std::vector<Particle*> constraint_particles = c->get_particles();
 
 			for (int k = 0; k < constraint_particles.size(); k++) {
-				int pIndex = constraint_particles[k]->m_Index * dims;
-				for (int d = 0; d < dims; d++) {
-					Jd(i, pIndex + d) = jd[k][d];
-					J(i, pIndex + d) = j[k][d];
-					Jt(pIndex + d, i) = j[k][d];
+				int index = constraint_particles[k]->m_Index * dimensions;
+				for (int d = 0; d < dimensions; d++) {
+					J_dot(i, index + d) = j_dot[k][d];
+					J(i, index + d) = j[k][d];
+					J_T(index + d, i) = j[k][d];
 				}
 			}
 		}
 
+		// Things we are able to evaluate from acquired matrices and vectors
 		Eigen::MatrixXf JW = J * W;
-		Eigen::MatrixXf JWJt = JW * Jt;
-		Eigen::VectorXf Jdqd = Jd * qd;
+		Eigen::VectorXf J_dot_q_dot = J_dot * q_dot;
+		Eigen::VectorXf KdC_dot = Kd * C_dot;
 		Eigen::VectorXf JWQ = JW * Q;
-
 		Eigen::VectorXf KsC = Ks * C;
-		Eigen::VectorXf KdCd = Kd * Cd;
+		Eigen::MatrixXf JWJ_T = JW * J_T;
 
-		Eigen::VectorXf rhs = - Jdqd - JWQ - KsC - KdCd;
 
+		// Right hand side of final constraint force equation with feedback
+		Eigen::VectorXf rhs = -J_dot_q_dot - JWQ - KsC - KdC_dot;
+
+		// Solve for lambda in JWJ_T*lambda = rhs linear problem using conjugate gradient algorithm
 		Eigen::ConjugateGradient<Eigen::MatrixXf, Eigen::Lower|Eigen::Upper> cg;
-
-		cg.compute(JWJt);
-
+		cg.compute(JWJ_T);
 		Eigen::VectorXf lambda = cg.solve(rhs);
-		Eigen::VectorXf Qh = J.transpose() * lambda;
 
+		// Solve for constraint force
+		Eigen::VectorXf Q_hat = J.transpose() * lambda;
+
+		// Apply constraint force
 		for (int i = 0; i < particles.size(); i++) {
 			Particle *p = particles[i];
-			int index = dims * i;
-			for (int d = 0; d < dims; d++) {
-				p->m_Force[d] += Qh[index + d];
+			int index = dimensions * i;
+			for (int d = 0; d < dimensions; d++) {
+				p->m_Force[d] += Q_hat[index + d];
 			}
 		}
 	}

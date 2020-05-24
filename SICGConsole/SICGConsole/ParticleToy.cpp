@@ -119,10 +119,11 @@ static void init_system() {
 
 	//Cloth c = Cloth(5, 7, Vec3f( 0.2f,0.2f,0.2f ), pVector, fVector, cVector);
 
-	//fVector.push_back(new GravityForce(pVector));
+	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 500, 50);
 
-	//fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 150.0f, 1.50f));
-	//fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 150.0f, 1.50f));
+	fVector.push_back(new GravityForce(pVector));
+	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 500, 5));
+	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 500, 5));
 
 
 	//fVector.push_back(new AngularSpringForce({ pVector[0],pVector[1],pVector[2] }, PI, 120.0, 100.0));
@@ -186,23 +187,6 @@ static void post_display() {
 
 	glutSwapBuffers();
 }
-
-static void apply_forces() {
-	// Reset all the forces.
-	for (Force* f : fVector) {
-		f->reset();
-	}
-
-	// Compute and apply all the new forces.
-	for (Force* f : fVector) {
-		f->apply();
-	}
-
-}
-//
-//static void apply_constraints() {
-//	ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
-//};
 
 static void draw_particles() {
 	int size = pVector.size();
@@ -354,8 +338,6 @@ static void reshape_func(int width, int height) {
 
 static void idle_func() {
 	if (dsim) {
-		apply_forces();
-//		apply_constraints();
 		solvers[solverIndex]->simulation_step(pVector, fVector, cVector, dt);
 	} else {
 		get_from_UI();
@@ -420,7 +402,7 @@ int main(int argc, char **argv) {
 
 	if (argc==1) {
 		N = 64;
-		dt = 0.001f;
+		dt = 0.005f;
 		d = 5.f;
 		fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
 				N, dt, d);

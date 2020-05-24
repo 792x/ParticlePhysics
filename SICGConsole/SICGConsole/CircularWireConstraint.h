@@ -10,9 +10,9 @@ class CircularWireConstraint : public Constraint {
 	void draw() override;
 
 	float m_C() override;
-	float m_Cd() override;
+	float m_C_dot() override;
 	std::vector<Vec3f> m_j() override;
-	std::vector<Vec3f> m_jd() override;
+	std::vector<Vec3f> m_j_dot() override;
 
   private:
 	Particle *const m_p;
