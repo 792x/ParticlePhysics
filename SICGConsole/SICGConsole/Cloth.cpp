@@ -33,7 +33,7 @@ void Cloth::init(vector<Particle *> &ps,
 	addConstraints(ps, cs);
 }
 
-void Cloth::addForces(vector<Particle *> &ps, vector<Force *> &fs) {
+void Cloth::addForces(vector<Particle *> ps, vector<Force *> &fs) {
 	for (int i = 0; i < xn; i++) {
 		for (int j = 0; j < yn; j++) {
 
@@ -82,7 +82,7 @@ void Cloth::addForces(vector<Particle *> &ps, vector<Force *> &fs) {
 	}
 }
 
-void Cloth::addConstraints(vector<Particle *> &ps, vector<Constraint *> &cs) {
+void Cloth::addConstraints(vector<Particle *> ps, vector<Constraint *> &cs) {
 	double r = 0.03f;
 	Vec3f o_pos = this->bot_left_pos;
 	const Vec3f mini_offset(0.0, 0.02, 0.0);

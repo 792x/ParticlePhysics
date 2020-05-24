@@ -19,12 +19,12 @@ using namespace std;
 class Hair : public Object {
 public:
 	Hair(vector<Particle*>& pVector, vector<Force*>& fVector, vector<Constraint*>& cVector,
-		Vec3f center = { 0,0,0 }, float mass=0.05, float radius=0.2);
+		Vec3f center = { 0,0,0 }, float mass=0.5, float radius=0.2);
 	void draw() override;
 private:
 	void addForces(vector<Force*>& fVector);
 	void addConstraints(vector<Constraint*>& cVector);
-	float mass = 0.05f, radius = 0.2, kd = 1.5, ks = 150.0;
+	float mass = 0.5f, radius = 0.2, kd = 1.5, ks = 150.0;
 	Vec3f center;
 	
 
