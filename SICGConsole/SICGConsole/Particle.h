@@ -11,11 +11,12 @@
 
 class Particle {
   public:
-	Particle(const Vec3f &constructPos, float mass, int index);
+	Particle(const Vec3f &constructPos, float mass, int index, bool drawable=1);
 	virtual ~Particle() = default;
 
 	void reset();
 	void draw();
+	void setDrawable(bool d);
 
 	Vec3f m_ConstructPos;
 	Vec3f m_OldPosition; // used for the Verlet integration scheme
@@ -24,4 +25,5 @@ class Particle {
 	Vec3f m_Force;
 	int m_Index;
 	float m_Mass;
+	bool drawable = 1;
 };

@@ -14,6 +14,7 @@
 #include "Object.h"
 
 #include<vector>
+#define PI 3.1415926535897932384626433832795
 
 using namespace std;
 class Hair : public Object {
@@ -24,7 +25,7 @@ public:
 private:
 	void addForces(vector<Force*>& fVector);
 	void addConstraints(vector<Constraint*>& cVector);
-	float mass = 0.5f, radius = 0.2, kd = 1.5, ks = 150.0;
+	float mass = 0.5f, radius = 0.2, kd = 1.5, ks = 150.0, angle=140.0/180 * PI;
 	Vec3f center;
 	
 

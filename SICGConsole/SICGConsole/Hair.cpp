@@ -9,7 +9,6 @@
 #include "GL/glut.h"
 #endif
 
-#define PI 3.1415926535897932384626433832795
 
 static void draw_circle(const Vec3f &vect, float radius) {
 	glBegin(GL_LINE_LOOP);
@@ -32,7 +31,7 @@ Hair::Hair(vector<Particle*>& pVector, vector<Force*>& fVector, vector<Constrain
 
 
 		Vec3f pos_l = center + Vec3f{-dx, dy, 0};
-		Particle* p_l = new Particle(pos_l, mass, pVector.size());
+		Particle* p_l = new Particle(pos_l, mass, pVector.size(),false);
 		pVector.push_back(p_l);
 		particles.push_back(p_l);
 		cVector.push_back(new CircularWireConstraint(p_l, pos_l, 0.02f));
@@ -43,25 +42,35 @@ Hair::Hair(vector<Particle*>& pVector, vector<Force*>& fVector, vector<Constrain
 		Vec3f offset_r{ 0.01,-0.05,0 };
 		for (int i = 1; i < particles_per_hair; i++) {
 			pos_l += offset_l;
-			Particle* pl = new Particle(pos_l, mass, pVector.size());
+			Particle* pl = new Particle(pos_l, mass, pVector.size(), false);
 			pVector.push_back(pl);
 			fVector.push_back(new SpringForce(pl, particles[particles.size()-1], dist,ks,kd));
 			particles.push_back(pl);
+			if ((i + 1) % 3 == 0 && i-2>=0) {
+				int j = particles.size();
+				fVector.push_back(new AngularSpringForce({ particles[j - 3],
+					particles[j - 2],particles[j-1] }, angle, 150.0, 1.5));
+			}
 
 		}
 
 		Vec3f pos_r = center + Vec3f{dx, dy, 0};
-		Particle* p_r = new Particle(pos_r, mass, pVector.size());
+		Particle* p_r = new Particle(pos_r, mass, pVector.size(),false);
 		pVector.push_back(p_r);
 		particles.push_back(p_r);
 		cVector.push_back(new CircularWireConstraint(p_r, pos_r, 0.02f));
 
 		for (int i = 1; i < particles_per_hair; i++) {
 			pos_r += offset_r;
-			Particle* pr = new Particle(pos_r, mass, pVector.size());
+			Particle* pr = new Particle(pos_r, mass, pVector.size(),false);
 			pVector.push_back(pr);
 			fVector.push_back(new SpringForce(pr, particles[particles.size()-1], dist,ks,kd));
 			particles.push_back(pr);
+			if ((i + 1) % 3 == 0 && i-2>=0) {
+				int j = particles.size();
+				fVector.push_back(new AngularSpringForce({ particles[j - 3],
+					particles[j - 2],particles[j-1] }, angle, 150.0, 1.5));
+			}
 		}
 	}
 }

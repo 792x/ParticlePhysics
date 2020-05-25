@@ -36,7 +36,6 @@ static int dsim;
 static int dump_frames;
 static int frame_number;
 
-static const double PI = 2 * acos(0.0);
 
 // static Particle *pList;
 static std::vector<Particle *> pVector;
