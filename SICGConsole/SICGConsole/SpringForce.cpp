@@ -31,6 +31,9 @@ void SpringForce::draw() {
 
 void SpringForce::apply() {
 	Vec3f x = particles[0]->m_Position - particles[1]->m_Position;
+	if (norm(x) > 2 * m_dist) {// Spring loses elasticity
+		return;
+	}
 	Vec3f v = particles[0]->m_Velocity - particles[1]->m_Velocity;
 	Vec3f f = x/norm(x);
 	f *= (m_ks*(norm(x) - m_dist) + m_kd*((x*v)/norm(x)));
