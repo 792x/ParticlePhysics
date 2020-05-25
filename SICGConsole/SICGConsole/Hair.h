@@ -25,7 +25,7 @@ public:
 private:
 	void addForces(vector<Force*>& fVector);
 	void addConstraints(vector<Constraint*>& cVector);
-	float mass = 0.5f, radius = 0.2, kd = 1.5, ks = 150.0, angle=140.0/180 * PI;
+	float mass = 1.0f, radius = 0.2, kd = 0.5, ks = 8000, angle=140.0/180 * PI;
 	Vec3f center;
 	
 

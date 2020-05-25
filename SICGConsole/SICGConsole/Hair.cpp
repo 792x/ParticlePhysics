@@ -23,6 +23,7 @@ static void draw_circle(const Vec3f &vect, float radius) {
 Hair::Hair(vector<Particle*>& pVector, vector<Force*>& fVector, vector<Constraint*>& cVector,
 	Vec3f center, float mass, float radius) : center(center), mass(mass), radius(radius){
 	int particles_per_hair = 10;
+	const Vec3f mini_offset(0.0, 0.01, 0.0);
 	// x^2 + y^2 = radius^2
 	vector<float> angles  = { 45.0 / 180 * PI, 35.0 / 180 * PI, 55.0 / 180 * PI };
 	for (float angle : angles) {
@@ -34,7 +35,7 @@ Hair::Hair(vector<Particle*>& pVector, vector<Force*>& fVector, vector<Constrain
 		Particle* p_l = new Particle(pos_l, mass, pVector.size(),false);
 		pVector.push_back(p_l);
 		particles.push_back(p_l);
-		cVector.push_back(new CircularWireConstraint(p_l, pos_l, 0.02f));
+		cVector.push_back(new CircularWireConstraint(p_l, pos_l-mini_offset, 0.02f));
 
 
 		float dist = 0.2;
@@ -58,7 +59,7 @@ Hair::Hair(vector<Particle*>& pVector, vector<Force*>& fVector, vector<Constrain
 		Particle* p_r = new Particle(pos_r, mass, pVector.size(),false);
 		pVector.push_back(p_r);
 		particles.push_back(p_r);
-		cVector.push_back(new CircularWireConstraint(p_r, pos_r, 0.02f));
+		cVector.push_back(new CircularWireConstraint(p_r, pos_r-mini_offset, 0.02f));
 
 		for (int i = 1; i < particles_per_hair; i++) {
 			pos_r += offset_r;
