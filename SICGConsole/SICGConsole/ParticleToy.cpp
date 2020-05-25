@@ -55,10 +55,11 @@ static int hmx, hmy;
 // global variables used for solvers
 static Euler explEuler = Euler(Euler::expl);
 static Euler semiEuler = Euler(Euler::semi);
+static Euler implEuler = Euler(Euler::impl);
 static MidPoint MidPointSolver;
 static RungeKutta RungeKuttaSolver;
 static BasicVerlet BasicVerletSolver;
-static Solver* solvers[5] = {&explEuler, &semiEuler, &MidPointSolver, &RungeKuttaSolver, &BasicVerletSolver};
+static Solver* solvers[6] = {&explEuler, &semiEuler, &implEuler, &MidPointSolver, &RungeKuttaSolver, &BasicVerletSolver};
 static int solverIndex = 2;
 
 
@@ -287,15 +288,19 @@ static void key_func(unsigned char key, int x, int y) {
 			break;
 
 		case '3': solverIndex = 2;
-			printf("\t Using solver 3. Explicit MidPoint\n");
+			printf("\t Using solver 3. Implicit Euler\n");
 			break;
 
 		case '4': solverIndex = 3;
-			printf("\t Using solver 4. Explicit Runge Kutta\n");
+			printf("\t Using solver 4. Explicit MidPoint\n");
 			break;
 
 		case '5': solverIndex = 4;
-			printf("\t Using solver 5. Basic Verlet\n");
+			printf("\t Using solver 5. Explicit Runge Kutta\n");
+			break;
+
+		case '6': solverIndex = 5;
+			printf("\t Using solver 6. Basic Verlet\n");
 			break;
 
 		case 'c':
