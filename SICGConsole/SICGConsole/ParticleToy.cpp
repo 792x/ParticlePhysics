@@ -8,6 +8,7 @@
 #include "Constraint.h"
 #include "GravityForce.h"
 #include "AngularSpringForce.h"
+#include "MouseForce.h"
 #include "solvers/Solver.h"
 #include "solvers/Euler.h"
 #include "solvers/MidPoint.h"
@@ -35,6 +36,8 @@ static float dt, d;
 static int dsim;
 static int dump_frames;
 static int frame_number;
+static Vec3f mouse_position;
+static int particle_selected = -1;
 
 
 // static Particle *pList;
@@ -42,6 +45,7 @@ static std::vector<Particle *> pVector;
 static std::vector<Force *> fVector;
 static std::vector<Constraint *> cVector;
 static std::vector<Object*> oVector;
+static std::vector<MouseForce *> mVector;
 
 static int win_id;
 static int win_x, win_y;
@@ -54,11 +58,13 @@ static int hmx, hmy;
 // global variables used for solvers
 static Euler explEuler = Euler(Euler::expl);
 static Euler semiEuler = Euler(Euler::semi);
+static Euler implEuler = Euler(Euler::impl);
 static MidPoint MidPointSolver;
 static RungeKutta RungeKuttaSolver;
 static BasicVerlet BasicVerletSolver;
-static Solver* solvers[5] = {&explEuler, &semiEuler, &MidPointSolver, &RungeKuttaSolver, &BasicVerletSolver};
+static Solver* solvers[6] = {&explEuler, &semiEuler, &implEuler, &MidPointSolver, &RungeKuttaSolver, &BasicVerletSolver};
 static int solverIndex = 2;
+
 
 /*
 ----------------------------------------------------------------------
@@ -101,28 +107,20 @@ static void clear_data() {
 static void init_system() {
 	const double dist = 0.2;
 	const Vec3f center(0.0, 0.0, 0.0);
-	const Vec3f offset(dist, 0.0, 0.0);
+	const Vec3f offset(0.0, dist, 0.0);
 
-	oVector.push_back(new Hair(pVector, fVector, cVector));
+	//oVector.push_back(new Hair(pVector, fVector, cVector));
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
-	//pVector.push_back(new Particle(center + offset, 1.0f, 0));
-	//pVector.push_back(new Particle(center + offset + offset, 1.0f, 1));
-	//pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 2));
+	pVector.push_back(new Particle(center - offset, 1.0f, 0));
+	pVector.push_back(new Particle(center - offset - offset, 1.0f, 1));
+	pVector.push_back(new Particle(center - offset - offset - offset, 1.0f, 2));
 
-	//pVector.push_back(new Particle(center - offset, 1.0f, 3));
-	//pVector.push_back(new Particle(center - offset - offset, 1.0f, 4));
-	//pVector.push_back(new Particle(center - offset - offset - offset, 1.0f, 5));
-
-
-
-	//Cloth c = Cloth(5, 7, Vec3f( 0.2f,0.2f,0.2f ), pVector, fVector, cVector);
-
-	//Cloth c = Cloth(5, 7, Vec3f(0.2f, 0.2f, 0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 500, 50);
+	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 0.5);
 
 	fVector.push_back(new GravityForce(pVector));
-	//fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 500, 5));
-	//fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 500, 5));
+	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 500,  0.5));
+	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 500,  0.5));
 
 
 	//fVector.push_back(new AngularSpringForce({ pVector[0],pVector[1],pVector[2] }, PI, 120.0, 100.0));
@@ -135,6 +133,8 @@ static void init_system() {
 	//cVector.push_back(new RodConstraint(pVector[3], pVector[4], dist));
 	//cVector.push_back(new CircularWireConstraint(pVector[3], center, dist));
 
+
+
 	//GravityForce gravity_force = GravityForce(pVector);
 	/*SpringForce spring1 = SpringForce(pVector[0], pVector[1], dist, 1, 1);
 	SpringForce spring2 = SpringForce(pVector[1], pVector[2], dist, 1, 1);
@@ -143,6 +143,9 @@ static void init_system() {
 
 	//gravity_force.apply();
 
+	for (int i = 0; i < pVector.size(); i++) {
+		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
+	}
 
 }
 
@@ -199,6 +202,9 @@ static void draw_forces() {
 	for (Force *f : fVector) {
 		f->draw();
 	}
+	for (MouseForce *m : mVector) {
+		m->draw();
+	}
 }
 
 static void draw_constraints() {
@@ -225,7 +231,7 @@ static void get_from_UI() {
 	int i, j;
 	// int size, flag;
 	int hi, hj;
-	// float x, y;
+	float x, y = 0;
 	if (!mouse_down[0] && !mouse_down[2] && !mouse_release[0]
 		&& !mouse_shiftclick[0] && !mouse_shiftclick[2])
 		return;
@@ -236,7 +242,35 @@ static void get_from_UI() {
 	if (i < 1 || i > N || j < 1 || j > N) return;
 
 	if (mouse_down[0]) {
+		x = i - 32.0f;
+		x = x / 32.0f;
+		y = j - 32.0f;
+		y = y / 32.0f;
 
+		for (i = 0; i < pVector.size(); i++) {
+			mouse_position[0] = x;
+			mouse_position[1] = y;
+			float delta_x = pVector[i]->m_Position[0] - mouse_position[0];
+			float delta_y = pVector[i]->m_Position[1] - mouse_position[1];
+			float dist = delta_x*delta_x + delta_y*delta_y;
+			if (dist < 0.003) {
+				particle_selected = i;
+			}
+
+			if (particle_selected == i) {
+				std::cout << i << std::endl;
+				mVector[i]->set_mouse(mouse_position);
+				mVector[i]->apply();
+			} else {
+				mVector[i]->set_mouse(pVector[i]->m_Position);
+			}
+		}
+	} else {
+		particle_selected = -1;
+		int i, size = pVector.size();
+		for (i = 0; i < size; i++) {
+			mVector[i]->set_mouse(pVector[i]->m_Position);
+		}
 	}
 
 	if (mouse_down[2]) {
@@ -277,15 +311,19 @@ static void key_func(unsigned char key, int x, int y) {
 			break;
 
 		case '3': solverIndex = 2;
-			printf("\t Using solver 3. Explicit MidPoint\n");
+			printf("\t Using solver 3. Implicit Euler\n");
 			break;
 
 		case '4': solverIndex = 3;
-			printf("\t Using solver 4. Explicit Runge Kutta\n");
+			printf("\t Using solver 4. Explicit MidPoint\n");
 			break;
 
 		case '5': solverIndex = 4;
-			printf("\t Using solver 5. Basic Verlet\n");
+			printf("\t Using solver 5. Explicit Runge Kutta\n");
+			break;
+
+		case '6': solverIndex = 5;
+			printf("\t Using solver 6. Basic Verlet\n");
 			break;
 
 		case 'c':
@@ -336,12 +374,12 @@ static void reshape_func(int width, int height) {
 
 static void idle_func() {
 	if (dsim) {
+		get_from_UI();
 		solvers[solverIndex]->simulation_step(pVector, fVector, cVector, dt);
 	} else {
 		get_from_UI();
 		remap_GUI();
 	}
-
 	glutSetWindow(win_id);
 	glutPostRedisplay();
 }

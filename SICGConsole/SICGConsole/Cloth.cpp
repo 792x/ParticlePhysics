@@ -88,9 +88,9 @@ void Cloth::addConstraints(vector<Particle *> ps, vector<Constraint *> &cs) {
 	const Vec3f mini_offset(0.0, 0.02, 0.0);
 
 	//the top left and right point to fix the cloth
-	for (Particle *p: ps) {
-		std::cout<< p->m_Index << std::endl;
-	}
+//	for (Particle *p: ps) {
+//		std::cout<< p->m_Index << std::endl;
+//	}
 
 //	auto c_left = new CircularWireConstraint(ps[ps.size()-1-xn],
 //											 o_pos +	 Vec3f(0, dist*(yn - 1), 0), r);
