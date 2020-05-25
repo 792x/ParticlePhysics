@@ -116,7 +116,7 @@ static void init_system() {
 	pVector.push_back(new Particle(center - offset - offset, 1.0f, 1));
 	pVector.push_back(new Particle(center - offset - offset - offset, 1.0f, 2));
 
-	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 0.5);
+	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
 
 	fVector.push_back(new GravityForce(pVector));
 	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 500,  0.5));
