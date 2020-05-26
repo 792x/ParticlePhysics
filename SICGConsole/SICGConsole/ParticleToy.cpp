@@ -109,18 +109,16 @@ static void init_system() {
 	const Vec3f center(0.0, 0.0, 0.0);
 	const Vec3f offset(0.0, dist, 0.0);
 
-	//oVector.push_back(new Hair(pVector, fVector, cVector));
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
-	pVector.push_back(new Particle(center - offset, 1.0f, 0));
-	pVector.push_back(new Particle(center - offset - offset, 1.0f, 1));
-	pVector.push_back(new Particle(center - offset - offset - offset, 1.0f, 2));
+	//pVector.push_back(new Particle(center - offset, 1.0f, 0));
+	//pVector.push_back(new Particle(center - offset - offset, 1.0f, 1));
+	//pVector.push_back(new Particle(center - offset - offset - offset, 1.0f, 2));
 
-	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
 
-	fVector.push_back(new GravityForce(pVector));
-	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 500,  0.5));
-	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 500,  0.5));
+	//fVector.push_back(new GravityForce(pVector));
+	//fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 500,  0.5));
+	//fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 500,  0.5));
 
 
 	//fVector.push_back(new AngularSpringForce({ pVector[0],pVector[1],pVector[2] }, PI, 120.0, 100.0));
@@ -143,10 +141,24 @@ static void init_system() {
 
 	//gravity_force.apply();
 
+	//for (int i = 0; i < pVector.size(); i++) {
+	//	mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
+	//}
+
+}
+static void init_hair() {
+	oVector.push_back(new Hair(pVector, fVector, cVector));
+	fVector.push_back(new GravityForce(pVector));
 	for (int i = 0; i < pVector.size(); i++) {
 		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
 	}
-
+}
+static void init_cloth() {
+	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
+	fVector.push_back(new GravityForce(pVector));
+	for (int i = 0; i < pVector.size(); i++) {
+		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
+	}
 }
 
 /*
@@ -339,6 +351,20 @@ static void key_func(unsigned char key, int x, int y) {
 			exit(0);
 			break;
 
+		case 'h':
+		case 'H':
+			init_hair();
+			glutMainLoop();
+			exit(0);
+			break;
+
+		case 'o':
+		case 'O':
+			init_cloth();
+			glutMainLoop();
+			exit(0);
+			break;
+
 		case ' ': dsim = !dsim;
 			break;
 		default:
@@ -459,6 +485,8 @@ int main(int argc, char **argv) {
 	printf("\t 5. Basic Verlet\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
+	printf("\t Press 'o' to show cloth\n");
+	printf("\t Press 'h' to show hair\n");
 
 	dsim = 0;
 	dump_frames = 0;
