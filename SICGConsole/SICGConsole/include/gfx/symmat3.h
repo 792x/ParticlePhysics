@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GFXSYMMAT3_INCLUDED // -*- C++ -*-
 #define GFXSYMMAT3_INCLUDED
 #if !defined(__GNUC__)

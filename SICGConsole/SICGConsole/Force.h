@@ -19,7 +19,7 @@ class Force {
 	}
 	Mat3 Jx; // Jacobian with respect to position
 	Mat3 Jv; // Jacobian with resepct to velocity
-	float dist = 0; // rest length
-	float ks = 0; // stiffness constant (aka. spring constant)
-	float kd = 0; // damping constant
+	float dist; // rest length
+	float ks; // stiffness constant (aka. spring constant)
+	float kd; // damping constant
 };

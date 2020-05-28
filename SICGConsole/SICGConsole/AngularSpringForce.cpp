@@ -11,6 +11,9 @@ using namespace std;
 AngularSpringForce::AngularSpringForce(std::vector<Particle*> ps, float dist, float ks, float kd):
  dist(dist),ks(ks), kd(kd)
 {
+	set_dist(dist);
+	set_ks(ks);
+	set_kd(kd);
 	this->target(ps);
 }
 

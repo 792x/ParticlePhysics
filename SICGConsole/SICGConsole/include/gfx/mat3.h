@@ -63,9 +63,14 @@ public:
 
     // Construction of standard matrices
     //
-    static Mat3 I();
-    static Mat3 outer_product(const Vec3& u, const Vec3& v);
-    static Mat3 outer_product(const Vec3& v);
+    static Mat3 I() {
+        return Mat3((1, 0, 0), (0, 1, 0), (0, 0, 1));
+    };
+    static Mat3 outer_product(const Vec3& u, const Vec3& v) { 
+        return Mat3((u[0] * v[0], u[0] * v[1], u[0]*v[2]), (u[1] * v[0], u[1] * v[1], u[1]*v[2]),( u[2]*v[0],u[2]*v[1],u[2]*v[2])); 
+    }
+    ;
+    static Mat3 outer_product(const Vec3& v) { return outer_product(v,v); };
 
     Mat3 &diag(double d);
     Mat3 &ident() { return diag(1.0); }

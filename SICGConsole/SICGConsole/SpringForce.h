@@ -11,6 +11,13 @@ class SpringForce : public Force {
 	void target(std::vector<Particle *> particles) override;
 	void draw() override;
 	void apply() override;
+	void set_dist(float dist) { Force::dist = dist; };
+	void set_ks(float ks) { Force::ks = ks; };
+	void set_kd(float kd) { Force::kd = kd; };
+
+	//float dist = Force::dist;
+	//float kd = Force::kd;
+	//float ks = Force::ks;
 	float const dist;     // rest length
 	float const ks, kd; // spring strength constants
 };

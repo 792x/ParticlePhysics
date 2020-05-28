@@ -13,6 +13,9 @@ SpringForce::SpringForce(Particle *p1, Particle * p2, float dist, float ks, floa
 
 SpringForce::SpringForce(std::vector<Particle*> particles, float dist, float ks, float kd) : dist(dist), ks(ks), kd(kd)
 {
+	set_dist(dist);
+	set_ks(ks);
+	set_kd(kd);
 	this->target(std::move(particles));
 }
 
