@@ -1,5 +1,7 @@
 #include "Euler.h"
 #include <Eigen/IterativeLinearSolvers>
+#include "linearSolver.h"
+#include "gfx/mat3.h"
 
 Euler::Euler(Euler::TYPE type) : type(type) {}
 
@@ -32,6 +34,30 @@ void Euler::simulation_step(std::vector<Particle *> pVector,
 			dfdx = Eigen::MatrixXf::Zero(pVector.size()*dimensions, pVector.size()*dimensions);
 		Eigen::MatrixXf
 			dfdv = Eigen::MatrixXf::Zero(pVector.size()*dimensions, pVector.size()*dimensions);
+		
+		for (int f = 0; f < fVector.size(); f++) {
+			Vec3 dx = fVector[f]->particles[0]->m_Position - fVector[f]->particles[1]->m_Position;
+			Mat3 dxtdx = Mat3::outer_product(dx,dx);
+			Mat3 ident = Mat3::I();
+			double l = sqrt(dx * dx);
+			if (l != 0) {
+				l = 1.0 / l;
+			}
+			dxtdx = dxtdx * (l * l);
+			fVector[f]->Jx = (dxtdx + (ident - dxtdx) * (1 - fVector[f]->dist * l)) * (fVector[f]->ks);
+			fVector[f]->Jv = ident * fVector[f]->kd;
+			Particle* p1 = fVector[f]->particles[0];
+			Particle* p2 = fVector[f]->particles[1];
+			int rIndex = p1->m_Index;
+			int cIndex = p2->m_Index;
+			for (int r = 0; r < 3; r++) {
+				for (int c = 0 ; c < 3 ; c++) {
+					dfdx(3 * rIndex + r, 3 * cIndex + c) = fVector[f]->Jx(r, c);
+					dfdv(3 * rIndex + r, 3 * cIndex + c) = fVector[f]->Jv(r, c);
+				}
+			}
+
+		}
 
 		// Fill matrices and vectors for all particles
 		for (int i = 0; i < int(pVector.size()); i++) {

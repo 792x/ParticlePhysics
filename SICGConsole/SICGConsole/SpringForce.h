@@ -11,8 +11,6 @@ class SpringForce : public Force {
 	void target(std::vector<Particle *> particles) override;
 	void draw() override;
 	void apply() override;
-
-  private:
-	float const m_dist;     // rest length
-	float const m_ks, m_kd; // spring strength constants
+	float const dist;     // rest length
+	float const ks, kd; // spring strength constants
 };

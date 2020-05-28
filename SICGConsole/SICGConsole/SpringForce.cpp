@@ -11,7 +11,7 @@
 SpringForce::SpringForce(Particle *p1, Particle * p2, float dist, float ks, float kd) :
 	SpringForce({p1, p2}, dist, ks, kd) {}
 
-SpringForce::SpringForce(std::vector<Particle*> particles, float dist, float ks, float kd) : m_dist(dist), m_ks(ks), m_kd(kd)
+SpringForce::SpringForce(std::vector<Particle*> particles, float dist, float ks, float kd) : dist(dist), ks(ks), kd(kd)
 {
 	this->target(std::move(particles));
 }
@@ -31,12 +31,12 @@ void SpringForce::draw() {
 
 void SpringForce::apply() {
 	Vec3f x = particles[0]->m_Position - particles[1]->m_Position;
-	if (norm(x) > 2 * m_dist) {// Spring loses elasticity
+	if (norm(x) > 2 * dist) {// Spring loses elasticity
 		return;
 	}
 	Vec3f v = particles[0]->m_Velocity - particles[1]->m_Velocity;
 	Vec3f f = x/norm(x);
-	f *= (m_ks*(norm(x) - m_dist) + m_kd*((x*v)/norm(x)));
+	f *= (ks*(norm(x) - dist) + kd*((x*v)/norm(x)));
 //	Vec3f f = -(m_ks * (norm(x) - m_dist) + m_kd * ((x * v) / norm(x))) * (x / norm(x));
 
 	particles[0]->m_Force -= f;
