@@ -20,7 +20,7 @@ class Particle {
 	void draw();
 
 	Vec3f m_ConstructPos;
-	Vec3f m_OldPosition; // used for the Verlet integration scheme
+	Vec3f m_OldPosition;
 	Vec3f m_Position;
 	Vec3f m_OldVelocity;
 	Vec3f m_Velocity;

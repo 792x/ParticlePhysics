@@ -73,6 +73,7 @@ void AdaptiveTimeStepper::undo_solver_step(std::vector<Particle*> pVector) {
 	for (Particle* p : pVector) {
 		p->undo_next_state();
 	}
+<<<<<<< Updated upstream
 }
 
 
@@ -116,3 +117,6 @@ Routines needed for adaptive step sizing
 //		p->undo_next_state();
 //	}
 //}
+=======
+}
+>>>>>>> Stashed changes
