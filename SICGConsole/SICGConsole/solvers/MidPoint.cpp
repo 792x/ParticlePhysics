@@ -31,7 +31,6 @@ void MidPoint::simulation_step(std::vector<Particle*> pVector, std::vector<Force
 		Vec3f finalVelocity = initVel + halfWayAcc * dt;
 		Vec3f finalPosition = initPos + halfWayVel * dt;
 
-		pVector[i]->m_Position = finalPosition;
-		pVector[i]->m_Velocity = finalVelocity;
+		pVector[i]->next_state(finalPosition, finalVelocity);
 	}
 }

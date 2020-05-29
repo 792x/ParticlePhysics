@@ -79,8 +79,7 @@ void RungeKutta::simulation_step(std::vector<Particle*> pVector, std::vector<For
 		Vec3f newVelocity = k1VelVec[i] + (1.f / 6.f) * dt * (k1AccVec[i] + 2.f * k2AccVec[i] + 2.f * k3AccVec[i] + k4AccVec[i]);
 		Vec3f newPosition = k1PosVec[i] + (1.f / 6.f) * dt * (k1VelVec[i] + 2.f * k2VelVec[i] + 2.f * k3VelVec[i] + k4VelVec[i]);
 
-		pVector[i]->m_Velocity = newVelocity;
-		pVector[i]->m_Position = newPosition;
+		pVector[i]->next_state(newPosition, newVelocity);
 	}
 
 }

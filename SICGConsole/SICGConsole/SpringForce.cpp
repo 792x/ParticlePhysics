@@ -16,6 +16,35 @@ SpringForce::SpringForce(std::vector<Particle*> particles, float dist, float ks,
 	this->target(std::move(particles));
 }
 
+float distance(Particle* p0, Particle* p1) {//TODO: is there a standard function for this?
+	float x0 = p0->m_Position[0];
+	float y0 = p0->m_Position[1];
+	float z0 = p0->m_Position[2];
+	float x1 = p1->m_Position[0];
+	float y1 = p1->m_Position[1];
+	float z1 = p1->m_Position[2];
+	return sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1) + (z0 - z1) * (z0 - z1));
+}
+
+void SpringForce::deformation_update() {
+	p_len = c_len;
+	c_len = distance(particles[0], particles[1]);
+}
+
+bool SpringForce::deformation_check() {
+	float t_len = distance(particles[0], particles[1]);
+	if (t_len > p_len * 1.10 || t_len < p_len * 0.90) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+void SpringForce::reset() {
+	p_len = distance(particles[0], particles[1]);
+	c_len = distance(particles[0], particles[1]);
+}
+
 void SpringForce::target(std::vector<Particle *> particles) {
 	this->particles = particles;
 }

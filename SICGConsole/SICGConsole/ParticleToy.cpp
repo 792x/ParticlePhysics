@@ -16,6 +16,7 @@
 #include "solvers/ConstraintSolver.h"
 #include "solvers/RungeKutta.h"
 #include "solvers/BasicVerlet.h"
+#include "solvers/AdaptiveTimeStepper.h"
 
 //#include "imageio.h"
 
@@ -31,7 +32,7 @@
 /* global variables */
 
 static int N;
-static float dt, d;
+static float d, c_dt = 0.01f;
 static int dsim;
 static int dump_frames;
 static int frame_number;
@@ -62,6 +63,9 @@ static BasicVerlet BasicVerletSolver;
 static Solver* solvers[6] = {&explEuler, &semiEuler, &implEuler, &MidPointSolver, &RungeKuttaSolver, &BasicVerletSolver};
 static int solverIndex = 2;
 
+// global variables used for adaptive time stepping
+static AdaptiveTimeStepper adaptiveTimeStepper(c_dt);
+static bool adaptive_time_stepping = true;
 
 /*
 ----------------------------------------------------------------------
@@ -94,6 +98,7 @@ static void clear_data() {
 		pVector[ii]->reset();
 	}
 
+	adaptiveTimeStepper.reset(fVector);
 }
 
 static void init_system() {
@@ -303,6 +308,15 @@ static void key_func(unsigned char key, int x, int y) {
 			printf("\t Using solver 6. Basic Verlet\n");
 			break;
 
+		case '+': adaptive_time_stepping = true;
+			adaptiveTimeStepper.reset(fVector);
+			printf("\t Using adaptive time stepping\n");
+			break;
+
+		case '-': adaptive_time_stepping = false;
+			printf("\t Using constant time stepping\n");
+			break;
+
 		case 'c':
 		case 'C': clear_data();
 			break;
@@ -352,7 +366,15 @@ static void reshape_func(int width, int height) {
 static void idle_func() {
 	if (dsim) {
 		get_from_UI();
-		solvers[solverIndex]->simulation_step(pVector, fVector, cVector, dt);
+
+		// Using adaptive time stepping with changing dt.
+		if (adaptive_time_stepping) {
+			adaptiveTimeStepper.simulation_step(pVector, fVector, cVector, solvers[solverIndex]);
+
+		// Using constant time stepping with c_dt as defined before compilation.
+		}else {
+			solvers[solverIndex]->simulation_step(pVector, fVector, cVector, c_dt);
+		}
 	} else {
 		get_from_UI();
 		remap_GUI();
@@ -414,13 +436,13 @@ int main(int argc, char **argv) {
 
 	if (argc==1) {
 		N = 64;
-		dt = 0.001f;
+		//c_dt = 10.f; //Moved to top for initialisation of the adaptive time stepper
 		d = 5.f;
 		fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
-				N, dt, d);
+				N, c_dt, d);
 	} else {
 		N = atoi(argv[1]);
-		dt = atof(argv[2]);
+		c_dt = atof(argv[2]);
 		d = atof(argv[3]);
 	}
 
@@ -433,6 +455,7 @@ int main(int argc, char **argv) {
 	printf("\t 3. Explicit MidPoint\n");
 	printf("\t 4. Explicit Runge Kutta\n");
 	printf("\t 5. Basic Verlet\n");
+	printf("\t Switch between adaptive time stepping and constant time stepping by using the + and the - keys\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
 
