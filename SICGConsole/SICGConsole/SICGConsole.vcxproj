@@ -175,6 +175,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="RodConstraint.h" />
+    <ClInclude Include="SolidObject.h" />
     <ClInclude Include="solvers\Euler.h" />
     <ClInclude Include="solvers\linearSolver.h" />
     <ClInclude Include="solvers\MidPoint.h" />
@@ -206,6 +207,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SICGConsole.cpp" />
+    <ClCompile Include="SolidObject.cpp" />
     <ClCompile Include="solvers\Euler.cpp" />
     <ClCompile Include="solvers\linearSolver.cpp" />
     <ClCompile Include="solvers\MidPoint.cpp" />

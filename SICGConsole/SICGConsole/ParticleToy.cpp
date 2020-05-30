@@ -17,6 +17,7 @@
 #include "solvers/RungeKutta.h"
 #include "solvers/BasicVerlet.h"
 #include "Hair.h"
+#include "SolidObject.h"
 
 //#include "imageio.h"
 
@@ -101,14 +102,17 @@ static void clear_data() {
 	for (ii = 0; ii < size; ii++) {
 		pVector[ii]->reset();
 	}
+//  TODO clear 	objects
 
 }
+
 
 static void init_system() {
 	const double dist = 0.2;
 	const Vec3f center(0.0, 0.0, 0.0);
 	const Vec3f offset(0.0, dist, 0.0);
 
+	//oVector.push_back(new SolidObject(5, 7, center, pVector, fVector, cVector));
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
 	//pVector.push_back(new Particle(center - offset, 1.0f, 0));
@@ -154,10 +158,11 @@ static void init_hair() {
 	}
 }
 static void init_cloth() {
-	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
+	//Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
+	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 150, 15);
 	fVector.push_back(new GravityForce(pVector));
 	for (int i = 0; i < pVector.size(); i++) {
-		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
+		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 10000, 5));
 	}
 }
 
@@ -265,9 +270,6 @@ static void get_from_UI() {
 			float delta_x = pVector[i]->m_Position[0] - mouse_position[0];
 			float delta_y = pVector[i]->m_Position[1] - mouse_position[1];
 			float dist = delta_x*delta_x + delta_y*delta_y;
-			if (dist < 0.003) {
-				particle_selected = i;
-			}
 
 			if (particle_selected == i) {
 				std::cout << i << std::endl;
@@ -277,6 +279,18 @@ static void get_from_UI() {
 				mVector[i]->set_mouse(pVector[i]->m_Position);
 			}
 		}
+
+		//for (int i = 0; i < oVector.size(); i++) {
+		//	// drag solid object
+		//	mouse_position[0] = x;
+		//	mouse_position[1] = y;
+		//	SolidObject* so = dynamic_cast<SolidObject*>(oVector[i]); //TODO hair might not be cast
+
+		//	if (so->object_selected(Vec2f(x,y))) {
+		//		so->set_new_position(mouse_position);
+		//		//so->draw();
+		//	}
+		//}
 	} else {
 		particle_selected = -1;
 		int i, size = pVector.size();
@@ -420,6 +434,7 @@ static void display_func() {
 
 	post_display();
 }
+
 
 /*
 ----------------------------------------------------------------------
