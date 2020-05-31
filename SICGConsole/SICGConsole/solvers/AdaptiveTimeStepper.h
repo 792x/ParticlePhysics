@@ -17,7 +17,6 @@ private:
 	void spring_deformation_update(std::vector<Force*> fVector);
 	void undo_solver_step(std::vector<Particle*> pVector);
 
-	float start_dt;
-	float dt;
+	float dt, total_step_dt, min_dt, max_dt;
 	float num_succesful_steps;
 };

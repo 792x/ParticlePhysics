@@ -65,7 +65,7 @@ static int solverIndex = 2;
 
 // global variables used for adaptive time stepping
 static AdaptiveTimeStepper adaptiveTimeStepper(c_dt);
-static bool adaptive_time_stepping = true;
+static bool adaptive_time_stepping = false;
 
 /*
 ----------------------------------------------------------------------
@@ -452,9 +452,10 @@ int main(int argc, char **argv) {
 	printf("\t Available solvers:\n");
 	printf("\t 1. Explicit Euler\n");
 	printf("\t 2. Semi Implicit Euler\n");
-	printf("\t 3. Explicit MidPoint\n");
-	printf("\t 4. Explicit Runge Kutta\n");
-	printf("\t 5. Basic Verlet\n");
+	printf("\t 3. Implicit Euler\n");
+	printf("\t 4. Explicit MidPoint\n");
+	printf("\t 5. Explicit Runge Kutta\n");
+	printf("\t 6. Basic Verlet\n");
 	printf("\t Switch between adaptive time stepping and constant time stepping by using the + and the - keys\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
