@@ -15,8 +15,9 @@ void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Fo
 		initVel = pVector[i]->m_Velocity;
 		initAcc = pVector[i]->m_Force / pVector[i]->m_Mass;
 
-		if (start_pos(pVector)) {
+		if (Solver::simulation_reset) {
 			newPos = initPos + initVel * dt + 0.5f * initAcc * dt * dt;
+			Solver::simulation_reset = false;
 		} else {
 			newPos = 2.f * initPos - prevPos + initAcc * dt * dt;
 		}
@@ -26,23 +27,4 @@ void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Fo
 		pVector[i]->m_Velocity = (newPos - initPos) / dt;
 	}
 
-}
-
-// TODO: implement in a different, more efficient fashion --> i.e. change a global variable when simulation is being resetted
-bool BasicVerlet::start_pos(std::vector<Particle*> pVector) {
-
-	bool start_pos = true, bx, by, bz;
-
-	for (int i = 0; i < int(pVector.size()); i++) {
-		bx = (pVector[i]->m_Position[0] == pVector[i]->m_ConstructPos[0]);
-		by = (pVector[i]->m_Position[0] == pVector[i]->m_ConstructPos[0]);
-		bz = (pVector[i]->m_Position[0] == pVector[i]->m_ConstructPos[0]);
-
-		if (!(bx && by && bz)) {
-			start_pos = false;
-			break;
-		}
-	}
-
-	return start_pos;
 }

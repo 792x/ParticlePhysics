@@ -20,8 +20,10 @@ class Particle {
 	void draw();
 
 	Vec3f m_ConstructPos;
+	Vec3f m_OldOldPosition;
 	Vec3f m_OldPosition;
 	Vec3f m_Position;
+	Vec3f m_OldOldVelocity;
 	Vec3f m_OldVelocity;
 	Vec3f m_Velocity;
 	Vec3f m_Force;

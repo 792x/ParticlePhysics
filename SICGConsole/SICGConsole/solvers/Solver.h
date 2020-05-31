@@ -26,4 +26,14 @@ public:
 		// Compute the constraint forces.
 		ConstraintSolver::solve(pVector, cVector, 100.0f, 10.0f);
 	 };
+
+	 /*static void set_simulation_reset(bool value) {
+		 simulation_reset = value;
+	 }
+
+	 static bool get_simulation_reset() {
+		 return simulation_reset;
+	 }*/
+
+	 static bool simulation_reset;
 };
