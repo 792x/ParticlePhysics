@@ -15,11 +15,15 @@ Particle::Particle(const Vec3f &constructPos, float mass, int index) :
 	m_Mass(mass) {}
 
 void Particle::undo_next_state() {
+	m_OldPosition = m_OldOldPosition;
+	m_OldVelocity = m_OldOldVelocity;
 	m_Position = m_OldPosition;
 	m_Velocity = m_OldVelocity;
 }
 
 void Particle::next_state(Vec3f new_pos, Vec3f new_vel) {
+	m_OldOldPosition = m_OldPosition;
+	m_OldOldVelocity = m_OldVelocity;
 	m_OldPosition = m_Position;
 	m_OldVelocity = m_Velocity;
 	m_Position = new_pos;
