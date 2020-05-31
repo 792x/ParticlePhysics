@@ -9,14 +9,16 @@
 #include "GravityForce.h"
 #include "AngularSpringForce.h"
 #include "MouseForce.h"
+#include "Cloth.h"
+
 #include "solvers/Solver.h"
+#include "solvers/AdaptiveTimeStepper.h"
 #include "solvers/Euler.h"
 #include "solvers/MidPoint.h"
-#include "Cloth.h"
-#include "solvers/ConstraintSolver.h"
 #include "solvers/RungeKutta.h"
 #include "solvers/BasicVerlet.h"
-#include "solvers/AdaptiveTimeStepper.h"
+#include "solvers/LeapFrog.h"
+#include "solvers/ConstraintSolver.h"
 
 //#include "imageio.h"
 
@@ -60,8 +62,10 @@ static Euler implEuler = Euler(Euler::impl);
 static MidPoint MidPointSolver;
 static RungeKutta RungeKuttaSolver;
 static BasicVerlet BasicVerletSolver;
-static Solver* solvers[6] = {&explEuler, &semiEuler, &implEuler, &MidPointSolver, &RungeKuttaSolver, &BasicVerletSolver};
-static int solverIndex = 2;
+static LeapFrog LeapFrogSolver;
+static Solver* solvers[7] = {&explEuler, &semiEuler, &implEuler, &MidPointSolver, &RungeKuttaSolver, &BasicVerletSolver, &LeapFrogSolver};
+static int solverIndex = 0;
+bool Solver::simulation_reset = true;
 
 // global variables used for adaptive time stepping
 static AdaptiveTimeStepper adaptiveTimeStepper(c_dt);
@@ -99,6 +103,7 @@ static void clear_data() {
 	}
 
 	adaptiveTimeStepper.reset(fVector);
+	Solver::simulation_reset = true;
 }
 
 static void init_system() {
@@ -135,7 +140,6 @@ static void init_system() {
 	for (int i = 0; i < pVector.size(); i++) {
 		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
 	}
-
 }
 
 /*
@@ -305,7 +309,13 @@ static void key_func(unsigned char key, int x, int y) {
 			break;
 
 		case '6': solverIndex = 5;
+			Solver::simulation_reset = true;
 			printf("\t Using solver 6. Basic Verlet\n");
+			break;
+
+		case '7': solverIndex = 6;
+			Solver::simulation_reset = true;
+			printf("\t Using solver 7. Leapfrog\n");
 			break;
 
 		case '+': adaptive_time_stepping = true;
@@ -456,6 +466,7 @@ int main(int argc, char **argv) {
 	printf("\t 4. Explicit MidPoint\n");
 	printf("\t 5. Explicit Runge Kutta\n");
 	printf("\t 6. Basic Verlet\n");
+	printf("\t 7. Leapfrog\n");
 	printf("\t Switch between adaptive time stepping and constant time stepping by using the + and the - keys\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
