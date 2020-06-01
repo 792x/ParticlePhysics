@@ -1,5 +1,6 @@
 #include "SolidObject.h"
 #include <Eigen/Dense>
+#include "RodConstraint.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -24,13 +25,17 @@ static Matrix3f star(Vec3f a) {
 
 SolidObject::SolidObject(int x, int y, Vec3f bottom_left_pos, vector<Particle*>& ps, vector<Force*>& fs, 
 	vector<Constraint*>& cs, float p_mass, float dist):
-	xn(x),yn(y),bot_left_pos(bottom_left_pos),p_mass(p_mass),dist(dist),x(bottom_left_pos)
+	xn(x),yn(y),bot_left_pos(bottom_left_pos),p_mass(p_mass),dist(dist)
 {
+	/*particle implementation of solid object*/
+	m_Position = bottom_left_pos;
+	/*particle implementation of solid object*/
 	init(ps, fs, cs);
 }
 
 void SolidObject::state_to_array(float* y)
 {
+	Vec3f x = m_Position;
 	*y++ = x[0];	*y++ = x[1];	*y++ = x[2];
 
 	for (int i = 0; i < 3; i++) /* copy rotation matrix */
@@ -44,6 +49,7 @@ void SolidObject::state_to_array(float* y)
 
 void SolidObject::array_to_state(float* y)
 {
+	Vec3f x = m_Position;
 	x[0] = *y++;	x[1] = *y++;	x[2] = *y++;
 
 	for (int i = 0; i < 3; i++)
@@ -84,17 +90,19 @@ void SolidObject::ddt_State_to_Array(float* ydot)
 
 void SolidObject::draw()
 {
+	Vec3f x = this->m_Position;
 	glBegin(GL_QUADS);
 	
 	glColor3f(0.0, 1.0, 0.0);
-	Vec3f tl = particles[particles.size()-xn]->m_Position;
-	Vec3f tr = particles[particles.size()-1]->m_Position;
-	Vec3f br = particles[xn-1]->m_Position;
-	Vec3f bl = particles[0]->m_Position;
-	glVertex2f(tl[0],tl[1]); // top left
-	glVertex2f(tr[0],tr[1]); // top right 
-	glVertex2f(br[0],br[1]); // bottom right
-	glVertex2f(bl[0],bl[1]); // bottom left
+	//Vec3f tl = particles[particles.size()-xn]->m_Position;
+	//Vec3f tr = particles[particles.size()-1]->m_Position;
+	//Vec3f br = particles[xn-1]->m_Position;
+	//Vec3f bl = particles[0]->m_Position;
+
+	glVertex2f(x[0],x[1]+yn*dist); // top left
+	glVertex2f(x[0]+dist*xn,x[1]+yn*dist); // top right 
+	glVertex2f(x[0]+dist*xn,x[1]); // bottom right
+	glVertex2f(x[0],x[1]); // bottom left
 	glEnd();
 }
 
@@ -104,15 +112,22 @@ void SolidObject::init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constra
 	L = Vec3f(0, 0, 0);
 	v = Vec3f(0, 0, 0);
 	force = Vec3f(0, 0, 0);
+	this->m_Force = force; //Particle
 	torque = Vec3f(0, 0, 0);
 	omega = Vec3f(0, 0, 0);
+	m_Velocity = Vec3f(0, 0, 0);
+	m_Index = ps.size();
+	m_OldPosition = m_Position;
+	m_ConstructPos = m_Position;
+
+
 
 	//init Ibody
-	this->mass = p_mass * xn * yn;
+	this->m_Mass = p_mass * xn * yn;
 	Ibody = Matrix3f(3, 3);
-	Ibody(0,0) = 1.0 / 12 * (mass * ((yn * yn) + 1)); 
-	Ibody(1,1) = 1.0 / 12 * (mass * ((xn * xn) + 1));
-	Ibody(2,2) = 1.0 / 12 * (mass * ((xn * xn) + (yn * yn)));
+	Ibody(0,0) = 1.0 / 12 * (m_Mass * ((yn * yn) + 1)); 
+	Ibody(1,1) = 1.0 / 12 * (m_Mass * ((xn * xn) + 1));
+	Ibody(2,2) = 1.0 / 12 * (m_Mass * ((xn * xn) + (yn * yn)));
 	Ibodyinv = Ibody.inverse();
 	Iinv = Ibodyinv;
 	omega = eigen_to_vec( Iinv * Vector3f(L) );
@@ -135,25 +150,56 @@ void SolidObject::init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constra
 
 
 	/*create particles*/
+	/*
 	int cnt = ps.size(); //index of particle
 	Vec3f o_pos = this->bot_left_pos;
 	for (int j = 0; j < yn; j++) {
 		for (int i = 0; i < xn; i++) {
 			Vec3f r_pos = Vec3f(i * dist, j * dist, 0);
 			Vec3f pos = o_pos + r_pos;
-			Particle *p = new Particle(pos, p_mass, cnt,false);
+			Particle *p = new Particle(pos, p_mass, cnt);
 			cnt++;
-			//ps.push_back(p);
+			ps.push_back(p);
 			p_positions.push_back(r_pos);
 			this->particles.push_back(p);
 		}
 	}
+	*/
+
+	/*rod connected implementation */
+	/*
+	for (int i = 0; i < xn; i++) {
+		for (int j = 0; j < yn; j++) {
+			auto p = particles[i + j*xn];
+			int p_index = i + j*xn;
+
+			//printf("\t current i,j (%d , %d)\n", i, j);
+			int p2_index = i + 1 + j*xn;
+			if (p2_index < particles.size() && i + 1!=xn) {
+				//printf("\t adding left spring to (%d->%d)\n", p_index, p2_index);
+				auto spring_left = new RodConstraint(p, particles[p2_index],
+												   dist);
+				cs.push_back(spring_left);
+			}
+
+
+			p2_index = i + (j + 1)*xn;
+			if (p2_index < particles.size()) {
+				//printf("\t adding up spring to (%d -> %d)\n", p_index, p2_index);
+				auto spring_up = new RodConstraint(p, particles[p2_index],
+												 dist);
+				cs.push_back(spring_up);
+			}
+		}
+	}
+	*/
 }
 
 bool SolidObject::object_selected(Vec2f mouse)
 {
 	//cout << "checking object selected x (" << x[0] << "," << x[1] << ")" << endl;
 	//cout << "checking object selected mouse (" << mouse[0] << "," << mouse[1] << ")" << endl;
+	Vec3f x = m_Position;
 	float dx = mouse[0] - x[0];
 	float dy = mouse[1] - x[1];
 	float d = sqrt(dx * dx + dy * dy);
@@ -163,29 +209,41 @@ bool SolidObject::object_selected(Vec2f mouse)
 
 void SolidObject::set_new_position(Vec3f mouse)
 {
-	//cout << "setting new position" << endl;
-	//cout << "original x (" << x[0] << "," << x[1] << ")" << endl;
-	x[0] = mouse[0];
-	x[1] = mouse[1];
+	//cout << "seting new position" << endl;
+	//cout << "original x (" << m_Position[0] << "," << m_Position[1] << ")" << endl;
+	this->m_Position[0] = mouse[0];//particle
+	this->m_Position[1] = mouse[1];
+	//cout << "new x (" << m_Position[0] << "," << m_Position[1] << ")" << endl;
 	//cout << "new x (" << x[0] << "," << x[1] << ")" << endl;
+	/*
 	for (int i = 0; i < particles.size(); i++) {
 		particles[i]->m_Position = x + p_positions[i];
 	}
+	*/
 }
 
 void SolidObject::computeForce()
 {
+	/*
 	force = Vec3f(0, 0, 0);
 	for (auto p : particles) {
 		force += p->m_Force;
 	}
+	*/
 }
 
 void SolidObject::computeTorque()
 {
+	/*
 	torque = Vec3f(0, 0, 0);
 	for (auto p : particles) {
 		torque += cross(p->m_Position - x, p->m_Force);
 	}
+	*/
 
+}
+
+string SolidObject::getType()
+{
+	return "SOLIDOBJECT";
 }

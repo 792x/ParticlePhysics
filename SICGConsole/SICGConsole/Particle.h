@@ -12,10 +12,12 @@
 class Particle {
   public:
 	Particle(const Vec3f &constructPos, float mass, int index, bool drawable=1);
+	Particle();
 	virtual ~Particle() = default;
 
 	void reset();
-	void draw();
+	virtual void draw();
+	virtual std::string getType();
 	void setDrawable(bool d);
 
 	Vec3f m_ConstructPos;

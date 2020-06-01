@@ -15,7 +15,7 @@
 using namespace Eigen;
 using namespace std;
 class SolidObject :
-	public Object
+	public Particle
 {
 public:
 	SolidObject(int x, int y, Vec3f bottom_left_pos, vector<Particle*>& ps,
@@ -23,12 +23,13 @@ public:
 	void state_to_array(float* y);
 	void array_to_state(float* y);
 	void ddt_State_to_Array(float* ydot);
-	void draw();
+	void draw() override;
 	void init(vector<Particle*>& ps, vector<Force*> &fs, vector<Constraint*>& cs);
 	bool object_selected(Vec2f mouse) ;
     void set_new_position(Vec3f mouse);
 	void computeForce();
 	void computeTorque();
+	string getType() override;
 
 	int xn, yn; //width and high
 	Vec3f bot_left_pos; // bottom left position i.e. origin
@@ -36,11 +37,11 @@ public:
 	float dist=0.5; // distance between each particles
 	vector<Vec3f> p_positions; // position of particles relative to bot_left_pos
 	//constat
-	float mass;
+	float m_Mass;
 	Matrix3f Ibody, Ibodyinv;
 
 	//state varaibles
-	Vec3f x; //position of ridgid body
+	//Vec3f x; //position of ridgid body
 	Vec3f P, L;
 	Matrix3f R;
 

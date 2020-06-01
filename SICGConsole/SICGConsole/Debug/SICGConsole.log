@@ -1,3 +1,2 @@
 ﻿  SolidObject.cpp
-SolidObject.obj : error LNK2019: 无法解析的外部符号 "class gfx::Mat3 __cdecl gfx::operator*(class gfx::Mat3 const &,class gfx::Mat3 const &)" (??Dgfx@@YA?AVMat3@0@ABV10@0@Z)，该符号在函数 "public: void __thiscall SolidObject::array_to_state(float *)" (?array_to_state@SolidObject@@QAEXPAM@Z) 中被引用
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\Debug\SICGConsole.exe : fatal error LNK1120: 1 个无法解析的外部命令
+  SICGConsole.vcxproj -> L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\Debug\SICGConsole.exe

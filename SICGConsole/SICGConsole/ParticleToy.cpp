@@ -39,13 +39,16 @@ static int dump_frames;
 static int frame_number;
 static Vec3f mouse_position;
 static int particle_selected = -1;
+static const string PARTICLE = "PARTICLE";
+static const string SOLIDOBJECT = "SOLIDOBJECT";
 
 
 // static Particle *pList;
 static std::vector<Particle *> pVector;
 static std::vector<Force *> fVector;
 static std::vector<Constraint *> cVector;
-static std::vector<Object*> oVector;
+//static std::vector<Object*> oVector;
+static std::vector<SolidObject*> oVector;
 static std::vector<MouseForce *> mVector;
 
 static int win_id;
@@ -89,7 +92,7 @@ static void free_data() {
 	}
 	cVector.clear();
 
-	for (Object *o : oVector) {
+	for (auto o: oVector) {
 		delete o;
 	}
 	oVector.clear();
@@ -102,8 +105,6 @@ static void clear_data() {
 	for (ii = 0; ii < size; ii++) {
 		pVector[ii]->reset();
 	}
-//  TODO clear 	objects
-
 }
 
 
@@ -112,7 +113,7 @@ static void init_system() {
 	const Vec3f center(0.0, 0.0, 0.0);
 	const Vec3f offset(0.0, dist, 0.0);
 
-	//oVector.push_back(new SolidObject(5, 7, center, pVector, fVector, cVector));
+	//fVector.push_back(new GravityForce(pVector));
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
 	//pVector.push_back(new Particle(center - offset, 1.0f, 0));
@@ -151,7 +152,7 @@ static void init_system() {
 
 }
 static void init_hair() {
-	oVector.push_back(new Hair(pVector, fVector, cVector));
+	//oVector.push_back(new Hair(pVector, fVector, cVector));
 	fVector.push_back(new GravityForce(pVector));
 	for (int i = 0; i < pVector.size(); i++) {
 		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
@@ -159,7 +160,12 @@ static void init_hair() {
 }
 static void init_cloth() {
 	//Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
+	int ind = pVector.size() - 1;
 	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 150, 15);
+
+	SolidObject* so = new SolidObject(5, 7, { 0,0,0 }, pVector, fVector, cVector);
+	//oVector.push_back(so);
+	pVector.push_back(so);
 	fVector.push_back(new GravityForce(pVector));
 	for (int i = 0; i < pVector.size(); i++) {
 		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 10000, 5));
@@ -231,12 +237,12 @@ static void draw_constraints() {
 	}
 }
 
-static void draw_objects() {
-
-	for (Object *o : oVector) {
-		o->draw();
-	}
-}
+//static void draw_objects() {
+//
+//	for (auto o : oVector) {
+//		o->draw();
+//	}
+//}
 
 /*
 ----------------------------------------------------------------------
@@ -280,17 +286,17 @@ static void get_from_UI() {
 			}
 		}
 
-		//for (int i = 0; i < oVector.size(); i++) {
-		//	// drag solid object
-		//	mouse_position[0] = x;
-		//	mouse_position[1] = y;
-		//	SolidObject* so = dynamic_cast<SolidObject*>(oVector[i]); //TODO hair might not be cast
+		for (int i = 0; i < oVector.size(); i++) {
+			// drag solid object
+			mouse_position[0] = x;
+			mouse_position[1] = y;
+			SolidObject* so = dynamic_cast<SolidObject*>(oVector[i]); //TODO hair might not be cast
 
-		//	if (so->object_selected(Vec2f(x,y))) {
-		//		so->set_new_position(mouse_position);
-		//		//so->draw();
-		//	}
-		//}
+			if (so->object_selected(Vec2f(x,y))) {
+				so->set_new_position(mouse_position);
+				//so->draw();
+			}
+		}
 	} else {
 		particle_selected = -1;
 		int i, size = pVector.size();
@@ -315,8 +321,10 @@ static void get_from_UI() {
 static void remap_GUI() {
 	int ii, size = pVector.size();
 	for (ii = 0; ii < size; ii++) {
-		pVector[ii]->m_Position[0] = pVector[ii]->m_ConstructPos[0];
-		pVector[ii]->m_Position[1] = pVector[ii]->m_ConstructPos[1];
+		if (pVector[ii]->getType() == PARTICLE) {
+			pVector[ii]->m_Position[0] = pVector[ii]->m_ConstructPos[0];
+			pVector[ii]->m_Position[1] = pVector[ii]->m_ConstructPos[1];
+		}
 	}
 }
 
@@ -430,7 +438,7 @@ static void display_func() {
 	draw_forces();
 	draw_constraints();
 	draw_particles();
-	draw_objects();
+	//draw_objects();
 
 	post_display();
 }
