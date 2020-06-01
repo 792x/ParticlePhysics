@@ -10,13 +10,15 @@ RodConstraint::RodConstraint(Particle *p1, Particle *p2, float dist) :
 
 float RodConstraint::m_C() {
 	Vec3f diff = m_p1->m_Position - m_p2->m_Position;
-	return diff*diff - m_dist*m_dist;
+	float m_C = diff[0]*diff[0] + diff[1]*diff[1] + diff[2]*diff[2] - m_dist*m_dist;
+	return m_C;
 }
 
 float RodConstraint::m_C_dot() {
-	Vec3f pDiff = (m_p1->m_Position - m_p2->m_Position)*2.f;
-	Vec3f vDiff = (m_p1->m_Velocity - m_p2->m_Velocity)*2.f;
-	return pDiff*vDiff;
+	Vec3f diff = m_p1->m_Position - m_p2->m_Position;
+	Vec3f v =m_p1->m_Velocity - m_p2->m_Velocity;
+	float m_C_dot = 2.f*diff*v;
+	return m_C_dot;
 }
 
 std::vector<Vec3f> RodConstraint::m_j() {

@@ -1,6 +1,7 @@
 #pragma once
 #include "Particle.h"
 #include <vector>
+#include "gfx/mat2.h"
 
 // Abstract class
 class Force {
@@ -10,6 +11,7 @@ class Force {
 	virtual void target(std::vector<Particle *> particles) = 0;
 	virtual void draw() = 0;
 	virtual void apply() = 0;
+	virtual std::vector<std::vector<float>> jacobian() = 0;
 	std::vector<Particle *> particles;
 	void reset() {
 		for (Particle* p : particles) {
