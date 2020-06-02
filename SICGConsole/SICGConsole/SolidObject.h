@@ -29,6 +29,8 @@ public:
     void set_new_position(Vec3f mouse);
 	void computeForce();
 	void computeTorque();
+
+	bool is_collid(Particle*);
 	string getType() override;
 
 	int xn, yn; //width and high
@@ -37,7 +39,6 @@ public:
 	float dist=0.5; // distance between each particles
 	vector<Vec3f> p_positions; // position of particles relative to bot_left_pos
 	//constat
-	float m_Mass;
 	Matrix3f Ibody, Ibodyinv;
 
 	//state varaibles

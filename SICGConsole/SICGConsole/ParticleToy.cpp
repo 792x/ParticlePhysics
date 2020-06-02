@@ -9,6 +9,8 @@
 #include "GravityForce.h"
 #include "AngularSpringForce.h"
 #include "MouseForce.h"
+#include "ContactForce.h"
+
 #include "solvers/Solver.h"
 #include "solvers/Euler.h"
 #include "solvers/MidPoint.h"
@@ -161,15 +163,16 @@ static void init_hair() {
 static void init_cloth() {
 	//Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
 	int ind = pVector.size() - 1;
-	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 150, 15);
-
-	SolidObject* so = new SolidObject(5, 7, { 0,0,0 }, pVector, fVector, cVector);
-	//oVector.push_back(so);
-	pVector.push_back(so);
-	fVector.push_back(new GravityForce(pVector));
+	Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 150, 15);
 	for (int i = 0; i < pVector.size(); i++) {
 		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 10000, 5));
 	}
+
+	fVector.push_back(new GravityForce(pVector));
+	SolidObject* so = new SolidObject(5, 7, { -0.5,-0.5,0 }, pVector, fVector, cVector);
+	fVector.push_back(new ContactForce(c, so));
+	oVector.push_back(so);
+	pVector.push_back(so);
 }
 
 /*
@@ -277,11 +280,12 @@ static void get_from_UI() {
 			float delta_y = pVector[i]->m_Position[1] - mouse_position[1];
 			float dist = delta_x*delta_x + delta_y*delta_y;
 
-			if (particle_selected == i) {
+			if (particle_selected == i && i < mVector.size()) {
 				std::cout << i << std::endl;
 				mVector[i]->set_mouse(mouse_position);
 				mVector[i]->apply();
 			} else {
+				if(i < mVector.size())
 				mVector[i]->set_mouse(pVector[i]->m_Position);
 			}
 		}
@@ -300,7 +304,7 @@ static void get_from_UI() {
 	} else {
 		particle_selected = -1;
 		int i, size = pVector.size();
-		for (i = 0; i < size; i++) {
+		for (i = 0; i < size && i < mVector.size(); i++) {
 			mVector[i]->set_mouse(pVector[i]->m_Position);
 		}
 	}

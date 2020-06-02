@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CircularWireConstraint.h" />
+    <ClInclude Include="ContactForce.h" />
     <ClInclude Include="GL\fgl.h" />
     <ClInclude Include="GL\fglu.h" />
     <ClInclude Include="GL\fglut.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="CircularWireConstraint.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ContactForce.cpp" />
     <ClCompile Include="GravityForce.cpp" />
     <ClCompile Include="AngularSpringForce.cpp" />
     <ClCompile Include="MouseForce.cpp" />

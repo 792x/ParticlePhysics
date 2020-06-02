@@ -92,8 +92,7 @@ void SolidObject::draw()
 {
 	Vec3f x = this->m_Position;
 	glBegin(GL_QUADS);
-	
-	glColor3f(0.0, 1.0, 0.0);
+	glColor3f(0.737255 , 0.560784 , 0.560784);
 	//Vec3f tl = particles[particles.size()-xn]->m_Position;
 	//Vec3f tr = particles[particles.size()-1]->m_Position;
 	//Vec3f br = particles[xn-1]->m_Position;
@@ -123,7 +122,7 @@ void SolidObject::init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constra
 
 
 	//init Ibody
-	this->m_Mass = p_mass * xn * yn;
+	m_Mass = p_mass * xn * yn;
 	Ibody = Matrix3f(3, 3);
 	Ibody(0,0) = 1.0 / 12 * (m_Mass * ((yn * yn) + 1)); 
 	Ibody(1,1) = 1.0 / 12 * (m_Mass * ((xn * xn) + 1));
@@ -197,8 +196,6 @@ void SolidObject::init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constra
 
 bool SolidObject::object_selected(Vec2f mouse)
 {
-	//cout << "checking object selected x (" << x[0] << "," << x[1] << ")" << endl;
-	//cout << "checking object selected mouse (" << mouse[0] << "," << mouse[1] << ")" << endl;
 	Vec3f x = m_Position;
 	float dx = mouse[0] - x[0];
 	float dy = mouse[1] - x[1];
@@ -210,36 +207,35 @@ bool SolidObject::object_selected(Vec2f mouse)
 void SolidObject::set_new_position(Vec3f mouse)
 {
 	//cout << "seting new position" << endl;
-	//cout << "original x (" << m_Position[0] << "," << m_Position[1] << ")" << endl;
-	this->m_Position[0] = mouse[0];//particle
-	this->m_Position[1] = mouse[1];
-	//cout << "new x (" << m_Position[0] << "," << m_Position[1] << ")" << endl;
-	//cout << "new x (" << x[0] << "," << x[1] << ")" << endl;
-	/*
-	for (int i = 0; i < particles.size(); i++) {
-		particles[i]->m_Position = x + p_positions[i];
-	}
-	*/
+
+	float dv = 20.0;
+	this->m_Velocity = dv * (mouse - m_Position);
 }
 
 void SolidObject::computeForce()
 {
-	/*
-	force = Vec3f(0, 0, 0);
-	for (auto p : particles) {
-		force += p->m_Force;
-	}
-	*/
 }
 
 void SolidObject::computeTorque()
 {
-	/*
-	torque = Vec3f(0, 0, 0);
-	for (auto p : particles) {
-		torque += cross(p->m_Position - x, p->m_Force);
-	}
-	*/
+
+}
+
+bool SolidObject::is_collid(Particle* p)
+{
+	float x1 = m_Position[0];
+	float x2 = m_Position[0] + xn*dist;
+
+	float y1 = m_Position[1];
+	float y2 = m_Position[1] + yn*dist;
+
+	float x = p->m_Position[0];
+	float y = p->m_Position[1];
+
+	if (x > x1 && x < x2 && y > y1 && y < y2)
+		return true;
+
+	return false;
 
 }
 

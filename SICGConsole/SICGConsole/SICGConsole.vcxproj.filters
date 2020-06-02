@@ -150,6 +150,9 @@
     <ClInclude Include="SolidObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ContactForce.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SICGConsole.cpp">
@@ -207,6 +210,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolidObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactForce.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
