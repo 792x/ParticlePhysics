@@ -11,13 +11,14 @@
 
 class Particle {
   public:
-	Particle(const Vec3f &constructPos, float mass, int index);
+	Particle(const Vec3f &constructPos, float mass, int index, bool drawable=1);
 	virtual ~Particle() = default;
 
 	void undo_next_state();
 	void next_state(Vec3f new_pos, Vec3f new_vel);
 	void reset();
 	void draw();
+	void setDrawable(bool d);
 
 	Vec3f m_ConstructPos;
 	Vec3f m_OldOldPosition;
@@ -29,6 +30,5 @@ class Particle {
 	Vec3f m_Force;
 	int m_Index;
 	float m_Mass;
-
-	
+	bool drawable = 1;
 };

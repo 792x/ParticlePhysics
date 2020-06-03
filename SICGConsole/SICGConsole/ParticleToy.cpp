@@ -20,6 +20,8 @@
 #include "solvers/LeapFrog.h"
 #include "solvers/ConstraintSolver.h"
 
+#include "Hair.h"
+
 //#include "imageio.h"
 
 #include <vector>
@@ -41,10 +43,12 @@ static int frame_number;
 static Vec3f mouse_position;
 static int particle_selected = -1;
 
+
 // static Particle *pList;
 static std::vector<Particle *> pVector;
 static std::vector<Force *> fVector;
 static std::vector<Constraint *> cVector;
+static std::vector<Object*> oVector;
 static std::vector<MouseForce *> mVector;
 
 static int win_id;
@@ -93,6 +97,11 @@ static void free_data() {
 	}
 	cVector.clear();
 
+	for (Object *o : oVector) {
+		delete o;
+	}
+	oVector.clear();
+
 }
 
 static void clear_data() {
@@ -111,21 +120,29 @@ static void init_system() {
 	const Vec3f center(0.0, 0.0, 0.0);
 	const Vec3f offset(0.0, dist, 0.0);
 
+	//oVector.push_back(new Hair(pVector, fVector, cVector));
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
 	pVector.push_back(new Particle(center - offset, 1.0f, 0));
 	pVector.push_back(new Particle(center - offset - offset, 1.0f, 1));
 	pVector.push_back(new Particle(center - offset - offset - offset, 1.0f, 2));
 
-	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 0.5);
+	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
 
 	fVector.push_back(new GravityForce(pVector));
 	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 500,  0.5));
 	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 500,  0.5));
 
 
-	cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
-	cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+	//fVector.push_back(new AngularSpringForce({ pVector[0],pVector[1],pVector[2] }, PI, 120.0, 100.0));
+
+	//cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
+	//cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+
+	//fVector.push_back(new SpringForce(pVector[3], pVector[4], dist, 150.0f, 1.50f));
+	//fVector.push_back(new SpringForce(pVector[4], pVector[5], dist, 150.0f, 1.50f));
+	//cVector.push_back(new RodConstraint(pVector[3], pVector[4], dist));
+	//cVector.push_back(new CircularWireConstraint(pVector[3], center, dist));
 
 
 
@@ -204,6 +221,13 @@ static void draw_constraints() {
 
 	for (Constraint *c : cVector) {
 		c->draw();
+	}
+}
+
+static void draw_objects() {
+
+	for (Object *o : oVector) {
+		o->draw();
 	}
 }
 
@@ -399,6 +423,7 @@ static void display_func() {
 	draw_forces();
 	draw_constraints();
 	draw_particles();
+	draw_objects();
 
 	post_display();
 }
@@ -485,4 +510,3 @@ int main(int argc, char **argv) {
 
 	exit(0);
 }
-
