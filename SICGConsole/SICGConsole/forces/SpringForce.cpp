@@ -5,7 +5,7 @@
 
 #include <utility>
 #else
-#include "GL/glut.h"
+#include "../GL/glut.h"
 #endif
 
 SpringForce::SpringForce(Particle *p1, Particle * p2, float dist, float ks, float kd) :

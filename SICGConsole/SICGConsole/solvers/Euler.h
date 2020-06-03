@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Solver.h"
-#include "../Force.h"
-#include "../Particle.h"
-#include "../Constraint.h"
 
 class Euler : public Solver
 {

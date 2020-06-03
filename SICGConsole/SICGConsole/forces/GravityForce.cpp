@@ -1,8 +1,8 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
-#include "stdafx.h"
-#include "GL/glut.h"
+#include "../stdafx.h"
+#include "../GL/glut.h"
 #endif
 
 #include <utility>

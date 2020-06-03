@@ -1,9 +1,10 @@
 #pragma once
 #include "Particle.h"
-#include "Force.h"
-#include "Constraint.h"
+#include "../forces/Force.h"
+#include "../constraints/Constraint.h"
 
 #include<vector>
+
 using namespace std;
 class Object
 {

@@ -2,7 +2,7 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
-#include "GL/glut.h"
+#include "../GL/glut.h"
 #endif
 
 #define PI 3.1415926535897932384626433832795

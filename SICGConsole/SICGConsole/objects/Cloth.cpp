@@ -1,6 +1,6 @@
 #include "Cloth.h"
-#include "SpringForce.h"
-#include "CircularWireConstraint.h"
+#include "../forces/SpringForce.h"
+#include "../constraints/CircularWireConstraint.h"
 
 using namespace std;
 

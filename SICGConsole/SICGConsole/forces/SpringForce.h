@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Particle.h"
+#include "../objects/Particle.h"
 #include "Force.h"
 
 class SpringForce : public Force {

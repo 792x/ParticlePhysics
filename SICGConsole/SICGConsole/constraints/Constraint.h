@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Force.h"
+#include "../forces/Force.h"
 #include <utility>
 #include <vector>
 

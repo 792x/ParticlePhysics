@@ -1,13 +1,13 @@
 #include "Hair.h"
-#include "SpringForce.h"
-#include "AngularSpringForce.h"
-#include "CircularWireConstraint.h"
-#include "RodConstraint.h"
+#include "../forces/SpringForce.h"
+#include "../forces/AngularSpringForce.h"
+#include "../constraints/CircularWireConstraint.h"
+#include "../constraints/RodConstraint.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
-#include "GL/glut.h"
+#include "../GL/glut.h"
 #endif
 
 

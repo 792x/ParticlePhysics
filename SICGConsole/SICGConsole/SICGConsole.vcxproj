@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>L:\learning\academy\TUeM1\Q4\Simulation\eigen\eigen-eigen-94875feeeeb9;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\s160261\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,18 +146,20 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CircularWireConstraint.h" />
+    <ClInclude Include="constraints\CircularWireConstraint.h" />
+    <ClInclude Include="constraints\Constraint.h" />
+    <ClInclude Include="constraints\RodConstraint.h" />
+    <ClInclude Include="forces\AngularSpringForce.h" />
+    <ClInclude Include="forces\Force.h" />
+    <ClInclude Include="forces\GravityForce.h" />
+    <ClInclude Include="forces\MouseForce.h" />
+    <ClInclude Include="forces\SpringForce.h" />
     <ClInclude Include="GL\fgl.h" />
     <ClInclude Include="GL\fglu.h" />
     <ClInclude Include="GL\fglut.h" />
     <ClInclude Include="GL\glsmap.h" />
     <ClInclude Include="GL\glut.h" />
     <ClInclude Include="GL\tube.h" />
-    <ClInclude Include="GravityForce.h" />
-    <ClInclude Include="AngularSpringForce.h" />
-    <ClInclude Include="MouseForce.h" />
-    <ClInclude Include="Cloth.h" />
-    <ClInclude Include="Hair.h" />
     <ClInclude Include="include\gfx\config.h" />
     <ClInclude Include="include\gfx\geom3d.h" />
     <ClInclude Include="include\gfx\geom4d.h" />
@@ -172,49 +174,39 @@
     <ClInclude Include="include\gfx\vec2.h" />
     <ClInclude Include="include\gfx\vec3.h" />
     <ClInclude Include="include\gfx\vec4.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="RodConstraint.h" />
-    <ClInclude Include="solvers\Euler.h" />
-    <ClInclude Include="solvers\linearSolver.h" />
-    <ClInclude Include="solvers\MidPoint.h" />
-    <ClInclude Include="solvers\Solver.h" />
+    <ClInclude Include="objects\Cloth.h" />
+    <ClInclude Include="objects\Hair.h" />
+    <ClInclude Include="objects\Object.h" />
+    <ClInclude Include="objects\Particle.h" />
+    <ClInclude Include="solvers\AdaptiveTimeStepper.h" />
     <ClInclude Include="solvers\BasicVerlet.h" />
-    <ClInclude Include="solvers\RungeKutta.h" />
     <ClInclude Include="solvers\ConstraintSolver.h" />
-    <ClInclude Include="SpringForce.h" />
+    <ClInclude Include="solvers\Euler.h" />
+    <ClInclude Include="solvers\LeapFrog.h" />
+    <ClInclude Include="solvers\MidPoint.h" />
+    <ClInclude Include="solvers\RungeKutta.h" />
+    <ClInclude Include="solvers\Solver.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CircularWireConstraint.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="GravityForce.cpp" />
-    <ClCompile Include="AngularSpringForce.cpp" />
-    <ClCompile Include="MouseForce.cpp" />
-    <ClCompile Include="Cloth.cpp" />
-    <ClCompile Include="Hair.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Particle.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ParticleToy.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="RodConstraint.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="SICGConsole.cpp" />
-    <ClCompile Include="solvers\Euler.cpp" />
-    <ClCompile Include="solvers\linearSolver.cpp" />
-    <ClCompile Include="solvers\MidPoint.cpp" />
+    <ClCompile Include="constraints\CircularWireConstraint.cpp" />
+    <ClCompile Include="constraints\RodConstraint.cpp" />
+    <ClCompile Include="forces\AngularSpringForce.cpp" />
+    <ClCompile Include="forces\GravityForce.cpp" />
+    <ClCompile Include="forces\MouseForce.cpp" />
+    <ClCompile Include="forces\SpringForce.cpp" />
+    <ClCompile Include="objects\Cloth.cpp" />
+    <ClCompile Include="objects\Hair.cpp" />
+    <ClCompile Include="objects\Particle.cpp" />
+    <ClCompile Include="ParticleToy.cpp" />
+    <ClCompile Include="solvers\AdaptiveTimeStepper.cpp" />
     <ClCompile Include="solvers\BasicVerlet.cpp" />
-    <ClCompile Include="solvers\RungeKutta.cpp" />
     <ClCompile Include="solvers\ConstraintSolver.cpp" />
-    <ClCompile Include="SpringForce.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="solvers\Euler.cpp" />
+    <ClCompile Include="solvers\LeapFrog.cpp" />
+    <ClCompile Include="solvers\MidPoint.cpp" />
+    <ClCompile Include="solvers\RungeKutta.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AdaptiveTimeStepper.h"
-#include "../SpringForce.h"
+#include "../forces/SpringForce.h"
 
 AdaptiveTimeStepper::AdaptiveTimeStepper(float c_dt){
 	total_step_dt = c_dt;

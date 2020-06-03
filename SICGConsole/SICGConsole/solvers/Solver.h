@@ -1,8 +1,7 @@
 #pragma once
 #include <vector>
-#include "../Force.h"
-//#include "../Constraint.h"
-#include "../Particle.h"
+#include "../forces/Force.h"
+#include "../objects/Particle.h"
 #include "ConstraintSolver.h"
 
 class Solver

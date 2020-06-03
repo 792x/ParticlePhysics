@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Constraint.h"
-#include "../Particle.h"
+#include "../constraints/Constraint.h"
+#include "../objects/Particle.h"
 
 class ConstraintSolver {
   public:

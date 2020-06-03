@@ -2,15 +2,15 @@
 
 #ifdef __APPLE__
 
-#include "include/linux/gfx/vec3.h"
+#include "../include/linux/gfx/vec3.h"
 
 #else
-#include "include\gfx\vec3.h"
+#include "../include/gfx/vec3.h"
 #endif
 
 #include "Particle.h"
-#include "Force.h"
-#include "Constraint.h"
+#include "../forces/Force.h"
+#include "../constraints/Constraint.h"
 #include "Object.h"
 
 #include<vector>

@@ -1,15 +1,19 @@
 // ParticleToy.cpp : Defines the entry point for the console application.
 
-#include "Particle.h"
-#include "SpringForce.h"
-#include "RodConstraint.h"
-#include "CircularWireConstraint.h"
-#include "Force.h"
-#include "Constraint.h"
-#include "GravityForce.h"
-#include "AngularSpringForce.h"
-#include "MouseForce.h"
-#include "Cloth.h"
+#include "constraints/RodConstraint.h"
+#include "constraints/CircularWireConstraint.h"
+#include "constraints/Constraint.h"
+
+#include "forces/Force.h"
+#include "forces/AngularSpringForce.h"
+#include "forces/GravityForce.h"
+#include "forces/MouseForce.h"
+#include "forces/SpringForce.h"
+
+#include "objects/Object.h"
+#include "objects/Cloth.h"
+#include "objects/Hair.h"
+#include "objects/Particle.h"
 
 #include "solvers/Solver.h"
 #include "solvers/AdaptiveTimeStepper.h"
@@ -19,10 +23,6 @@
 #include "solvers/BasicVerlet.h"
 #include "solvers/LeapFrog.h"
 #include "solvers/ConstraintSolver.h"
-
-#include "Hair.h"
-
-//#include "imageio.h"
 
 #include <vector>
 #include <cstdlib>
@@ -36,7 +36,7 @@
 /* global variables */
 
 static int N;
-static float d, c_dt = 0.01f;
+static float d, c_dt = 0.001f;
 static int dsim;
 static int dump_frames;
 static int frame_number;

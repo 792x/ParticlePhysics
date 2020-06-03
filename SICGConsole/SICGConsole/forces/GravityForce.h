@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Particle.h"
+#include "../objects/Particle.h"
 #include "Force.h"
 
 class GravityForce : public Force {

@@ -1,5 +1,5 @@
 #pragma once
-#include "Particle.h"
+#include "../objects/Particle.h"
 #include <vector>
 
 // Abstract class

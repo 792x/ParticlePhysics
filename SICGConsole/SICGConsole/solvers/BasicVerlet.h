@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Solver.h"
-#include "../Force.h"
-#include "../Particle.h"
 
 class BasicVerlet : public Solver
 {

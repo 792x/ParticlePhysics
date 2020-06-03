@@ -2,7 +2,7 @@
 #include <GLUT/glut.h>
 #include <utility>
 #else
-#include "GL/glut.h"
+#include "../GL/glut.h"
 #endif
 
 #include "AngularSpringForce.h"
