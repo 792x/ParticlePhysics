@@ -88,6 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\s160261\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,6 +147,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CircularWireConstraint.h" />
+    <ClInclude Include="Constraint.h" />
+    <ClInclude Include="Force.h" />
     <ClInclude Include="GL\fgl.h" />
     <ClInclude Include="GL\fglu.h" />
     <ClInclude Include="GL\fglut.h" />
@@ -169,11 +172,15 @@
     <ClInclude Include="include\gfx\vec2.h" />
     <ClInclude Include="include\gfx\vec3.h" />
     <ClInclude Include="include\gfx\vec4.h" />
+    <ClInclude Include="MouseForce.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="RodConstraint.h" />
+    <ClInclude Include="solvers\BasicVerlet.h" />
+    <ClInclude Include="solvers\ConstraintSolver.h" />
     <ClInclude Include="solvers\Euler.h" />
     <ClInclude Include="solvers\linearSolver.h" />
     <ClInclude Include="solvers\MidPoint.h" />
+    <ClInclude Include="solvers\RungeKutta.h" />
     <ClInclude Include="solvers\Solver.h" />
     <ClInclude Include="SpringForce.h" />
     <ClInclude Include="stdafx.h" />
@@ -186,6 +193,7 @@
     <ClCompile Include="GravityForce.cpp" />
     <ClCompile Include="AngularSpringForce.cpp" />
     <ClCompile Include="Cloth.cpp" />
+    <ClCompile Include="MouseForce.cpp" />
     <ClCompile Include="Particle.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -196,9 +204,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SICGConsole.cpp" />
+    <ClCompile Include="solvers\BasicVerlet.cpp" />
+    <ClCompile Include="solvers\ConstraintSolver.cpp" />
     <ClCompile Include="solvers\Euler.cpp" />
     <ClCompile Include="solvers\linearSolver.cpp" />
     <ClCompile Include="solvers\MidPoint.cpp" />
+    <ClCompile Include="solvers\RungeKutta.cpp" />
     <ClCompile Include="SpringForce.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>

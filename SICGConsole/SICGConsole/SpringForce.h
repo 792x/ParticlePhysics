@@ -11,7 +11,7 @@ class SpringForce : public Force {
 	void target(std::vector<Particle *> particles) override;
 	void draw() override;
 	void apply() override;
-	std::vector<std::vector<float>> jacobian() override;
+	std::vector<std::vector<float>> jacobian();
 
   private:
 	float const m_dist;     // rest length

@@ -30,10 +30,6 @@ void MouseForce::apply() {
 	m_p->m_Velocity -= f;
 }
 
-std::vector<std::vector<float>> MouseForce::jacobian(){
-
-};
-
 void MouseForce::draw() {
 	glBegin(GL_LINES);
 	glColor3f(1, 0, 0);

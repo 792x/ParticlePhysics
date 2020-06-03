@@ -25,10 +25,6 @@ void GravityForce::apply() {
 		p->m_Force += p->m_Mass*GravityForce::standard_gravity;
 	}
 }
-std::vector<std::vector<float>> GravityForce::jacobian(){
-
-}
-
 
 void GravityForce::draw() {
 }

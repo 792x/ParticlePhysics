@@ -12,7 +12,6 @@ class MouseForce : public Force {
 	void target(std::vector<Particle *> particles) override;
 	void draw() override;
 	void apply() override;
-	std::vector<std::vector<float>> jacobian() override;
   private:
 	Particle * const m_p;
 	Vec3f m_mloc;

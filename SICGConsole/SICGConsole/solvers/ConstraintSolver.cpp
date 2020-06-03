@@ -1,6 +1,6 @@
 #include "ConstraintSolver.h"
 #include "linearSolver.h"
-#include "Eigen"
+#include <Eigen/IterativeLinearSolvers>
 
 std::vector<std::vector<float>> ConstraintSolver::multiply_matrix_by_matrix(std::vector<std::vector<
 	float>> v1,

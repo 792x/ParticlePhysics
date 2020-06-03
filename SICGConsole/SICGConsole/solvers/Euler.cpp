@@ -34,9 +34,10 @@ void Euler::simulation_step(std::vector<Particle *> pVector,
 			}
 		}
 
-		for (auto &i : fVector) {
+		for (Force* f : fVector) {
 			// Only for SpringForce
-			if (typeid(*i)==typeid(SpringForce)) {
+			SpringForce* i = dynamic_cast<SpringForce*>(f);
+			if (i != NULL) {
 				std::vector<std::vector<float>> j = i->jacobian();
 				std::vector<std::vector<float>>
 					jd = ConstraintSolver::multiply_matrix_by_scalar(j, pow(dt, 2));

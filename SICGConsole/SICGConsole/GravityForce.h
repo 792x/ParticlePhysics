@@ -10,7 +10,6 @@ class GravityForce : public Force {
 	void target(std::vector<Particle *> particles) override;
 	void apply() override;
 	void draw() override;
-	std::vector<std::vector<float>> jacobian() override;
   private:
 	static const Vec3f standard_gravity;
 };
