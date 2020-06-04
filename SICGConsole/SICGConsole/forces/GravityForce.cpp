@@ -16,7 +16,9 @@ GravityForce::GravityForce(std::vector<Particle *> particles) {
 }
 
 void GravityForce::target(std::vector<Particle *> particles) {
-	this->particles = particles;
+	for (int i = 0; i < particles.size(); i++) {
+		this->particles.push_back(particles[i]);
+	}
 }
 
 void GravityForce::apply() {

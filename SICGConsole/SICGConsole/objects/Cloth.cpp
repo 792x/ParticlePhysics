@@ -47,12 +47,20 @@ void Cloth::addForces(vector<Particle *> ps, vector<Force *> &fs) {
 			int p_index = i + j*xn;
 
 			//printf("\t current i,j (%d , %d)\n", i, j);
-			int p2_index = i + j*xn + 1;
+			int p2_index = i + 1 + j*xn;
 			if (p2_index < particles.size() && i + 1!=xn) {
 				//printf("\t adding left spring to (%d->%d)\n", p_index, p2_index);
 				auto spring_left = new SpringForce(p, particles[p2_index],
 												   dist, c_ks, c_kd);
 				fs.push_back(spring_left);
+			}
+
+			p2_index = i + 2 + j*xn;
+			if (p2_index < particles.size() && i + 2 < xn) {
+				//printf("\t adding left spring to (%d->%d)\n", p_index, p2_index);
+				auto spring_left_2 = new SpringForce(p, particles[p2_index],
+												   2*dist, c_ks, c_kd);
+				fs.push_back(spring_left_2);
 			}
 
 			p2_index = i + (j + 1)*xn;
@@ -61,6 +69,14 @@ void Cloth::addForces(vector<Particle *> ps, vector<Force *> &fs) {
 				auto spring_up = new SpringForce(p, particles[p2_index],
 												 dist, c_ks, c_kd);
 				fs.push_back(spring_up);
+			}
+
+			p2_index = i + (j + 2)*xn;
+			if (p2_index < particles.size()) {
+				//printf("\t adding up spring to (%d -> %d)\n", p_index, p2_index);
+				auto spring_up_2 = new SpringForce(p, particles[p2_index],
+												 2*dist, c_ks, c_kd);
+				fs.push_back(spring_up_2);
 			}
 
 			p2_index = i + 1 + (j + 1)*xn;

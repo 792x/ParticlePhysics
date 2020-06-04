@@ -4,6 +4,10 @@
 #else
 #include "../GL/glut.h"
 #endif
+#include <string>
+using namespace std;
+
+
 
 Particle::Particle(const Vec3f &constructPos, float mass, int index, bool drawable) :
 	m_ConstructPos(constructPos),
@@ -14,6 +18,10 @@ Particle::Particle(const Vec3f &constructPos, float mass, int index, bool drawab
 	m_Index(index),
 	m_Mass(mass),
 	drawable(drawable){}
+
+Particle::Particle() {
+
+}
 
 void Particle::undo_next_state() {
 	m_OldPosition = m_OldOldPosition;
@@ -47,6 +55,11 @@ void Particle::draw() {
 	glVertex2f(m_Position[0] + h/2.0, m_Position[1] + h/2.0);
 	glVertex2f(m_Position[0] - h/2.0, m_Position[1] + h/2.0);
 	glEnd();
+}
+
+string Particle::getType()
+{
+	return string("PARTICLE");
 }
 
 void Particle::setDrawable(bool d)

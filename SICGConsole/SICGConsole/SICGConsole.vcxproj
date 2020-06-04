@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\s160261\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>L:\learning\academy\TUeM1\Q4\Simulation\eigen\eigen-eigen-94875feeeeb9;C:\Users\s160261\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,6 +154,7 @@
     <ClInclude Include="forces\GravityForce.h" />
     <ClInclude Include="forces\MouseForce.h" />
     <ClInclude Include="forces\SpringForce.h" />
+    <ClInclude Include="forces\ContactForce.h" />
     <ClInclude Include="GL\fgl.h" />
     <ClInclude Include="GL\fglu.h" />
     <ClInclude Include="GL\fglut.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="objects\Hair.h" />
     <ClInclude Include="objects\Object.h" />
     <ClInclude Include="objects\Particle.h" />
+    <ClInclude Include="objects\SolidObject.h" />
     <ClInclude Include="solvers\AdaptiveTimeStepper.h" />
     <ClInclude Include="solvers\BasicVerlet.h" />
     <ClInclude Include="solvers\ConstraintSolver.h" />
@@ -196,9 +198,12 @@
     <ClCompile Include="forces\GravityForce.cpp" />
     <ClCompile Include="forces\MouseForce.cpp" />
     <ClCompile Include="forces\SpringForce.cpp" />
+    <ClCompile Include="forces\ContactForce.cpp" />
     <ClCompile Include="objects\Cloth.cpp" />
     <ClCompile Include="objects\Hair.cpp" />
     <ClCompile Include="objects\Particle.cpp" />
+    <ClCompile Include="objects\SolidObject.cpp" />
+    <ClCompile Include="objects\Object.cpp" />
     <ClCompile Include="ParticleToy.cpp" />
     <ClCompile Include="solvers\AdaptiveTimeStepper.cpp" />
     <ClCompile Include="solvers\BasicVerlet.cpp" />
@@ -207,6 +212,7 @@
     <ClCompile Include="solvers\LeapFrog.cpp" />
     <ClCompile Include="solvers\MidPoint.cpp" />
     <ClCompile Include="solvers\RungeKutta.cpp" />
+    <ClCompile Include="SICGConsole.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

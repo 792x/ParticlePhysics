@@ -9,11 +9,13 @@
 #include "forces/GravityForce.h"
 #include "forces/MouseForce.h"
 #include "forces/SpringForce.h"
+#include "forces/ContactForce.h"
 
 #include "objects/Object.h"
 #include "objects/Cloth.h"
 #include "objects/Hair.h"
 #include "objects/Particle.h"
+#include "objects/SolidObject.h"
 
 #include "solvers/Solver.h"
 #include "solvers/AdaptiveTimeStepper.h"
@@ -42,6 +44,8 @@ static int dump_frames;
 static int frame_number;
 static Vec3f mouse_position;
 static int particle_selected = -1;
+static const string PARTICLE = "PARTICLE";
+static const string SOLIDOBJECT = "SOLIDOBJECT";
 
 
 // static Particle *pList;
@@ -49,6 +53,7 @@ static std::vector<Particle *> pVector;
 static std::vector<Force *> fVector;
 static std::vector<Constraint *> cVector;
 static std::vector<Object*> oVector;
+static std::vector<SolidObject*> soVector;
 static std::vector<MouseForce *> mVector;
 
 static int win_id;
@@ -97,10 +102,15 @@ static void free_data() {
 	}
 	cVector.clear();
 
-	for (Object *o : oVector) {
+	for (auto o: oVector) {
 		delete o;
 	}
 	oVector.clear();
+
+	for (auto so : soVector) {
+		delete so;
+	}
+	soVector.clear();
 
 }
 
@@ -115,23 +125,23 @@ static void clear_data() {
 	Solver::simulation_reset = true;
 }
 
+
 static void init_system() {
 	const double dist = 0.2;
 	const Vec3f center(0.0, 0.0, 0.0);
 	const Vec3f offset(0.0, dist, 0.0);
 
-	//oVector.push_back(new Hair(pVector, fVector, cVector));
+	//fVector.push_back(new GravityForce(pVector));
 	// Create three particles, attach them to each other, then add a
 	// circular wire constraint to the first.
-	pVector.push_back(new Particle(center - offset, 1.0f, 0));
-	pVector.push_back(new Particle(center - offset - offset, 1.0f, 1));
-	pVector.push_back(new Particle(center - offset - offset - offset, 1.0f, 2));
+	//pVector.push_back(new Particle(center - offset, 1.0f, 0));
+	//pVector.push_back(new Particle(center - offset - offset, 1.0f, 1));
+	//pVector.push_back(new Particle(center - offset - offset - offset, 1.0f, 2));
 
-	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
 
-	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 100,  0.5));
-	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 100,  0.5));
-	fVector.push_back(new GravityForce(pVector));
+	//fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 100,  0.5));
+	//fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 100,  0.5));
+	//fVector.push_back(new GravityForce(pVector));
 
 
 	//fVector.push_back(new AngularSpringForce({ pVector[0],pVector[1],pVector[2] }, PI, 120.0, 100.0));
@@ -154,9 +164,31 @@ static void init_system() {
 
 	//gravity_force.apply();
 
+	//for (int i = 0; i < pVector.size(); i++) {
+	//	mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
+	//}
+
+}
+static void init_hair() {
+	oVector.push_back(new Hair(pVector, fVector, cVector));
+	fVector.push_back(new GravityForce(pVector));
 	for (int i = 0; i < pVector.size(); i++) {
 		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 4, 0.5));
 	}
+}
+static void init_cloth() {
+	//Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
+	int ind = pVector.size() - 1;
+	Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 150, 15);
+	for (int i = 0; i < pVector.size(); i++) {
+		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 10000, 5));
+	}
+
+	fVector.push_back(new GravityForce(pVector));
+	SolidObject* so = new SolidObject(5, 7, { -0.5,-0.5,0 }, pVector, fVector, cVector);
+	fVector.push_back(new ContactForce(c, so));
+	soVector.push_back(so);
+	pVector.push_back(so);
 }
 
 /*
@@ -226,8 +258,11 @@ static void draw_constraints() {
 
 static void draw_objects() {
 
-	for (Object *o : oVector) {
+	for (auto o : oVector) {
 		o->draw();
+	}
+	for (auto so : soVector) {
+		so->draw();
 	}
 }
 
@@ -263,22 +298,31 @@ static void get_from_UI() {
 			float delta_x = pVector[i]->m_Position[0] - mouse_position[0];
 			float delta_y = pVector[i]->m_Position[1] - mouse_position[1];
 			float dist = delta_x*delta_x + delta_y*delta_y;
-			if (dist < 0.003) {
-				particle_selected = i;
-			}
 
-			if (particle_selected == i) {
-//				std::cout << i << std::endl;
+			if (particle_selected == i && i < mVector.size()) {
+				std::cout << i << std::endl;
 				mVector[i]->set_mouse(mouse_position);
 				mVector[i]->apply();
 			} else {
+				if(i < mVector.size())
 				mVector[i]->set_mouse(pVector[i]->m_Position);
 			}
+		}
+
+		for (auto so : soVector) {
+			// drag solid object
+			mouse_position[0] = x;
+			mouse_position[1] = y;
+
+			if (so->object_selected(Vec2f(x,y))) {
+				so->set_new_position(mouse_position);
+			}
+
 		}
 	} else {
 		particle_selected = -1;
 		int i, size = pVector.size();
-		for (i = 0; i < size; i++) {
+		for (i = 0; i < size && i < mVector.size(); i++) {
 			mVector[i]->set_mouse(pVector[i]->m_Position);
 		}
 	}
@@ -299,8 +343,10 @@ static void get_from_UI() {
 static void remap_GUI() {
 	int ii, size = pVector.size();
 	for (ii = 0; ii < size; ii++) {
-		pVector[ii]->m_Position[0] = pVector[ii]->m_ConstructPos[0];
-		pVector[ii]->m_Position[1] = pVector[ii]->m_ConstructPos[1];
+		if (pVector[ii]->getType() == PARTICLE) {
+			pVector[ii]->m_Position[0] = pVector[ii]->m_ConstructPos[0];
+			pVector[ii]->m_Position[1] = pVector[ii]->m_ConstructPos[1];
+		}
 	}
 }
 
@@ -364,6 +410,20 @@ static void key_func(unsigned char key, int x, int y) {
 			exit(0);
 			break;
 
+		case 'h':
+		case 'H':
+			init_hair();
+			glutMainLoop();
+			exit(0);
+			break;
+
+		case 'o':
+		case 'O':
+			init_cloth();
+			glutMainLoop();
+			exit(0);
+			break;
+
 		case ' ': dsim = !dsim;
 			break;
 		default:
@@ -423,10 +483,11 @@ static void display_func() {
 	draw_forces();
 	draw_constraints();
 	draw_particles();
-	draw_objects();
+	//draw_objects();
 
 	post_display();
 }
+
 
 /*
 ----------------------------------------------------------------------
@@ -495,6 +556,8 @@ int main(int argc, char **argv) {
 	printf("\t Switch between adaptive time stepping and constant time stepping by using the + and the - keys\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
+	printf("\t Press 'o' to show cloth\n");
+	printf("\t Press 'h' to show hair\n");
 
 	dsim = 0;
 	dump_frames = 0;
