@@ -2,7 +2,7 @@
 #include "linearSolver.h"
 #include <Eigen/IterativeLinearSolvers>
 #include "ConstraintSolver.h"
-#include "../SpringForce.h"
+#include "../forces/SpringForce.h"
 
 Euler::Euler(Euler::TYPE type) : type(type) {}
 
@@ -113,9 +113,12 @@ void Euler::simulation_step(std::vector<Particle *> pVector,
 			dx[i] = (pVector[i/3]->m_Velocity[0] + eigen_dv[i])*dt;
 			dx[i + 1] = (pVector[i/3]->m_Velocity[1] + eigen_dv[i + 1])*dt;
 		}
+
+		Vec3f newPosition, newVelocity;
 		for (int i = 0; i < pVector.size(); i++) {
-			pVector[i]->m_Position += Vec3f(dx[i*3], dx[i*3 + 1], 0);
-			pVector[i]->m_Velocity += Vec3f(eigen_dv[i*3], eigen_dv[i*3 + 1], 0);
+			newPosition = pVector[i]->m_Position + Vec3f(dx[i*3], dx[i*3 + 1], 0);
+			newVelocity = pVector[i]->m_Velocity + Vec3f(eigen_dv[i*3], eigen_dv[i*3 + 1], 0);
+			pVector[i]->next_state(newPosition, newVelocity);
 		}
 
 	} else {

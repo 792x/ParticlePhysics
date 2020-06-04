@@ -23,7 +23,16 @@
       <UniqueIdentifier>{b87e7de3-dee4-4839-8473-10e32a7890d3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\solvers">
-      <UniqueIdentifier>{cdff6839-ccf9-4536-b1e1-910efe3bbd63}</UniqueIdentifier>
+      <UniqueIdentifier>{ddfa609c-0226-4d90-bb47-4f3db7bba464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\forces">
+      <UniqueIdentifier>{eeeb9be0-a4e1-4502-834a-b48f5c9bd76d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\constraints">
+      <UniqueIdentifier>{d7f20a54-acbe-4ab9-94a0-5f940ac38cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects">
+      <UniqueIdentifier>{1cb248b2-eefc-45ab-afb4-78fc7289b2d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -35,18 +44,6 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CircularWireConstraint.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RodConstraint.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SpringForce.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="include\gfx\config.h">
       <Filter>Source Files\include\gfx</Filter>
@@ -108,94 +105,118 @@
     <ClInclude Include="GL\tube.h">
       <Filter>Source Files\GL</Filter>
     </ClInclude>
-    <ClInclude Include="GravityForce.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="solvers\AdaptiveTimeStepper.h">
+      <Filter>Source Files\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="solvers\BasicVerlet.h">
+      <Filter>Source Files\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="solvers\ConstraintSolver.h">
+      <Filter>Source Files\solvers</Filter>
     </ClInclude>
     <ClInclude Include="solvers\Euler.h">
       <Filter>Source Files\solvers</Filter>
     </ClInclude>
-    <ClInclude Include="solvers\linearSolver.h">
+    <ClInclude Include="solvers\LeapFrog.h">
       <Filter>Source Files\solvers</Filter>
     </ClInclude>
     <ClInclude Include="solvers\MidPoint.h">
       <Filter>Source Files\solvers</Filter>
     </ClInclude>
+    <ClInclude Include="solvers\RungeKutta.h">
+      <Filter>Source Files\solvers</Filter>
+    </ClInclude>
     <ClInclude Include="solvers\Solver.h">
       <Filter>Source Files\solvers</Filter>
     </ClInclude>
-    <ClInclude Include="AngularSpringForce.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="constraints\CircularWireConstraint.h">
+      <Filter>Source Files\constraints</Filter>
     </ClInclude>
-    <ClInclude Include="Cloth.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="constraints\Constraint.h">
+      <Filter>Source Files\constraints</Filter>
     </ClInclude>
-    <ClInclude Include="solvers\BasicVerlet.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="constraints\RodConstraint.h">
+      <Filter>Source Files\constraints</Filter>
     </ClInclude>
-    <ClInclude Include="solvers\ConstraintSolver.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="forces\AngularSpringForce.h">
+      <Filter>Source Files\forces</Filter>
     </ClInclude>
-    <ClInclude Include="solvers\RungeKutta.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="forces\Force.h">
+      <Filter>Source Files\forces</Filter>
     </ClInclude>
-    <ClInclude Include="Constraint.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="forces\GravityForce.h">
+      <Filter>Source Files\forces</Filter>
     </ClInclude>
-    <ClInclude Include="Force.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="forces\MouseForce.h">
+      <Filter>Source Files\forces</Filter>
     </ClInclude>
-    <ClInclude Include="MouseForce.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="forces\SpringForce.h">
+      <Filter>Source Files\forces</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\Cloth.h">
+      <Filter>Source Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\Hair.h">
+      <Filter>Source Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\Particle.h">
+      <Filter>Source Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\Object.h">
+      <Filter>Source Files\objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SICGConsole.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="solvers\AdaptiveTimeStepper.cpp">
+      <Filter>Source Files\solvers</Filter>
     </ClCompile>
-    <ClCompile Include="CircularWireConstraint.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="solvers\BasicVerlet.cpp">
+      <Filter>Source Files\solvers</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleToy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RodConstraint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SpringForce.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GravityForce.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="solvers\ConstraintSolver.cpp">
+      <Filter>Source Files\solvers</Filter>
     </ClCompile>
     <ClCompile Include="solvers\Euler.cpp">
       <Filter>Source Files\solvers</Filter>
     </ClCompile>
-    <ClCompile Include="solvers\linearSolver.cpp">
+    <ClCompile Include="solvers\LeapFrog.cpp">
       <Filter>Source Files\solvers</Filter>
     </ClCompile>
     <ClCompile Include="solvers\MidPoint.cpp">
       <Filter>Source Files\solvers</Filter>
     </ClCompile>
-    <ClCompile Include="AngularSpringForce.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Cloth.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="solvers\BasicVerlet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="solvers\ConstraintSolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="solvers\RungeKutta.cpp">
+      <Filter>Source Files\solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="constraints\CircularWireConstraint.cpp">
+      <Filter>Source Files\constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="constraints\RodConstraint.cpp">
+      <Filter>Source Files\constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="forces\AngularSpringForce.cpp">
+      <Filter>Source Files\forces</Filter>
+    </ClCompile>
+    <ClCompile Include="forces\GravityForce.cpp">
+      <Filter>Source Files\forces</Filter>
+    </ClCompile>
+    <ClCompile Include="forces\MouseForce.cpp">
+      <Filter>Source Files\forces</Filter>
+    </ClCompile>
+    <ClCompile Include="forces\SpringForce.cpp">
+      <Filter>Source Files\forces</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleToy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MouseForce.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="objects\Cloth.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\Hair.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\Particle.cpp">
+      <Filter>Source Files\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

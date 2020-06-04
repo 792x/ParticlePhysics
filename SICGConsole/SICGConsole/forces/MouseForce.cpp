@@ -7,7 +7,7 @@
 
 #include <utility>
 #include "MouseForce.h"
-#include "solvers/ConstraintSolver.h"
+#include "../solvers/ConstraintSolver.h"
 
 MouseForce::MouseForce(Particle *p, Vec3f &mouse, double ks, double kd) : m_p(p), m_mloc(mouse), m_ks(ks), m_kd(kd) {}
 

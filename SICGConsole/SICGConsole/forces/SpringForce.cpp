@@ -1,5 +1,5 @@
 #include "SpringForce.h"
-#include "solvers/ConstraintSolver.h"
+#include "../solvers/ConstraintSolver.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
