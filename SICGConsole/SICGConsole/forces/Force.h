@@ -1,7 +1,15 @@
 #pragma once
+#ifdef __APPLE__
+
+#include "gfx/mat2.h"
+
+#else
+
+#include "..\include\gfx\mat2.h"
+#endif
+
 #include "../objects/Particle.h"
 #include <vector>
-#include "gfx/mat2.h"
 
 // Abstract class
 class Force {
