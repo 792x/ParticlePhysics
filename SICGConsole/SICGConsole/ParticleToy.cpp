@@ -49,8 +49,8 @@ static const string SOLIDOBJECT = "SOLIDOBJECT";
 static std::vector<Particle *> pVector;
 static std::vector<Force *> fVector;
 static std::vector<Constraint *> cVector;
-//static std::vector<Object*> oVector;
-static std::vector<SolidObject*> oVector;
+static std::vector<Object*> oVector;
+static std::vector<SolidObject*> soVector;
 static std::vector<MouseForce *> mVector;
 
 static int win_id;
@@ -98,6 +98,11 @@ static void free_data() {
 		delete o;
 	}
 	oVector.clear();
+
+	for (auto so : soVector) {
+		delete so;
+	}
+	soVector.clear();
 
 }
 
@@ -154,7 +159,7 @@ static void init_system() {
 
 }
 static void init_hair() {
-	//oVector.push_back(new Hair(pVector, fVector, cVector));
+	oVector.push_back(new Hair(pVector, fVector, cVector));
 	fVector.push_back(new GravityForce(pVector));
 	for (int i = 0; i < pVector.size(); i++) {
 		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
@@ -171,7 +176,7 @@ static void init_cloth() {
 	fVector.push_back(new GravityForce(pVector));
 	SolidObject* so = new SolidObject(5, 7, { -0.5,-0.5,0 }, pVector, fVector, cVector);
 	fVector.push_back(new ContactForce(c, so));
-	oVector.push_back(so);
+	soVector.push_back(so);
 	pVector.push_back(so);
 }
 
@@ -240,12 +245,15 @@ static void draw_constraints() {
 	}
 }
 
-//static void draw_objects() {
-//
-//	for (auto o : oVector) {
-//		o->draw();
-//	}
-//}
+static void draw_objects() {
+
+	for (auto o : oVector) {
+		o->draw();
+	}
+	for (auto so : soVector) {
+		so->draw();
+	}
+}
 
 /*
 ----------------------------------------------------------------------
@@ -290,16 +298,15 @@ static void get_from_UI() {
 			}
 		}
 
-		for (int i = 0; i < oVector.size(); i++) {
+		for (auto so : soVector) {
 			// drag solid object
 			mouse_position[0] = x;
 			mouse_position[1] = y;
-			SolidObject* so = dynamic_cast<SolidObject*>(oVector[i]); //TODO hair might not be cast
 
 			if (so->object_selected(Vec2f(x,y))) {
 				so->set_new_position(mouse_position);
-				//so->draw();
 			}
+
 		}
 	} else {
 		particle_selected = -1;
