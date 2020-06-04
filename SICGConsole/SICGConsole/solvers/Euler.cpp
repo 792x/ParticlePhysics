@@ -135,8 +135,7 @@ void Euler::simulation_step(std::vector<Particle *> pVector,
 				newPosition = initPos + newVelocity*dt;
 			}
 
-			i->m_Position = newPosition;
-			i->m_Velocity = newVelocity;
+			i->next_state(newPosition, newVelocity);
 		}
 	}
 }
