@@ -7,6 +7,7 @@
 
 #include <utility>
 #include "GravityForce.h"
+#include "solvers/ConstraintSolver.h"
 
 const Vec3f GravityForce::standard_gravity = Vec3f(0.0, -9.81f, 0.0);
 

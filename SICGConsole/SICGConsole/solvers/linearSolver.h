@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <vector>
 
 // Karen's CGD
 
@@ -13,8 +14,23 @@
 // Matrix class the solver will accept
 class implicitMatrix
 {
- public:
-  virtual void matVecMult(double x[], double r[]) = 0;
+  public:
+	implicitMatrix(std::vector<std::vector<float>>* matrix) {
+		m = matrix;
+	}
+
+	virtual void matVecMult(double x[], double r[]) {
+		for (int i = 0; i < m->size(); i++) {
+			int res = 0;
+			for (int j = 0; j < m[0].size(); j++) {
+				res += (*m)[j][i] * x[j];
+			}
+			r[i] = res;
+		}
+	}
+
+  private:
+	std::vector<std::vector<float>>* m;
 };
 
 // Matrix class the solver will accept

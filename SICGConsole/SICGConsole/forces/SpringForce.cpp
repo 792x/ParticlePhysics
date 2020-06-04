@@ -1,4 +1,5 @@
 #include "SpringForce.h"
+#include "solvers/ConstraintSolver.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -70,4 +71,33 @@ void SpringForce::apply() {
 
 	particles[0]->m_Force -= f;
 	particles[1]->m_Force += f;
+}
+
+std::vector<std::vector<float>> SpringForce::jacobian() {
+	Vec3f x = particles[0]->m_Position - particles[1]->m_Position;
+	Vec3f f = x/norm(x);
+
+	std::vector<std::vector<float>>
+		mf = std::vector<std::vector<float>>(3, std::vector<float>(3, 0));
+	std::vector<std::vector<float>>
+		I = std::vector<std::vector<float>>(3, std::vector<float>(3, 0));
+
+	mf[0][0] = f[0] * f[0];
+	mf[0][1] = f[0] * f[1];
+	mf[1][0] = f[1] * f[0];
+	mf[1][1] = f[1] * f[1];
+
+	I[0][0] = 1.f;
+	I[0][1] = 0.f;
+	I[1][0] = 0.f;
+	I[1][1] = 1.f;
+
+	//((1.0 - m_dist / norm(x)) * (I - mf) + mf) * -m_ks;
+	std::vector<std::vector<float>> jacobian =
+		ConstraintSolver::multiply_matrix_by_scalar((ConstraintSolver::add_matrix_to_matrix(
+			ConstraintSolver::multiply_matrix_by_scalar((ConstraintSolver::subtract_matrix_from_matrix(
+				I,
+				mf)), (1.0 - m_dist/norm(x))),
+			mf)), -m_ks);
+	return jacobian;
 }

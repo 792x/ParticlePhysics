@@ -129,9 +129,9 @@ static void init_system() {
 
 	Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
 
+	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 100,  0.5));
+	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 100,  0.5));
 	fVector.push_back(new GravityForce(pVector));
-	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 500,  0.5));
-	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 500,  0.5));
 
 
 	//fVector.push_back(new AngularSpringForce({ pVector[0],pVector[1],pVector[2] }, PI, 120.0, 100.0));
@@ -155,7 +155,7 @@ static void init_system() {
 	//gravity_force.apply();
 
 	for (int i = 0; i < pVector.size(); i++) {
-		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
+		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 4, 0.5));
 	}
 }
 
@@ -268,7 +268,7 @@ static void get_from_UI() {
 			}
 
 			if (particle_selected == i) {
-				std::cout << i << std::endl;
+//				std::cout << i << std::endl;
 				mVector[i]->set_mouse(mouse_position);
 				mVector[i]->apply();
 			} else {

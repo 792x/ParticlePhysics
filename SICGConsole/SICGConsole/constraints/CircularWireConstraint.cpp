@@ -26,24 +26,29 @@ void CircularWireConstraint::draw() {
 
 float CircularWireConstraint::m_C() {
 	Vec3f diff = m_p->m_Position - m_center;
-	return diff*diff - m_radius*m_radius;
+	Vec3f v = m_p->m_Velocity;
+	float m_C = diff[0]*diff[0] + diff[1]*diff[1] + diff[2]*diff[2] - m_radius*m_radius;
+	return m_C;
 }
 
 float CircularWireConstraint::m_C_dot() {
-	Vec3f p = (m_p->m_Position - m_center);
+	Vec3f diff = m_p->m_Position - m_center;
 	Vec3f v = m_p->m_Velocity;
-
-	return 2.f*p*v;
+	float m_C_dot = 2.f*diff*v;
+	return m_C_dot;
 }
 
 std::vector<Vec3f> CircularWireConstraint::m_j() {
 	std::vector<Vec3f> j;
-	j.push_back((m_p->m_Position - m_center)*2.f);
+	Vec3f diff = m_p->m_Position - m_center;
+	Vec3f v = m_p->m_Velocity;
+	j.emplace_back(Vec3f(2*diff[0], 2*diff[1], 2*diff[2]));
 	return j;
 }
 
 std::vector<Vec3f> CircularWireConstraint::m_j_dot() {
 	std::vector<Vec3f> j_dot;
-	j_dot.push_back(m_p->m_Velocity*2.f);
+	Vec3f v = m_p->m_Velocity;
+	j_dot.emplace_back(Vec3f(2*v[0], 2*v[1], 2*v[2]));
 	return j_dot;
 }

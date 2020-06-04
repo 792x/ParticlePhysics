@@ -1,6 +1,7 @@
 #pragma once
 #include "../objects/Particle.h"
 #include <vector>
+#include "gfx/mat2.h"
 
 // Abstract class
 class Force {
