@@ -11,7 +11,7 @@ public:
 	void simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, Solver* solver);
 
 private:
-	bool AdaptiveTimeStepper::minor_deformation_check(std::vector<Force*> fVector);
+	bool minor_deformation_check(std::vector<Force*> fVector);
 	void spring_deformation_update(std::vector<Force*> fVector);
 	void undo_solver_step(std::vector<Particle*> pVector);
 

@@ -102,14 +102,15 @@ static void free_data() {
 	}
 	cVector.clear();
 
-	for (auto o: oVector) {
+	for (Object *o: oVector) {
 		delete o;
 	}
 	oVector.clear();
 
-	for (auto so : soVector) {
-		delete so;
+	for (MouseForce *m : mVector) {
+		delete m;
 	}
+	mVector.clear();
 	soVector.clear();
 
 }
@@ -169,6 +170,33 @@ static void init_system() {
 	//}
 
 }
+
+static void init_default() {
+	const double dist = 0.2;
+	const Vec3f center(0.0, 0.0, 0.0);
+	const Vec3f offset(dist, 0.0, 0.0);
+
+	// Create three particles, attach them to each other, then add a
+	// circular wire constraint to the first.
+	pVector.push_back(new Particle(center + offset, 1.0f, 0));
+	pVector.push_back(new Particle(center + offset + offset, 1.0f, 1));
+	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 2));
+
+
+	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 1000,  80));
+	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 1000,  80));
+	fVector.push_back(new GravityForce(pVector));
+
+	cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
+	cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
+
+
+	for (int i = 0; i < pVector.size(); i++) {
+		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
+	}
+}
+
+
 static void init_hair() {
 	oVector.push_back(new Hair(pVector, fVector, cVector));
 	fVector.push_back(new GravityForce(pVector));
@@ -179,10 +207,11 @@ static void init_hair() {
 static void init_cloth() {
 	//Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
 	int ind = pVector.size() - 1;
-	Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 150, 15);
+	Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 1000, 100);
 	for (int i = 0; i < pVector.size(); i++) {
-		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 10000, 5));
+		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 5));
 	}
+
 
 	fVector.push_back(new GravityForce(pVector));
 	SolidObject* so = new SolidObject(5, 7, { -0.5,-0.5,0 }, pVector, fVector, cVector);
@@ -298,8 +327,10 @@ static void get_from_UI() {
 			float delta_x = pVector[i]->m_Position[0] - mouse_position[0];
 			float delta_y = pVector[i]->m_Position[1] - mouse_position[1];
 			float dist = delta_x*delta_x + delta_y*delta_y;
-
-			if (particle_selected == i && i < mVector.size()) {
+			if (dist < 0.003) {
+				particle_selected = i;
+			}
+			if (particle_selected == i) {
 				std::cout << i << std::endl;
 				mVector[i]->set_mouse(mouse_position);
 				mVector[i]->apply();
@@ -317,7 +348,6 @@ static void get_from_UI() {
 			if (so->object_selected(Vec2f(x,y))) {
 				so->set_new_position(mouse_position);
 			}
-
 		}
 	} else {
 		particle_selected = -1;
@@ -412,16 +442,23 @@ static void key_func(unsigned char key, int x, int y) {
 
 		case 'h':
 		case 'H':
+			clear_data();
+			free_data();
 			init_hair();
-			glutMainLoop();
-			exit(0);
+			break;
+
+		case 'j':
+		case 'J':
+			clear_data();
+			free_data();
+			init_default();
 			break;
 
 		case 'o':
 		case 'O':
+			clear_data();
+			free_data();
 			init_cloth();
-			glutMainLoop();
-			exit(0);
 			break;
 
 		case ' ': dsim = !dsim;
@@ -558,12 +595,13 @@ int main(int argc, char **argv) {
 	printf("\t Quit by pressing the 'q' key\n");
 	printf("\t Press 'o' to show cloth\n");
 	printf("\t Press 'h' to show hair\n");
+	printf("\t Press 'j' to show default\n");
 
 	dsim = 0;
 	dump_frames = 0;
 	frame_number = 0;
 
-	init_system();
+	init_default();
 
 	win_x = 512;
 	win_y = 512;
