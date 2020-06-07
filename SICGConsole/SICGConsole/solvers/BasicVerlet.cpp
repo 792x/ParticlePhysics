@@ -6,7 +6,7 @@ void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Fo
 	compute_forces(fVector);
 	compute_constraints(pVector, cVector);
 
-	Vec3f newPos, initPos, initVel, initAcc, prevPos;
+	Vec3f newPos, newVel, initPos, initVel, initAcc, prevPos;
 
 	// loop through all the particles
 	for (int i = 0; i < int(pVector.size()); i++) {
@@ -22,9 +22,9 @@ void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Fo
 			newPos = 2.f * initPos - prevPos + initAcc * dt * dt;
 		}
 
-		pVector[i]->m_OldPosition = initPos;
-		pVector[i]->m_Position = newPos;
-		pVector[i]->m_Velocity = (newPos - initPos) / dt;
+		newVel = (newPos - initPos) / dt;
+
+		pVector[i]->next_state(newPos, newVel);
 	}
 
 }

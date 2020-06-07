@@ -34,7 +34,8 @@ private:
 	int particles_per_hair = 10;
 	Vec3f center;
 
-	vector<float> angles  = { 45.0 / 180 * PI, 35.0 / 180 * PI, 55.0 / 180 * PI };
+	vector<float> angles  = { 40.0 / 180 * PI, 
+		45.0 / 180 * PI, 35.0 / 180 * PI, 55.0 / 180 * PI };
 	
 
 };

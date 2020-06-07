@@ -14,11 +14,12 @@ L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Compute
               T=float
           ]
 L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(33,34): warning C4305: “初始化”: 从“double”到“float”截断
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(37,79): warning C4305: “初始化”: 从“double”到“float”截断
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(176,20): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(185,20): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(297,17): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(304,36): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(309,10): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(327,29): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(38,54): warning C4305: “初始化”: 从“double”到“float”截断
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(194,20): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(204,20): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(214,20): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(327,17): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(336,36): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(341,10): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(358,29): warning C4018: “<”: 有符号/无符号不匹配
   SICGConsole.vcxproj -> L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\Debug\SICGConsole.exe

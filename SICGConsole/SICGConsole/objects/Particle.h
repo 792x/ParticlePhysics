@@ -2,7 +2,7 @@
 
 #ifdef __APPLE__
 
-#include "include/linux/gfx/vec3.h"
+#include "../include/linux/gfx/vec3.h"
 
 #else
 
