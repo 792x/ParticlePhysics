@@ -171,24 +171,26 @@ static void init_system() {
 }
 static void init_hair() {
 	oVector.push_back(new Hair(pVector, fVector, cVector));
+	c_dt = 0.003f;
 	fVector.push_back(new GravityForce(pVector));
 	for (int i = 0; i < pVector.size(); i++) {
 		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 4, 0.5));
 	}
 }
 static void init_cloth() {
-	//Cloth c = Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
+	//Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
 	int ind = pVector.size() - 1;
-	Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 150, 15);
+	//Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 1500, 15);
+	Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 1500, 15);
 	for (int i = 0; i < pVector.size(); i++) {
-		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 10000, 5));
+		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100000, 0.5));
 	}
 
 	fVector.push_back(new GravityForce(pVector));
-	SolidObject* so = new SolidObject(5, 7, { -0.5,-0.5,0 }, pVector, fVector, cVector);
-	fVector.push_back(new ContactForce(c, so));
-	soVector.push_back(so);
-	pVector.push_back(so);
+	//SolidObject* so = new SolidObject(5, 7, { -0.5,-0.5,0 }, pVector, fVector, cVector);
+	//fVector.push_back(new ContactForce(c, so));
+	//soVector.push_back(so);
+	//pVector.push_back(so);
 }
 
 /*
@@ -414,14 +416,12 @@ static void key_func(unsigned char key, int x, int y) {
 		case 'H':
 			init_hair();
 			glutMainLoop();
-			exit(0);
 			break;
 
 		case 'o':
 		case 'O':
 			init_cloth();
 			glutMainLoop();
-			exit(0);
 			break;
 
 		case ' ': dsim = !dsim;
@@ -483,7 +483,7 @@ static void display_func() {
 	draw_forces();
 	draw_constraints();
 	draw_particles();
-	//draw_objects();
+	draw_objects();
 
 	post_display();
 }

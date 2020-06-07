@@ -92,10 +92,6 @@ void SolidObject::draw()
 	Vec3f x = this->m_Position;
 	glBegin(GL_QUADS);
 	glColor3f(0.737255 , 0.560784 , 0.560784);
-	//Vec3f tl = particles[particles.size()-xn]->m_Position;
-	//Vec3f tr = particles[particles.size()-1]->m_Position;
-	//Vec3f br = particles[xn-1]->m_Position;
-	//Vec3f bl = particles[0]->m_Position;
 
 	glVertex2f(x[0],x[1]+yn*dist); // top left
 	glVertex2f(x[0]+dist*xn,x[1]+yn*dist); // top right 
@@ -129,21 +125,6 @@ void SolidObject::init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constra
 	Ibodyinv = Ibody.inverse();
 	Iinv = Ibodyinv;
 	omega = eigen_to_vec( Iinv * Vector3f(L) );
-
-
-	//Matrix3f tmp;
-	//for (int i = 0; i < 3; i++) {
-	//	for (int j = 0; j < 3; j++) {
-	//		tmp(i, j) = Ibody[i][j];
-	//	}
-	//}
-
-	//Matrix3f inv = tmp.inverse();
-	//for (int i = 0; i < 3; i++) {
-	//	for (int j = 0; j < 3; j++) {
-	//		Ibodyinv[i][j] = inv(i,j);
-	//	}
-	//}
 
 
 
@@ -205,7 +186,6 @@ bool SolidObject::object_selected(Vec2f mouse)
 
 void SolidObject::set_new_position(Vec3f mouse)
 {
-	//cout << "seting new position" << endl;
 
 	float dv = 20.0;
 	this->m_Velocity = dv * (mouse - m_Position);

@@ -25,6 +25,7 @@ Hair::Hair(vector<Particle*>& pVector, vector<Force*>& fVector, vector<Constrain
 	Vec3f center, float mass, float radius) : center(center), mass(mass), radius(radius){
 	const Vec3f mini_offset(0.0, 0.01, 0.0);
 	// x^2 + y^2 = radius^2
+	cout << "angle " << angle << " cos:" << cos(angle) << endl;
 	for (float angle : angles) {
 		float dx = cos(angle) * radius;
 		float dy = sin(angle) * radius;
