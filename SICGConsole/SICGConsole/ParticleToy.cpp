@@ -200,6 +200,7 @@ static void init_default() {
 static void init_hair() {
 	oVector.push_back(new Hair(pVector, fVector, cVector));
 	c_dt = 0.0025f;
+	//c_dt = 0.004f;
 	fVector.push_back(new GravityForce(pVector));
 	for (int i = 0; i < pVector.size(); i++) {
 		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 1, 0.5));

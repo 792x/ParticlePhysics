@@ -22,7 +22,9 @@ static void draw_circle(const Vec3f &vect, float radius) {
 }
 
 Hair::Hair(vector<Particle*>& pVector, vector<Force*>& fVector, vector<Constraint*>& cVector,
-	Vec3f center, float mass, float radius) : center(center), mass(mass), radius(radius){
+	float p_ks, float p_kd,
+	Vec3f center, float mass, float radius) : 
+	center(center), ks(p_ks), kd(p_kd),mass(mass), radius(radius){
 	const Vec3f mini_offset(0.0, 0.01, 0.0);
 	// x^2 + y^2 = radius^2
 	cout << "angle " << angle << " cos:" << cos(angle) << endl;
