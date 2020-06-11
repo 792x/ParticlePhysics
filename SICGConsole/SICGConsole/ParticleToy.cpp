@@ -42,7 +42,6 @@ static float d, c_dt = 0.001f;
 static int dsim;
 static int dump_frames;
 static int frame_number;
-static Vec3f mouse_position;
 static int particle_selected = -1;
 static const string PARTICLE = "PARTICLE";
 static const string SOLIDOBJECT = "SOLIDOBJECT";
@@ -54,15 +53,15 @@ static std::vector<Force *> fVector;
 static std::vector<Constraint *> cVector;
 static std::vector<Object*> oVector;
 static std::vector<SolidObject*> soVector;
-static std::vector<MouseForce *> mVector;
 
 static int win_id;
 static int win_x, win_y;
-static int mouse_down[3];
-static int mouse_release[3];
-static int mouse_shiftclick[3];
-static int omx, omy, mx, my;
-static int hmx, hmy;
+static int mx, my;
+static Vec3f mouse_position;
+static bool button_just_down= false;
+static bool button_down = false;
+static bool button_just_up = false;
+static bool solid_object_selected = false;
 
 // global variables used for solvers
 static Euler explEuler = Euler(Euler::expl);
@@ -107,10 +106,6 @@ static void free_data() {
 	}
 	oVector.clear();
 
-	for (MouseForce *m : mVector) {
-		delete m;
-	}
-	mVector.clear();
 	soVector.clear();
 
 }
@@ -182,18 +177,12 @@ static void init_default() {
 	pVector.push_back(new Particle(center + offset + offset, 1.0f, 1));
 	pVector.push_back(new Particle(center + offset + offset + offset, 1.0f, 2));
 
-
 	fVector.push_back(new SpringForce(pVector[0], pVector[1], dist, 1000,  80));
 	fVector.push_back(new SpringForce(pVector[1], pVector[2], dist, 1000,  80));
 	fVector.push_back(new GravityForce(pVector));
 
 	cVector.push_back(new RodConstraint(pVector[0], pVector[1], dist));
 	cVector.push_back(new CircularWireConstraint(pVector[0], center, dist));
-
-
-	for (int i = 0; i < pVector.size(); i++) {
-		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 0.5));
-	}
 }
 
 
@@ -202,9 +191,6 @@ static void init_hair() {
 	c_dt = 0.0025f;
 	//c_dt = 0.004f;
 	fVector.push_back(new GravityForce(pVector));
-	for (int i = 0; i < pVector.size(); i++) {
-		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 1, 0.5));
-	}
 }
 static void init_cloth() {
 	//Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 1.0f, 0.08f, 8000, 100);
@@ -212,9 +198,6 @@ static void init_cloth() {
 	//Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 1500, 15);
 	//Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 1500, 15);
 	Cloth* c = new Cloth(5, 7, Vec3f(0.2f,0.2f,0.2f), pVector, fVector, cVector, 0.5f, 0.08f, 1000, 100);
-	for (int i = 0; i < pVector.size(); i++) {
-		mVector.push_back(new MouseForce(pVector[i], pVector[i]->m_Velocity, 100, 5));
-	}
 
 
 	fVector.push_back(new GravityForce(pVector));
@@ -277,9 +260,6 @@ static void draw_forces() {
 	for (Force *f : fVector) {
 		f->draw();
 	}
-	for (MouseForce *m : mVector) {
-		m->draw();
-	}
 }
 
 static void draw_constraints() {
@@ -306,72 +286,70 @@ relates mouse movements to particle toy construction
 */
 
 static void get_from_UI() {
-	int i, j;
-	// int size, flag;
-	int hi, hj;
+	/* Mouse position computations */
 	float x, y = 0;
-	if (!mouse_down[0] && !mouse_down[2] && !mouse_release[0]
-		&& !mouse_shiftclick[0] && !mouse_shiftclick[2])
-		return;
 
-	i = (int)((mx/(float)win_x)*N);
-	j = (int)(((win_y - my)/(float)win_y)*N);
+	// compute the mouse position in terms of the coordinate system used in the simulation
+	x = 2*((float)mx / (float)win_x) - 1.f;
+	y = -2*((float)my / (float)win_y) + 1.f;
+	
+	mouse_position[0] = x;
+	mouse_position[1] = y;
 
-	if (i < 1 || i > N || j < 1 || j > N) return;
-
-	if (mouse_down[0]) {
-		x = i - 32.0f;
-		x = x / 32.0f;
-		y = j - 32.0f;
-		y = y / 32.0f;
-
-		for (i = 0; i < pVector.size(); i++) {
-			mouse_position[0] = x;
-			mouse_position[1] = y;
+	/* Cases */
+	// button is just down
+	if (button_just_down) {
+		button_just_down = false;
+		
+		// for particles
+		for (int i = 0; i < pVector.size(); i++) {
 			float delta_x = pVector[i]->m_Position[0] - mouse_position[0];
 			float delta_y = pVector[i]->m_Position[1] - mouse_position[1];
-			float dist = delta_x*delta_x + delta_y*delta_y;
+			float dist = delta_x * delta_x + delta_y * delta_y;
+
+			// check if a particle is selected
 			if (dist < 0.003) {
-				particle_selected = i;
+				fVector.push_back(new MouseForce(pVector[i], mouse_position, 100000, 100));
+				break; // make sure only one particle can be selected
 			}
-			if (particle_selected == i && i < mVector.size()) {
-				std::cout << i << std::endl;
-				mVector[i]->set_mouse(mouse_position);
-				mVector[i]->apply();
-			} else {
-				if(i < mVector.size())
-				mVector[i]->set_mouse(pVector[i]->m_Position);
+		}
+	}
+
+	// button is down
+	if (button_down) {
+		// for particles
+		for (int i = 0; i < fVector.size(); i++) {
+			// Only for MouseForce
+			MouseForce* m = dynamic_cast<MouseForce*>(fVector[i]);
+			if (m != NULL) {
+				m->set_mouse(mouse_position);
 			}
 		}
 
+		// for solid objects
 		for (auto so : soVector) {
 			// drag solid object
 			mouse_position[0] = x;
 			mouse_position[1] = y;
 
-			if (so->object_selected(Vec2f(x,y))) {
+			if (so->object_selected(Vec2f(x, y))) {
 				so->set_new_position(mouse_position);
 			}
 		}
-	} else {
-		particle_selected = -1;
-		int i, size = pVector.size();
-		for (i = 0; i < size && i < mVector.size(); i++) {
-			mVector[i]->set_mouse(pVector[i]->m_Position);
+	}
+
+	// button is just up
+	if (button_just_up) {
+		button_just_up = false;
+
+		for (int i = 0; i < fVector.size(); i++) {
+			// Only for MouseForce
+			MouseForce* m = dynamic_cast<MouseForce*>(fVector[i]);
+			if (m != NULL) {
+				fVector.erase(fVector.begin()+i);
+			}
 		}
 	}
-
-	if (mouse_down[2]) {
-	}
-
-	hi = (int)((hmx/(float)win_x)*N);
-	hj = (int)(((win_y - hmy)/(float)win_y)*N);
-
-	if (mouse_release[0]) {
-	}
-
-	omx = mx;
-	omy = my;
 }
 
 static void remap_GUI() {
@@ -474,16 +452,21 @@ static void key_func(unsigned char key, int x, int y) {
 }
 
 static void mouse_func(int button, int state, int x, int y) {
-	omx = mx = x;
-	omx = my = y;
 
-	if (!mouse_down[0]) {
-		hmx = x;
-		hmy = y;
+	mx = x; // x location mouse pointer
+	my = y; // y location mouse pointer
+
+	if (button == 0 && state == GLUT_DOWN) {
+		button_just_down = true;
+		button_down = true;
 	}
-	if (mouse_down[button]) mouse_release[button] = state==GLUT_UP;
-	if (mouse_down[button]) mouse_shiftclick[button] = glutGetModifiers()==GLUT_ACTIVE_SHIFT;
-	mouse_down[button] = state==GLUT_DOWN;
+
+	if (button == 0 && state == GLUT_UP) {
+		button_just_up = true;
+		button_down = false;
+	}
+
+
 }
 
 static void motion_func(int x, int y) {
@@ -586,7 +569,7 @@ int main(int argc, char **argv) {
 
 	printf("\n\nHow to use this application:\n\n");
 	printf("\t Toggle construction/simulation display with the spacebar key\n");
-	printf("\t Switch between solvers by pressing the keys '1' and '2'\n");
+	printf("\t Switch between solvers by pressing the keys 1 to 7\n");
 	printf("\t Available solvers:\n");
 	printf("\t 1. Explicit Euler\n");
 	printf("\t 2. Semi Implicit Euler\n");

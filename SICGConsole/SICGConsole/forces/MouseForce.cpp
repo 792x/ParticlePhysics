@@ -24,10 +24,13 @@ void MouseForce::apply() {
 	Vec3f v = (m_p->m_Velocity);
 	float dist = (sqrt(x[0] * x[0] + x[1] * x[1]));
 
-	Vec3f f = x/norm(x);
-	f /= (m_ks*(norm(x) - dist) + m_kd*((x*v)/norm(x)));
+	// check the distance from the particle before applying a force, this avoids some minor kickbacks/instabilities for explicit solvers
+	if (dist > 0.003 * 3) {
+		Vec3f f = x / norm(x);
+		f *= (m_ks * (norm(x) - dist) + m_kd * ((x * v) / norm(x)));
 
-	m_p->m_Velocity -= f;
+		m_p->m_Force -= f;
+	}
 }
 
 void MouseForce::draw() {
