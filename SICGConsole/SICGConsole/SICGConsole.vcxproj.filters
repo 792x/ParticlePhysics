@@ -165,11 +165,11 @@
     <ClInclude Include="objects\Object.h">
       <Filter>Source Files\objects</Filter>
     </ClInclude>
-    <ClInclude Include="forces\ContactForce.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="objects\SolidObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="forces\ContactForce.h">
+      <Filter>Source Files\forces</Filter>
     </ClInclude>
     <ClInclude Include="RigidObject.h">
       <Filter>Source Files\objects</Filter>
@@ -218,9 +218,6 @@
     <ClCompile Include="forces\SpringForce.cpp">
       <Filter>Source Files\forces</Filter>
     </ClCompile>
-    <ClCompile Include="forces\ContactForce.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleToy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -233,14 +230,17 @@
     <ClCompile Include="objects\Particle.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
-    <ClCompile Include="objects\SolidObject.cpp">
+    <ClCompile Include="SICGConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="objects\Object.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\objects</Filter>
     </ClCompile>
-    <ClCompile Include="SICGConsole.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="forces\ContactForce.cpp">
+      <Filter>Source Files\forces</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\SolidObject.cpp">
+      <Filter>Source Files\objects</Filter>
     </ClCompile>
     <ClCompile Include="RigidObject.cpp">
       <Filter>Source Files\objects</Filter>
