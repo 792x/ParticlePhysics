@@ -10,6 +10,7 @@
 #include "forces/MouseForce.h"
 #include "forces/SpringForce.h"
 #include "forces/ContactForce.h"
+#include "ObjectForce.h"
 
 #include "objects/Object.h"
 #include "objects/Cloth.h"
@@ -217,11 +218,25 @@ static void init_cloth() {
 	}
 
 
-	fVector.push_back(new GravityForce(pVector));
+	
 	SolidObject* so = new SolidObject(5, 7, { -0.5,-0.5,0 }, pVector, fVector, cVector);
-	fVector.push_back(new ContactForce(c, so));
 	soVector.push_back(so);
 	pVector.push_back(so);
+	SolidObject* so3 = new SolidObject(2, 3, { 0,0,0 }, pVector, fVector, cVector);
+	soVector.push_back(so3);
+	pVector.push_back(so3);
+	
+	
+	fVector.push_back(new ContactForce(c, so));
+	fVector.push_back(new ContactForce(c, so3));
+
+	SolidObject* so2 = new SolidObject(30,1, { -0.5,-1,0 }, pVector, fVector, cVector,"floor",25);
+	
+	soVector.push_back(so2);
+	fVector.push_back(new ObjectForce(soVector));
+	
+	fVector.push_back(new GravityForce(pVector));
+	pVector.push_back(so2);
 }
 
 /*

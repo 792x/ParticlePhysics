@@ -171,6 +171,12 @@
     <ClInclude Include="objects\SolidObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RigidObject.h">
+      <Filter>Source Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectForce.h">
+      <Filter>Source Files\forces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="solvers\AdaptiveTimeStepper.cpp">
@@ -235,6 +241,12 @@
     </ClCompile>
     <ClCompile Include="SICGConsole.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidObject.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectForce.cpp">
+      <Filter>Source Files\forces</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

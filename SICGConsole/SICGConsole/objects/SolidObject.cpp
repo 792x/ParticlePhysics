@@ -23,8 +23,8 @@ static Matrix3f star(Vec3f a) {
 }
 
 SolidObject::SolidObject(int x, int y, Vec3f bottom_left_pos, vector<Particle*>& ps, vector<Force*>& fs, 
-	vector<Constraint*>& cs, float p_mass, float dist):
-	xn(x),yn(y),bot_left_pos(bottom_left_pos),p_mass(p_mass),dist(dist)
+	vector<Constraint*>& cs, std::string type, float p_mass, float dist):
+	xn(x),yn(y),bot_left_pos(bottom_left_pos), type(type) ,p_mass(p_mass),dist(dist)
 {
 	/*particle implementation of solid object*/
 	m_Position = bottom_left_pos;
@@ -32,7 +32,7 @@ SolidObject::SolidObject(int x, int y, Vec3f bottom_left_pos, vector<Particle*>&
 	init(ps, fs, cs);
 }
 
-void SolidObject::state_to_array(float* y)
+void SolidObject::state_to_array(float *y)
 {
 	Vec3f x = m_Position;
 	*y++ = x[0];	*y++ = x[1];	*y++ = x[2];
@@ -59,12 +59,18 @@ void SolidObject::array_to_state(float* y)
 
 	L[0] = *y++;	L[1] = *y++;	L[2] = *y++;
 
-	v = P;
+	v = P/m_Mass;
 
 	Iinv = R * Ibodyinv * R.transpose();
 	Vector3f tmp = Iinv * Vector3f(L);
 	omega = Vec3f(tmp[0], tmp[1], tmp[2]);
 }
+
+//void SolidObject::array_to_bodies(float y[]) {
+//	for (int i = 0; i < nBodies; i++) {
+//		array_to_state(&Bodies[i], &y[i*state_size])
+//	}
+//}
 
 void SolidObject::ddt_State_to_Array(float* ydot)
 {
@@ -113,8 +119,6 @@ void SolidObject::init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constra
 	m_Index = ps.size();
 	m_OldPosition = m_Position;
 	m_ConstructPos = m_Position;
-
-
 
 	//init Ibody
 	m_Mass = p_mass * xn * yn;
@@ -186,13 +190,33 @@ bool SolidObject::object_selected(Vec2f mouse)
 
 void SolidObject::set_new_position(Vec3f mouse)
 {
-
 	float dv = 20.0;
 	this->m_Velocity = dv * (mouse - m_Position);
 }
 
-void SolidObject::computeForce()
-{
+void SolidObject::computeForce(Particle* p) {
+	Vec3f tempVel = m_Velocity;
+	if (p->getType() == "floor") {
+		if (m_Velocity[1] <= 0) {
+			m_Velocity[1] += 0.8*((m_Mass - p->m_Mass) / (m_Mass + p->m_Mass) - 1) * m_Velocity[1];
+		}
+		m_Force[1] += m_Mass * 9.81f;
+	}
+	else if (getType() == "floor") {
+		if (p->m_Velocity[1] <= 0) {
+			p->m_Velocity[1] += 0.8 * ((p->m_Mass - m_Mass) / (m_Mass + p->m_Mass) - 1) * p->m_Velocity[1];
+		}
+		p->m_Force[1] += p->m_Mass * 9.81f;
+	}
+	else {
+		Vec3f forceDiff = m_Force + p->m_Force;
+		m_Force += forceDiff;
+		p->m_Force += forceDiff;
+		m_Velocity = (m_Mass - p->m_Mass) / (m_Mass + p->m_Mass) * m_Velocity + (2 * p->m_Mass) / (m_Mass + p->m_Mass) * p->m_Velocity;
+		p->m_Velocity = (p->m_Mass - m_Mass) / (m_Mass + p->m_Mass) * p->m_Velocity + (2 * m_Mass) / (m_Mass + p->m_Mass) * tempVel;
+	}
+		
+	
 }
 
 void SolidObject::computeTorque()
@@ -220,5 +244,28 @@ bool SolidObject::is_collid(Particle* p)
 
 string SolidObject::getType()
 {
-	return "SOLIDOBJECT";
+	return type;
+}
+
+bool SolidObject::ObjectsCollide(SolidObject* so) {
+
+	float x1l = so->m_Position[0];
+	float x1r = so->m_Position[0] + so->xn * so->dist;
+
+	float x2l = m_Position[0];
+	float x2r = m_Position[0] + xn * dist;
+
+	float y1l = so->m_Position[1];
+	float y1u = so->m_Position[1] + so->yn * so->dist;
+
+	float y2l = m_Position[1];
+	float y2u = m_Position[1] + yn * dist;
+
+	if (!(x1l >= x2r || x2l >= x1r)) {
+		if (!(y1l >= y2u || y2l >= y1u)) {
+			return true;
+		};
+	};
+	return false;
+
 }

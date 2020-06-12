@@ -19,24 +19,27 @@ class SolidObject :
 {
 public:
 	SolidObject(int x, int y, Vec3f bottom_left_pos, vector<Particle*>& ps,
-		vector<Force*>& fs, vector<Constraint*>& cs, float p_mass = 1.0, float dist = 0.05);
+		vector<Force*>& fs, vector<Constraint*>& cs, std::string type = "SOLIDOBJECT", float p_mass = 1.0, float dist = 0.05);
 	void state_to_array(float* y);
 	void array_to_state(float* y);
+	void array_to_bodies(float y[]);
 	void ddt_State_to_Array(float* ydot);
 	void draw() override;
-	void init(vector<Particle*>& ps, vector<Force*> &fs, vector<Constraint*>& cs);
-	bool object_selected(Vec2f mouse) ;
-    void set_new_position(Vec3f mouse);
-	void computeForce();
+	void init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constraint*>& cs);
+	bool object_selected(Vec2f mouse);
+	void set_new_position(Vec3f mouse);
+	void computeForce(Particle* p);
 	void computeTorque();
 
 	bool is_collid(Particle*);
+	bool ObjectsCollide(SolidObject*);
 	string getType() override;
+	string type;
 
 	int xn, yn; //width and high
 	Vec3f bot_left_pos; // bottom left position i.e. origin
 	float p_mass; //practicle mass
-	float dist=0.5; // distance between each particles
+	float dist = 0.5; // distance between each particles
 	vector<Vec3f> p_positions; // position of particles relative to bot_left_pos
 	//constat
 	Matrix3f Ibody, Ibodyinv;
@@ -52,5 +55,6 @@ public:
 
 	//computed quantities
 	Vec3f force, torque;
+
 };
 
