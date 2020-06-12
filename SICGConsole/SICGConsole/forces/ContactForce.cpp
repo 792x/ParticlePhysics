@@ -18,6 +18,7 @@ void ContactForce::apply()
 	for (auto p : particles) {
 		if (solid_object->is_collid(p)) {
 			p->m_Force += df * solid_object->m_Velocity * solid_object->m_Mass / p->m_Mass;
+			solid_object->computeForce(p);
 		}
 	}
 }
