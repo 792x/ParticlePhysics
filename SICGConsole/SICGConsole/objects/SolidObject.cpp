@@ -22,92 +22,138 @@ static Matrix3f star(Vec3f a) {
 	return m;
 }
 
-SolidObject::SolidObject(int x, int y, Vec3f bottom_left_pos, vector<Particle*>& ps, vector<Force*>& fs, 
-	vector<Constraint*>& cs, std::string type, float p_mass, float dist):
+SolidObject::SolidObject(int x, int y, Vec3f bottom_left_pos,std::string type, float p_mass, float dist):
 	xn(x),yn(y),bot_left_pos(bottom_left_pos), type(type) ,p_mass(p_mass),dist(dist)
 {
 	/*particle implementation of solid object*/
 	m_Position = bottom_left_pos;
 	/*particle implementation of solid object*/
-	init(ps, fs, cs);
+	init();
 }
 
-void SolidObject::state_to_array(float *y)
-{
-	Vec3f x = m_Position;
-	*y++ = x[0];	*y++ = x[1];	*y++ = x[2];
+//void SolidObject::state_to_array(float *y)
+//{
+//	Vec3f x = m_Position;
+//	*y++ = x[0];	*y++ = x[1];	*y++ = x[2];
 
-	for (int i = 0; i < 3; i++) /* copy rotation matrix */
-		for (int j = 0; j < 3; j++)
-			*y++ = R(i,j);
+//	for (int i = 0; i < 3; i++) /* copy rotation matrix */
+//		for (int j = 0; j < 3; j++)
+//			*y++ = R(i,j);
 
-	*y++ = P[0];	*y++ = P[1];	*y++ = P[2];
+//	*y++ = P[0];	*y++ = P[1];	*y++ = P[2];
 
-	*y++ = L[0];	*y++ = L[1];	*y++ = L[2];
-}
+//	*y++ = L[0];	*y++ = L[1];	*y++ = L[2];
+//}
 
-void SolidObject::array_to_state(float* y)
-{
-	Vec3f x = m_Position;
-	x[0] = *y++;	x[1] = *y++;	x[2] = *y++;
+//void SolidObject::array_to_state(float* y)
+//{
+//	Vec3f x = m_Position;
+//	x[0] = *y++;	x[1] = *y++;	x[2] = *y++;
 
-	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			R(i,j) = *y++;
+//	for (int i = 0; i < 3; i++)
+//		for (int j = 0; j < 3; j++)
+//			R(i,j) = *y++;
 
-	P[0] = *y++;	P[1] = *y++;	P[2] = *y++;
+//	P[0] = *y++;	P[1] = *y++;	P[2] = *y++;
 
-	L[0] = *y++;	L[1] = *y++;	L[2] = *y++;
+//	L[0] = *y++;	L[1] = *y++;	L[2] = *y++;
 
-	v = P/m_Mass;
+//	v = P/m_Mass;
 
-	Iinv = R * Ibodyinv * R.transpose();
-	Vector3f tmp = Iinv * Vector3f(L);
-	omega = Vec3f(tmp[0], tmp[1], tmp[2]);
-}
+//	Iinv = R * Ibodyinv * R.transpose();
+//	Vector3f tmp = Iinv * Vector3f(L);
+//	omega = Vec3f(tmp[0], tmp[1], tmp[2]);
+//}
 
 //void SolidObject::array_to_bodies(float y[]) {
 //	for (int i = 0; i < nBodies; i++) {
 //		array_to_state(&Bodies[i], &y[i*state_size])
 //	}
 //}
+void SolidObject::computeR(SolidObject* p) {
+	float angle = 0;
+	float dx = m_Position[0] - p->m_Position[0];
+	float dy = m_Position[1] - p->m_Position[1];
+	if (dy > 0) {
+		Particle* p_high = this;
+		Particle* p_low = p;
+	}
+	else {
+		Particle* p_high = p;
+		Particle* p_low = this;
+	}
 
-void SolidObject::ddt_State_to_Array(float* ydot)
-{
-	*ydot++ = v[0];
-	*ydot++ = v[1];
-	*ydot++ = v[2];
+	if (dx > 0) {
+		//this rechts van p
+	}
+	else {
+		//this links van p
+	}
+	R(0, 0) = cosf(angle);
+	R(0, 1) = -sinf(angle); 
+	R(1, 0) = sinf(angle);
+	R(1, 1) = cosf(angle);
+	Vec3f x = m_Position;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			m_Position[i] += x[j] * R(i, j);
+		}
+	}
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			L[i] = Ibody(i, j) * omega[j];
+		}
+	}
 
-	Matrix3f Rdot = star(omega) * R;
-
-	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			*ydot++ = Rdot(i,j);
-
-	*ydot++ = force[0]; 
-	*ydot++ = force[1];
-	*ydot++ = force[2];
-
-	*ydot++ = torque[0]; 
-	*ydot++ = torque[1];
-	*ydot++ = torque[2];
+	//v = P/m_Mass;
+	Iinv = R * Ibodyinv * R.transpose();
+	Vector3f tmp = Iinv * Vector3f(L);
+	omega = Vec3f(tmp[0], tmp[1], tmp[2]);
 }
+void SolidObject::ddt_Calculations() {
+	Matrix3f Rdot = star(omega) * R;
+}
+//{
+//	*ydot++ = v[0];
+//	*ydot++ = v[1];
+//	*ydot++ = v[2];
+
+//	Matrix3f Rdot = star(omega) * R;
+
+//	for (int i = 0; i < 3; i++)
+//		for (int j = 0; j < 3; j++)
+//			*ydot++ = Rdot(i,j);
+
+//	*ydot++ = force[0]; 
+//	*ydot++ = force[1];
+//	*ydot++ = force[2];
+
+//	*ydot++ = torque[0]; 
+//	*ydot++ = torque[1];
+//	*ydot++ = torque[2];
+//}
 
 void SolidObject::draw()
 {
-	Vec3f x = this->m_Position;
+	Vec3f x = m_Position;
+
+	top_left = Vec3f(x[0], x[1] + yn * dist, 0); // top left
+	top_right = Vec3f(x[0] + dist * xn, x[1] + yn * dist, 0); // top right 
+	bottom_right = Vec3f(x[0] + dist * xn, x[1], 0); // bottom right
+	bottom_left = Vec3f(x[0], x[1], 0); // bottom left
+
 	glBegin(GL_QUADS);
 	glColor3f(0.737255 , 0.560784 , 0.560784);
-
-	glVertex2f(x[0],x[1]+yn*dist); // top left
-	glVertex2f(x[0]+dist*xn,x[1]+yn*dist); // top right 
-	glVertex2f(x[0]+dist*xn,x[1]); // bottom right
-	glVertex2f(x[0],x[1]); // bottom left
+	glVertex2f(top_left[0],top_left[1]); // top left
+	glVertex2f(top_right[0], top_right[1]); // top right 
+	glVertex2f(bottom_right[0], bottom_right[1]); // bottom right
+	glVertex2f(bottom_left[0], bottom_left[1]); // bottom left
 	glEnd();
 }
 
-void SolidObject::init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constraint*>& cs)
+void SolidObject::init()
 {
+	R = Matrix3f::Identity();
 	P = Vec3f(0, 0, 0);
 	L = Vec3f(0, 0, 0);
 	v = Vec3f(0, 0, 0);
@@ -116,7 +162,7 @@ void SolidObject::init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constra
 	torque = Vec3f(0, 0, 0);
 	omega = Vec3f(0, 0, 0);
 	m_Velocity = Vec3f(0, 0, 0);
-	m_Index = ps.size();
+	//m_Index = ps.size();
 	m_OldPosition = m_Position;
 	m_ConstructPos = m_Position;
 
@@ -130,7 +176,12 @@ void SolidObject::init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constra
 	Iinv = Ibodyinv;
 	omega = eigen_to_vec( Iinv * Vector3f(L) );
 
+	Vec3f x = m_Position;
 
+	top_left = Vec3f(x[0], x[1] + yn * dist, 0); // top left
+	top_right = Vec3f(x[0] + dist * xn, x[1] + yn * dist, 0); // top right 
+	bottom_right = Vec3f(x[0] + dist * xn, x[1], 0); // bottom right
+	bottom_left = Vec3f(x[0], x[1], 0); // bottom left
 
 	/*create particles*/
 	/*

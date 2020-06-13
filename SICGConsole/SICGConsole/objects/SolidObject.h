@@ -18,14 +18,13 @@ class SolidObject :
 	public Particle
 {
 public:
-	SolidObject(int x, int y, Vec3f bottom_left_pos, vector<Particle*>& ps,
-		vector<Force*>& fs, vector<Constraint*>& cs, std::string type = "SOLIDOBJECT", float p_mass = 1.0, float dist = 0.05);
+	SolidObject(int x, int y, Vec3f bottom_left_pos, std::string type = "SOLIDOBJECT", float p_mass = 1.0, float dist = 0.05);
 	void state_to_array(float* y);
 	void array_to_state(float* y);
-	void array_to_bodies(float y[]);
-	void ddt_State_to_Array(float* ydot);
+	void computeR(SolidObject* p);
+	void ddt_Calculations();
 	void draw() override;
-	void init(vector<Particle*>& ps, vector<Force*>& fs, vector<Constraint*>& cs);
+	void init();
 	bool object_selected(Vec2f mouse);
 	void set_new_position(Vec3f mouse);
 	void computeForce(Particle* p);
@@ -55,6 +54,12 @@ public:
 
 	//computed quantities
 	Vec3f force, torque;
+
+	//object points
+	Vec3f top_left;// top left
+	Vec3f top_right; // top right 
+	Vec3f bottom_right;// bottom right
+	Vec3f bottom_left;// bottom left
 
 };
 

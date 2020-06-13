@@ -11,7 +11,7 @@
 
 class Particle {
   public:
-	Particle(const Vec3f &constructPos, float mass, int index, bool drawable=1);
+	Particle(const Vec3f &constructPos, float mass, int index, bool drawable=1, Vec3f col = Vec3f(1.f, 1.f, 1.f));
 	Particle();
 	virtual ~Particle() = default;
 
@@ -34,4 +34,6 @@ class Particle {
 	Vec3f m_OldOldPosition;
 	Vec3f m_OldOldVelocity;
 	Vec3f m_OldVelocity;
+
+	Vec3f col;
 };

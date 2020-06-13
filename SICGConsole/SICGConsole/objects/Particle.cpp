@@ -9,7 +9,7 @@ using namespace std;
 
 
 
-Particle::Particle(const Vec3f &constructPos, float mass, int index, bool drawable) :
+Particle::Particle(const Vec3f &constructPos, float mass, int index, bool drawable, Vec3f col) :
 	m_ConstructPos(constructPos),
 	m_Position(constructPos),
 	m_OldPosition(constructPos),
@@ -17,7 +17,8 @@ Particle::Particle(const Vec3f &constructPos, float mass, int index, bool drawab
 	m_Force(Vec3f(0.0, 0.0, 0.0)),
 	m_Index(index),
 	m_Mass(mass),
-	drawable(drawable){}
+	drawable(drawable),
+	col(col){}
 
 Particle::Particle() {
 
@@ -48,7 +49,7 @@ void Particle::reset() {
 void Particle::draw() {
 	if (!drawable) return;
 	const double h = 0.03;
-	glColor3f(1.f, 1.f, 1.f);
+	glColor3f(col[0], col[1], col[2]);
 	glBegin(GL_QUADS);
 	glVertex2f(m_Position[0] - h/2.0, m_Position[1] - h/2.0);
 	glVertex2f(m_Position[0] + h/2.0, m_Position[1] - h/2.0);
