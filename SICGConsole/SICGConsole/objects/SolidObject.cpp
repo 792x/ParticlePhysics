@@ -70,45 +70,17 @@ SolidObject::SolidObject(int x, int y, Vec3f bottom_left_pos,std::string type, f
 //		array_to_state(&Bodies[i], &y[i*state_size])
 //	}
 //}
-void SolidObject::computeR(SolidObject* p) {
-	float angle = 0;
-	float dx = m_Position[0] - p->m_Position[0];
-	float dy = m_Position[1] - p->m_Position[1];
-	if (dy > 0) {
-		Particle* p_high = this;
-		Particle* p_low = p;
-	}
-	else {
-		Particle* p_high = p;
-		Particle* p_low = this;
-	}
+void SolidObject::computeR(Vec3f rotationCenter , float angle) 
+{
+	top_left[0] =     (top_left[0]    - rotationCenter[0]) * cosf(angle)	+ (top_left[1] -    rotationCenter [1]) * sinf(angle)	+ rotationCenter[0];
+	top_left[1] =     (top_left[0]    - rotationCenter[0]) * (- sinf(angle))+ (top_left[1] -    rotationCenter[1]) * cosf(angle)	+ rotationCenter[1];
+	top_right[0] =    (top_right[0]   - rotationCenter[0]) * cosf(angle)	+ (top_right[1] -   rotationCenter[1]) * sinf(angle)	+ rotationCenter[0];
+	top_right[1] =    (top_right[0]   - rotationCenter[0]) * (-sinf(angle))	+ (top_right[1] -   rotationCenter[1]) * cosf(angle)	+ rotationCenter[1];
+	bottom_right[0] = (bottom_right[0] - rotationCenter[0]) * cosf(angle) + (bottom_right[1] - rotationCenter[1]) * sinf(angle)		+ rotationCenter[0];
+	bottom_right[1] = (bottom_right[0] - rotationCenter[0]) * (-sinf(angle))+ (bottom_right[1] - rotationCenter[1]) * cosf(angle)	+ rotationCenter[1];
+	bottom_left[0] =  (bottom_left[0] - rotationCenter[0]) * cosf(angle)	+ (bottom_left[1] - rotationCenter[1]) * sinf(angle)	+ rotationCenter[0];
+	bottom_left[1] =  (bottom_left[0] - rotationCenter[0]) * (-sinf(angle)) + (bottom_left[1] - rotationCenter[1]) * cosf(angle)	+ rotationCenter[1];
 
-	if (dx > 0) {
-		//this rechts van p
-	}
-	else {
-		//this links van p
-	}
-	R(0, 0) = cosf(angle);
-	R(0, 1) = -sinf(angle); 
-	R(1, 0) = sinf(angle);
-	R(1, 1) = cosf(angle);
-	Vec3f x = m_Position;
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			m_Position[i] += x[j] * R(i, j);
-		}
-	}
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			L[i] = Ibody(i, j) * omega[j];
-		}
-	}
-
-	//v = P/m_Mass;
-	Iinv = R * Ibodyinv * R.transpose();
-	Vector3f tmp = Iinv * Vector3f(L);
-	omega = Vec3f(tmp[0], tmp[1], tmp[2]);
 }
 void SolidObject::ddt_Calculations() {
 	Matrix3f Rdot = star(omega) * R;
@@ -136,18 +108,14 @@ void SolidObject::ddt_Calculations() {
 void SolidObject::draw()
 {
 	Vec3f x = m_Position;
-
-	top_left = Vec3f(x[0], x[1] + yn * dist, 0); // top left
-	top_right = Vec3f(x[0] + dist * xn, x[1] + yn * dist, 0); // top right 
-	bottom_right = Vec3f(x[0] + dist * xn, x[1], 0); // bottom right
-	bottom_left = Vec3f(x[0], x[1], 0); // bottom left
-
 	glBegin(GL_QUADS);
-	glColor3f(0.737255 , 0.560784 , 0.560784);
-	glVertex2f(top_left[0],top_left[1]); // top left
-	glVertex2f(top_right[0], top_right[1]); // top right 
-	glVertex2f(bottom_right[0], bottom_right[1]); // bottom right
-	glVertex2f(bottom_left[0], bottom_left[1]); // bottom left
+
+		glColor3f(0.737255, 0.560784, 0.560784);
+		glVertex2f(x[0] + top_left[0], x[1] + top_left[1]); // top left
+		glVertex2f(x[0] + top_right[0], x[1] + top_right[1]); // top right 
+		glVertex2f(x[0] + bottom_right[0], x[1] + bottom_right[1]); // bottom right
+		glVertex2f(x[0] + bottom_left[0], x[1] + bottom_left[1]); // bottom left
+	
 	glEnd();
 }
 
@@ -178,10 +146,10 @@ void SolidObject::init()
 
 	Vec3f x = m_Position;
 
-	top_left = Vec3f(x[0], x[1] + yn * dist, 0); // top left
-	top_right = Vec3f(x[0] + dist * xn, x[1] + yn * dist, 0); // top right 
-	bottom_right = Vec3f(x[0] + dist * xn, x[1], 0); // bottom right
-	bottom_left = Vec3f(x[0], x[1], 0); // bottom left
+	top_left = Vec3f(0, yn * dist, 0); // top left
+	top_right = Vec3f(dist * xn, yn * dist, 0); // top right 
+	bottom_right = Vec3f( dist * xn,0, 0); // bottom right
+	bottom_left = Vec3f(0,0, 0); // bottom left
 
 	/*create particles*/
 	/*
@@ -249,13 +217,13 @@ void SolidObject::computeForce(Particle* p) {
 	Vec3f tempVel = m_Velocity;
 	if (p->getType() == "floor") {
 		if (m_Velocity[1] <= 0) {
-			m_Velocity[1] += 0.8*((m_Mass - p->m_Mass) / (m_Mass + p->m_Mass) - 1) * m_Velocity[1];
+			m_Velocity[1] += 0.6*((m_Mass - p->m_Mass) / (m_Mass + p->m_Mass) - 1) * m_Velocity[1];
 		}
 		m_Force[1] += m_Mass * 9.81f;
 	}
 	else if (getType() == "floor") {
 		if (p->m_Velocity[1] <= 0) {
-			p->m_Velocity[1] += 0.8 * ((p->m_Mass - m_Mass) / (m_Mass + p->m_Mass) - 1) * p->m_Velocity[1];
+			p->m_Velocity[1] += 0.6 * ((p->m_Mass - m_Mass) / (m_Mass + p->m_Mass) - 1) * p->m_Velocity[1];
 		}
 		p->m_Force[1] += p->m_Mass * 9.81f;
 	}
@@ -265,9 +233,18 @@ void SolidObject::computeForce(Particle* p) {
 		p->m_Force += forceDiff;
 		m_Velocity = (m_Mass - p->m_Mass) / (m_Mass + p->m_Mass) * m_Velocity + (2 * p->m_Mass) / (m_Mass + p->m_Mass) * p->m_Velocity;
 		p->m_Velocity = (p->m_Mass - m_Mass) / (m_Mass + p->m_Mass) * p->m_Velocity + (2 * m_Mass) / (m_Mass + p->m_Mass) * tempVel;
+
 	}
 		
-	
+}
+
+void SolidObject::computeForceObject(SolidObject* p) {
+	float distL = p->m_Position[0]+p->top_left[0] - m_Position[0]- bottom_left[0];
+	float distR = m_Position[0] + bottom_right[0] - p->m_Position[0] - p->top_left[0];
+
+	if (distL > distR) {
+		computeR(p->m_Position + p->top_left, -0.0005);
+	}
 }
 
 void SolidObject::computeTorque()
@@ -298,25 +275,94 @@ string SolidObject::getType()
 	return type;
 }
 
+bool onSegment(Vec3f p, Vec3f q, Vec3f r)
+{
+	if (q[0] <= max(p[0], r[0]) && q[0] >= min(p[0], r[0]) &&
+		q[1] <= max(p[1], r[1]) && q[1] >= min(p[1], r[1]))
+		return true;
+
+	return false;
+}
+int orientation(Vec3f p, Vec3f q, Vec3f r)
+{
+	int val = (q[1] - p[1]) * (r[0] - q[0]) -
+		(q[0] - p[0]) * (r[1] - q[1]);
+
+	if (val == 0) return 0;  // colinear 
+
+	return (val > 0) ? 1 : 2; // clock or counterclock wise 
+}
+bool doIntersect(Vec3f p1, Vec3f q1, Vec3f p2, Vec3f q2)
+{
+	// Find the four orientations needed for general and 
+	// special cases 
+	int o1 = orientation(p1, q1, p2);
+	int o2 = orientation(p1, q1, q2);
+	int o3 = orientation(p2, q2, p1);
+	int o4 = orientation(p2, q2, q1);
+
+	// General case 
+	if (o1 != o2 && o3 != o4)
+		return true;
+
+	// Special Cases 
+	// p1, q1 and p2 are colinear and p2 lies on segment p1q1 
+	if (o1 == 0 && onSegment(p1, p2, q1)) return true;
+
+	// p1, q1 and q2 are colinear and q2 lies on segment p1q1 
+	if (o2 == 0 && onSegment(p1, q2, q1)) return true;
+
+	// p2, q2 and p1 are colinear and p1 lies on segment p2q2 
+	if (o3 == 0 && onSegment(p2, p1, q2)) return true;
+
+	// p2, q2 and q1 are colinear and q1 lies on segment p2q2 
+	if (o4 == 0 && onSegment(p2, q1, q2)) return true;
+
+	return false; // Doesn't fall in any of the above cases 
+}
 bool SolidObject::ObjectsCollide(SolidObject* so) {
+	if (so->bottom_left[1] == so->bottom_right[1] && bottom_left[1] == bottom_right[1]) {
+		float x1l = so->m_Position[0];
+		float x1r = so->m_Position[0] + so->xn * so->dist;
 
-	float x1l = so->m_Position[0];
-	float x1r = so->m_Position[0] + so->xn * so->dist;
+		float x2l = m_Position[0];
+		float x2r = m_Position[0] + xn * dist;
 
-	float x2l = m_Position[0];
-	float x2r = m_Position[0] + xn * dist;
+		if (!(x1l >= x2r || x2l >= x1r)) {
 
-	float y1l = so->m_Position[1];
-	float y1u = so->m_Position[1] + so->yn * so->dist;
+			float y1l = so->m_Position[1];
+			float y1u = so->m_Position[1] + so->yn * so->dist;
 
-	float y2l = m_Position[1];
-	float y2u = m_Position[1] + yn * dist;
+			float y2l = m_Position[1];
+			float y2u = m_Position[1] + yn * dist;
 
-	if (!(x1l >= x2r || x2l >= x1r)) {
-		if (!(y1l >= y2u || y2l >= y1u)) {
-			return true;
+			if (!(y1l >= y2u || y2l >= y1u)) {
+				return true;
+			};
 		};
-	};
+		return false;
+	}
+	
+	std::vector<std::vector<Vec3f>> sides = {};
+	sides.push_back({ m_Position + bottom_right,  m_Position + bottom_left });
+	sides.push_back({ m_Position + bottom_left,  m_Position + top_left  });
+	sides.push_back({ m_Position + top_left,  m_Position + top_right });
+	sides.push_back({ m_Position + top_right,  m_Position + bottom_right });
+
+	std::vector<std::vector<Vec3f>> sides2 = {};
+	sides2.push_back({ so->m_Position + so->bottom_right, so->m_Position + so->bottom_left });
+	sides2.push_back({ so->m_Position + so->bottom_left, so->m_Position + so->top_left });
+	sides2.push_back({ so->m_Position + so->top_left, so->m_Position + so->top_right });
+	sides2.push_back({ so->m_Position + so->top_right, so->m_Position + so->bottom_right });
+	
+
+	for (std::vector<Vec3f> s1 : sides) {
+		for (std::vector<Vec3f> s2 : sides2) {
+			if(doIntersect(s1[0],s1[1],s2[0],s2[1])){
+				return true;
+			}
+		}
+	}
 	return false;
 
 }

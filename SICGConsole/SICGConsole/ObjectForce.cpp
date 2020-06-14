@@ -19,7 +19,8 @@ void ObjectForce::apply()
 	for (int i = 0; i < objects.size();i++) {
 		for (int j = i+1; j < objects.size(); j++) {
 			if (objects[i]->ObjectsCollide(objects[j])) {
-					objects[i]->computeForce(objects[j]);
+				objects[i]->computeForce(objects[j]);
+				objects[i]->computeForceObject(objects[j]);
 			}
 		}
 	}

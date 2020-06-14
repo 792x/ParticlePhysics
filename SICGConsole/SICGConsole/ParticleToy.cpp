@@ -113,7 +113,6 @@ static void free_data() {
 
 static void clear_data() {
 	int ii, size = pVector.size();
-
 	for (ii = 0; ii < size; ii++) {
 		pVector[ii]->reset();
 	}
@@ -231,6 +230,23 @@ static void init_cloth() {
 	fVector.push_back(new ObjectForce(pVector, soVector));	
 	fVector.push_back(new GravityForce(pVector));
 	pVector.push_back(so2);
+}
+static void init_rotate() {
+	
+	int ind = pVector.size() - 1;
+
+	SolidObject* so = new SolidObject(7, 3, { -0.1,0,0 }, "SOLIDOBJECT",0.01);
+	soVector.push_back(so);
+	pVector.push_back(so);
+	SolidObject* so3 = new SolidObject(4, 4, { 0.1,-0.5,0 }, "floor", 25);
+	soVector.push_back(so3);
+	SolidObject* so2 = new SolidObject(30, 1, { -0.5,-1,0 }, "floor", 25);
+	soVector.push_back(so2);
+	fVector.push_back(new GravityForce(pVector));
+	fVector.push_back(new ObjectForce(pVector, soVector));
+	
+	pVector.push_back(so2);
+	c_dt = 0.0001f;
 }
 
 /*
@@ -469,6 +485,15 @@ static void key_func(unsigned char key, int x, int y) {
 			init_cloth();
 			glutMainLoop();
 			break;
+
+		case 'r':
+		case 'R':
+			clear_data();
+			free_data();
+			init_rotate();
+			glutMainLoop();
+			break;
+
 
 		case ' ': dsim = !dsim;
 			break;
