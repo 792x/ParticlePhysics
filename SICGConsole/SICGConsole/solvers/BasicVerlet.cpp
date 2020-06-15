@@ -1,7 +1,7 @@
 #include "BasicVerlet.h"
 
 void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, float dt) {
-	
+
 	// Compute forces + constraints
 	compute_forces(fVector);
 	compute_constraints(pVector, cVector);
@@ -18,7 +18,8 @@ void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Fo
 		if (Solver::simulation_reset) {
 			newPos = initPos + initVel * dt + 0.5f * initAcc * dt * dt;
 			Solver::simulation_reset = false;
-		} else {
+		}
+		else {
 			newPos = 2.f * initPos - prevPos + initAcc * dt * dt;
 		}
 
@@ -26,5 +27,4 @@ void BasicVerlet::simulation_step(std::vector<Particle*> pVector, std::vector<Fo
 
 		pVector[i]->next_state(newPos, newVel);
 	}
-
 }

@@ -16,7 +16,7 @@ void LeapFrog::simulation_step(std::vector<Particle*> pVector, std::vector<Force
 		for (int i = 0; i < int(pVector.size()); i++) {
 			initPosVec.push_back(pVector[i]->m_Position);
 		}
-		
+
 		// Use the Runge Kutta scheme to get the velocities halfway the first step
 		RungeKuttaSolver.simulation_step(pVector, fVector, cVector, 0.5f * dt);
 
@@ -34,7 +34,7 @@ void LeapFrog::simulation_step(std::vector<Particle*> pVector, std::vector<Force
 		Vec3f newPosition = pVector[i]->m_Position + pVector[i]->m_Velocity * dt;
 		pVector[i]->m_Position = newPosition;
 	}
-	
+
 	// Compute forces + constraints
 	compute_forces(fVector);
 	compute_constraints(pVector, cVector);

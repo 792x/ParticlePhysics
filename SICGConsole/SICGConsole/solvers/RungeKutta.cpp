@@ -64,7 +64,7 @@ void RungeKutta::simulation_step(std::vector<Particle*> pVector, std::vector<For
 
 		pVector[i]->m_Position = k4PosVec[i];
 	}
-	
+
 	// Compute forces + constraints
 	compute_forces(fVector);
 	compute_constraints(pVector, cVector);
@@ -81,5 +81,4 @@ void RungeKutta::simulation_step(std::vector<Particle*> pVector, std::vector<For
 
 		pVector[i]->next_state(newPosition, newVelocity);
 	}
-
 }

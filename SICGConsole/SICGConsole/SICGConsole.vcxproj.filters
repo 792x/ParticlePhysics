@@ -171,10 +171,7 @@
     <ClInclude Include="forces\ContactForce.h">
       <Filter>Source Files\forces</Filter>
     </ClInclude>
-    <ClInclude Include="RigidObject.h">
-      <Filter>Source Files\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectForce.h">
+    <ClInclude Include="forces\ObjectForce.h">
       <Filter>Source Files\forces</Filter>
     </ClInclude>
   </ItemGroup>
@@ -233,19 +230,13 @@
     <ClCompile Include="SICGConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="objects\Object.cpp">
-      <Filter>Source Files\objects</Filter>
-    </ClCompile>
     <ClCompile Include="forces\ContactForce.cpp">
       <Filter>Source Files\forces</Filter>
     </ClCompile>
     <ClCompile Include="objects\SolidObject.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
-    <ClCompile Include="RigidObject.cpp">
-      <Filter>Source Files\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectForce.cpp">
+    <ClCompile Include="forces\ObjectForce.cpp">
       <Filter>Source Files\forces</Filter>
     </ClCompile>
   </ItemGroup>

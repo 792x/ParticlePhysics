@@ -1,12 +1,12 @@
 #include "ObjectForce.h"
 
-
 ObjectForce::ObjectForce(std::vector<Particle*> pVector, std::vector<SolidObject*> soVector)
 {
 	particles = pVector;
 	objects = soVector;
 }
 
+// Set the target of the object force.
 void ObjectForce::target(std::vector<Particle*> particles)
 {
 	for (int i = 0; i < particles.size(); i++) {
@@ -14,10 +14,11 @@ void ObjectForce::target(std::vector<Particle*> particles)
 	}
 }
 
+// Apply the object force.
 void ObjectForce::apply()
-{	
+{
 	for (int i = 0; i < objects.size();i++) {
-		for (int j = i+1; j < objects.size(); j++) {
+		for (int j = i + 1; j < objects.size(); j++) {
 			if (objects[i]->ObjectsCollide(objects[j])) {
 				objects[i]->computeForce(objects[j]);
 				objects[i]->computeForceObject(objects[j]);

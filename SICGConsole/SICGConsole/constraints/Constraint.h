@@ -5,8 +5,8 @@
 #include <vector>
 
 class Constraint {
-  public:
-	explicit Constraint(std::vector<Particle *> particles) : particles(std::move(particles)) {}
+public:
+	explicit Constraint(std::vector<Particle*> particles) : particles(std::move(particles)) {}
 	virtual ~Constraint() = default;
 
 	virtual void draw() = 0;
@@ -19,8 +19,6 @@ class Constraint {
 		return particles;
 	};
 
-  protected:
-	std::vector<Particle *> particles;
+protected:
+	std::vector<Particle*> particles;
 };
-
-

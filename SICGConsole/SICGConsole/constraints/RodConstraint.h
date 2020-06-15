@@ -4,8 +4,8 @@
 #include "../constraints/Constraint.h"
 
 class RodConstraint : public Constraint {
-  public:
-	RodConstraint(Particle *p1, Particle *p2, float dist);
+public:
+	RodConstraint(Particle* p1, Particle* p2, float dist);
 
 	void draw() override;
 	float m_C() override;
@@ -13,8 +13,8 @@ class RodConstraint : public Constraint {
 	std::vector<Vec3f> m_j() override;
 	std::vector<Vec3f> m_j_dot() override;
 
-  private:
-	Particle *const m_p1;
-	Particle *const m_p2;
+private:
+	Particle* const m_p1;
+	Particle* const m_p2;
 	float const m_dist;
 };

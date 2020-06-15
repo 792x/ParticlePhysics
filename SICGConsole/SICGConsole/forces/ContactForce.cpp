@@ -1,10 +1,11 @@
 #include "ContactForce.h"
 
-ContactForce::ContactForce(Cloth* cloth, SolidObject* so):solid_object(so)
+ContactForce::ContactForce(Cloth* cloth, SolidObject* so) :solid_object(so)
 {
 	target(cloth->particles);
 }
 
+// Set the contact force target.
 void ContactForce::target(std::vector<Particle*> particles)
 {
 	for (int i = 0; i < particles.size(); i++) {
@@ -12,6 +13,7 @@ void ContactForce::target(std::vector<Particle*> particles)
 	}
 }
 
+// Apply the contact force.
 void ContactForce::apply()
 {
 	float df = 4;

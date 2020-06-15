@@ -8,9 +8,11 @@
 #endif
 
 using namespace Eigen;
+
 static Vec3f eigen_to_vec(Vector3f a) {
 	return Vec3f(a[0], a[1], a[2]);
 }
+
 static Matrix3f star(Vec3f a) {
 	Matrix3f m(3, 3);
 	m(0, 0) = 0;	 m(0, 1) = -a[2];	m(0, 2) = a[1];
@@ -22,8 +24,8 @@ static Matrix3f star(Vec3f a) {
 	return m;
 }
 
-SolidObject::SolidObject(int x, int y, Vec3f bottom_left_pos,std::string type, float p_mass, float dist):
-	xn(x),yn(y),bot_left_pos(bottom_left_pos), type(type) ,p_mass(p_mass),dist(dist)
+SolidObject::SolidObject(int x, int y, Vec3f bottom_left_pos, std::string type, float p_mass, float dist) :
+	xn(x), yn(y), bot_left_pos(bottom_left_pos), type(type), p_mass(p_mass), dist(dist)
 {
 	/*particle implementation of solid object*/
 	m_Position = bottom_left_pos;
@@ -31,91 +33,33 @@ SolidObject::SolidObject(int x, int y, Vec3f bottom_left_pos,std::string type, f
 	init();
 }
 
-//void SolidObject::state_to_array(float *y)
-//{
-//	Vec3f x = m_Position;
-//	*y++ = x[0];	*y++ = x[1];	*y++ = x[2];
-
-//	for (int i = 0; i < 3; i++) /* copy rotation matrix */
-//		for (int j = 0; j < 3; j++)
-//			*y++ = R(i,j);
-
-//	*y++ = P[0];	*y++ = P[1];	*y++ = P[2];
-
-//	*y++ = L[0];	*y++ = L[1];	*y++ = L[2];
-//}
-
-//void SolidObject::array_to_state(float* y)
-//{
-//	Vec3f x = m_Position;
-//	x[0] = *y++;	x[1] = *y++;	x[2] = *y++;
-
-//	for (int i = 0; i < 3; i++)
-//		for (int j = 0; j < 3; j++)
-//			R(i,j) = *y++;
-
-//	P[0] = *y++;	P[1] = *y++;	P[2] = *y++;
-
-//	L[0] = *y++;	L[1] = *y++;	L[2] = *y++;
-
-//	v = P/m_Mass;
-
-//	Iinv = R * Ibodyinv * R.transpose();
-//	Vector3f tmp = Iinv * Vector3f(L);
-//	omega = Vec3f(tmp[0], tmp[1], tmp[2]);
-//}
-
-//void SolidObject::array_to_bodies(float y[]) {
-//	for (int i = 0; i < nBodies; i++) {
-//		array_to_state(&Bodies[i], &y[i*state_size])
-//	}
-//}
-void SolidObject::computeR(Vec3f rotationCenter , float angle) 
+void SolidObject::computeR(Vec3f rotationCenter, float angle)
 {
-	top_left[0] =     (top_left[0]    - rotationCenter[0]) * cosf(angle)	+ (top_left[1] -    rotationCenter [1]) * sinf(angle)	+ rotationCenter[0];
-	top_left[1] =     (top_left[0]    - rotationCenter[0]) * (- sinf(angle))+ (top_left[1] -    rotationCenter[1]) * cosf(angle)	+ rotationCenter[1];
-	top_right[0] =    (top_right[0]   - rotationCenter[0]) * cosf(angle)	+ (top_right[1] -   rotationCenter[1]) * sinf(angle)	+ rotationCenter[0];
-	top_right[1] =    (top_right[0]   - rotationCenter[0]) * (-sinf(angle))	+ (top_right[1] -   rotationCenter[1]) * cosf(angle)	+ rotationCenter[1];
-	bottom_right[0] = (bottom_right[0] - rotationCenter[0]) * cosf(angle) + (bottom_right[1] - rotationCenter[1]) * sinf(angle)		+ rotationCenter[0];
-	bottom_right[1] = (bottom_right[0] - rotationCenter[0]) * (-sinf(angle))+ (bottom_right[1] - rotationCenter[1]) * cosf(angle)	+ rotationCenter[1];
-	bottom_left[0] =  (bottom_left[0] - rotationCenter[0]) * cosf(angle)	+ (bottom_left[1] - rotationCenter[1]) * sinf(angle)	+ rotationCenter[0];
-	bottom_left[1] =  (bottom_left[0] - rotationCenter[0]) * (-sinf(angle)) + (bottom_left[1] - rotationCenter[1]) * cosf(angle)	+ rotationCenter[1];
+	top_left[0] = (top_left[0] - rotationCenter[0]) * cosf(angle) + (top_left[1] - rotationCenter[1]) * sinf(angle) + rotationCenter[0];
+	top_left[1] = (top_left[0] - rotationCenter[0]) * (-sinf(angle)) + (top_left[1] - rotationCenter[1]) * cosf(angle) + rotationCenter[1];
+	top_right[0] = (top_right[0] - rotationCenter[0]) * cosf(angle) + (top_right[1] - rotationCenter[1]) * sinf(angle) + rotationCenter[0];
+	top_right[1] = (top_right[0] - rotationCenter[0]) * (-sinf(angle)) + (top_right[1] - rotationCenter[1]) * cosf(angle) + rotationCenter[1];
+	bottom_right[0] = (bottom_right[0] - rotationCenter[0]) * cosf(angle) + (bottom_right[1] - rotationCenter[1]) * sinf(angle) + rotationCenter[0];
+	bottom_right[1] = (bottom_right[0] - rotationCenter[0]) * (-sinf(angle)) + (bottom_right[1] - rotationCenter[1]) * cosf(angle) + rotationCenter[1];
+	bottom_left[0] = (bottom_left[0] - rotationCenter[0]) * cosf(angle) + (bottom_left[1] - rotationCenter[1]) * sinf(angle) + rotationCenter[0];
+	bottom_left[1] = (bottom_left[0] - rotationCenter[0]) * (-sinf(angle)) + (bottom_left[1] - rotationCenter[1]) * cosf(angle) + rotationCenter[1];
 
 }
 void SolidObject::ddt_Calculations() {
 	Matrix3f Rdot = star(omega) * R;
 }
-//{
-//	*ydot++ = v[0];
-//	*ydot++ = v[1];
-//	*ydot++ = v[2];
-
-//	Matrix3f Rdot = star(omega) * R;
-
-//	for (int i = 0; i < 3; i++)
-//		for (int j = 0; j < 3; j++)
-//			*ydot++ = Rdot(i,j);
-
-//	*ydot++ = force[0]; 
-//	*ydot++ = force[1];
-//	*ydot++ = force[2];
-
-//	*ydot++ = torque[0]; 
-//	*ydot++ = torque[1];
-//	*ydot++ = torque[2];
-//}
 
 void SolidObject::draw()
 {
 	Vec3f x = m_Position;
 	glBegin(GL_QUADS);
 
-		glColor3f(0.737255, 0.560784, 0.560784);
-		glVertex2f(x[0] + top_left[0], x[1] + top_left[1]); // top left
-		glVertex2f(x[0] + top_right[0], x[1] + top_right[1]); // top right 
-		glVertex2f(x[0] + bottom_right[0], x[1] + bottom_right[1]); // bottom right
-		glVertex2f(x[0] + bottom_left[0], x[1] + bottom_left[1]); // bottom left
-	
+	glColor3f(0.737255, 0.560784, 0.560784);
+	glVertex2f(x[0] + top_left[0], x[1] + top_left[1]); // top left
+	glVertex2f(x[0] + top_right[0], x[1] + top_right[1]); // top right 
+	glVertex2f(x[0] + bottom_right[0], x[1] + bottom_right[1]); // bottom right
+	glVertex2f(x[0] + bottom_left[0], x[1] + bottom_left[1]); // bottom left
+
 	glEnd();
 }
 
@@ -130,71 +74,25 @@ void SolidObject::init()
 	torque = Vec3f(0, 0, 0);
 	omega = Vec3f(0, 0, 0);
 	m_Velocity = Vec3f(0, 0, 0);
-	//m_Index = ps.size();
 	m_OldPosition = m_Position;
 	m_ConstructPos = m_Position;
 
 	//init Ibody
 	m_Mass = p_mass * xn * yn;
 	Ibody = Matrix3f(3, 3);
-	Ibody(0,0) = 1.0 / 12 * (m_Mass * ((yn * yn) + 1)); 
-	Ibody(1,1) = 1.0 / 12 * (m_Mass * ((xn * xn) + 1));
-	Ibody(2,2) = 1.0 / 12 * (m_Mass * ((xn * xn) + (yn * yn)));
+	Ibody(0, 0) = 1.0 / 12 * (m_Mass * ((yn * yn) + 1));
+	Ibody(1, 1) = 1.0 / 12 * (m_Mass * ((xn * xn) + 1));
+	Ibody(2, 2) = 1.0 / 12 * (m_Mass * ((xn * xn) + (yn * yn)));
 	Ibodyinv = Ibody.inverse();
 	Iinv = Ibodyinv;
-	omega = eigen_to_vec( Iinv * Vector3f(L) );
+	omega = eigen_to_vec(Iinv * Vector3f(L));
 
 	Vec3f x = m_Position;
 
 	top_left = Vec3f(0, yn * dist, 0); // top left
 	top_right = Vec3f(dist * xn, yn * dist, 0); // top right 
-	bottom_right = Vec3f( dist * xn,0, 0); // bottom right
-	bottom_left = Vec3f(0,0, 0); // bottom left
-
-	/*create particles*/
-	/*
-	int cnt = ps.size(); //index of particle
-	Vec3f o_pos = this->bot_left_pos;
-	for (int j = 0; j < yn; j++) {
-		for (int i = 0; i < xn; i++) {
-			Vec3f r_pos = Vec3f(i * dist, j * dist, 0);
-			Vec3f pos = o_pos + r_pos;
-			Particle *p = new Particle(pos, p_mass, cnt);
-			cnt++;
-			ps.push_back(p);
-			p_positions.push_back(r_pos);
-			this->particles.push_back(p);
-		}
-	}
-	*/
-
-	/*rod connected implementation */
-	/*
-	for (int i = 0; i < xn; i++) {
-		for (int j = 0; j < yn; j++) {
-			auto p = particles[i + j*xn];
-			int p_index = i + j*xn;
-
-			//printf("\t current i,j (%d , %d)\n", i, j);
-			int p2_index = i + 1 + j*xn;
-			if (p2_index < particles.size() && i + 1!=xn) {
-				//printf("\t adding left spring to (%d->%d)\n", p_index, p2_index);
-				auto spring_left = new RodConstraint(p, particles[p2_index],
-												   dist);
-				cs.push_back(spring_left);
-			}
-
-
-			p2_index = i + (j + 1)*xn;
-			if (p2_index < particles.size()) {
-				//printf("\t adding up spring to (%d -> %d)\n", p_index, p2_index);
-				auto spring_up = new RodConstraint(p, particles[p2_index],
-												 dist);
-				cs.push_back(spring_up);
-			}
-		}
-	}
-	*/
+	bottom_right = Vec3f(dist * xn, 0, 0); // bottom right
+	bottom_left = Vec3f(0, 0, 0); // bottom left
 }
 
 bool SolidObject::object_selected(Vec2f mouse)
@@ -217,7 +115,7 @@ void SolidObject::computeForce(Particle* p) {
 	Vec3f tempVel = m_Velocity;
 	if (p->getType() == "floor") {
 		if (m_Velocity[1] <= 0) {
-			m_Velocity[1] += 0.6*((m_Mass - p->m_Mass) / (m_Mass + p->m_Mass) - 1) * m_Velocity[1];
+			m_Velocity[1] += 0.6 * ((m_Mass - p->m_Mass) / (m_Mass + p->m_Mass) - 1) * m_Velocity[1];
 		}
 		m_Force[1] += m_Mass * 9.81f;
 	}
@@ -235,11 +133,10 @@ void SolidObject::computeForce(Particle* p) {
 		p->m_Velocity = (p->m_Mass - m_Mass) / (m_Mass + p->m_Mass) * p->m_Velocity + (2 * m_Mass) / (m_Mass + p->m_Mass) * tempVel;
 
 	}
-		
 }
 
 void SolidObject::computeForceObject(SolidObject* p) {
-	float distL = p->m_Position[0]+p->top_left[0] - m_Position[0]- bottom_left[0];
+	float distL = p->m_Position[0] + p->top_left[0] - m_Position[0] - bottom_left[0];
 	float distR = m_Position[0] + bottom_right[0] - p->m_Position[0] - p->top_left[0];
 
 	if (distL > distR) {
@@ -252,13 +149,14 @@ void SolidObject::computeTorque()
 
 }
 
+// Check if the solid object collided.
 bool SolidObject::is_collid(Particle* p)
 {
 	float x1 = m_Position[0];
-	float x2 = m_Position[0] + xn*dist;
+	float x2 = m_Position[0] + xn * dist;
 
 	float y1 = m_Position[1];
-	float y2 = m_Position[1] + yn*dist;
+	float y2 = m_Position[1] + yn * dist;
 
 	float x = p->m_Position[0];
 	float y = p->m_Position[1];
@@ -283,6 +181,8 @@ bool onSegment(Vec3f p, Vec3f q, Vec3f r)
 
 	return false;
 }
+
+// Check the orientation of the polygon.
 int orientation(Vec3f p, Vec3f q, Vec3f r)
 {
 	int val = (q[1] - p[1]) * (r[0] - q[0]) -
@@ -292,6 +192,7 @@ int orientation(Vec3f p, Vec3f q, Vec3f r)
 
 	return (val > 0) ? 1 : 2; // clock or counterclock wise 
 }
+
 bool doIntersect(Vec3f p1, Vec3f q1, Vec3f p2, Vec3f q2)
 {
 	// Find the four orientations needed for general and 
@@ -342,10 +243,10 @@ bool SolidObject::ObjectsCollide(SolidObject* so) {
 		};
 		return false;
 	}
-	
+
 	std::vector<std::vector<Vec3f>> sides = {};
 	sides.push_back({ m_Position + bottom_right,  m_Position + bottom_left });
-	sides.push_back({ m_Position + bottom_left,  m_Position + top_left  });
+	sides.push_back({ m_Position + bottom_left,  m_Position + top_left });
 	sides.push_back({ m_Position + top_left,  m_Position + top_right });
 	sides.push_back({ m_Position + top_right,  m_Position + bottom_right });
 
@@ -354,15 +255,15 @@ bool SolidObject::ObjectsCollide(SolidObject* so) {
 	sides2.push_back({ so->m_Position + so->bottom_left, so->m_Position + so->top_left });
 	sides2.push_back({ so->m_Position + so->top_left, so->m_Position + so->top_right });
 	sides2.push_back({ so->m_Position + so->top_right, so->m_Position + so->bottom_right });
-	
+
 
 	for (std::vector<Vec3f> s1 : sides) {
 		for (std::vector<Vec3f> s2 : sides2) {
-			if(doIntersect(s1[0],s1[1],s2[0],s2[1])){
+			if (doIntersect(s1[0], s1[1], s2[0], s2[1])) {
 				return true;
 			}
 		}
 	}
-	return false;
 
+	return false;
 }

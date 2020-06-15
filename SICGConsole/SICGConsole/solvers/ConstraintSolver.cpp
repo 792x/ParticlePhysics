@@ -1,47 +1,50 @@
 #include "ConstraintSolver.h"
-#include "linearSolver.h"
 #include <Eigen/IterativeLinearSolvers>
 
+// Function to multipy two matrices.
 std::vector<std::vector<float>> ConstraintSolver::multiply_matrix_by_matrix(std::vector<std::vector<
 	float>> v1,
-																			std::vector<std::vector<
-																				float>> v2) {
+	std::vector<std::vector<
+	float>> v2) {
 	std::vector<std::vector<float>>
 		result = std::vector<std::vector<float>>(v1.size(), std::vector<float>(v2[0].size()));
 	for (int i = 0; i < v1.size(); i++) {
 		for (int j = 0; j < v2[0].size(); j++) {
 			result[i][j] = 0;
 			for (int k = 0; k < v1[0].size(); k++) {
-				result[i][j] = result[i][j] + v1[i][k]*v2[k][j];
+				result[i][j] = result[i][j] + v1[i][k] * v2[k][j];
 			}
 		}
 	}
 	return result;
 }
 
+// Function to multipy a matrix by a vector.
 std::vector<float> ConstraintSolver::multiply_matrix_by_vector(std::vector<std::vector<float>> v1,
-															   std::vector<float> v2) {
+	std::vector<float> v2) {
 	std::vector<float> result = std::vector<float>(v1.size());
 	for (int i = 0; i < v1.size(); i++) {
 		result[i] = 0;
 		for (int j = 0; j < v2.size(); j++) {
-			result[i] = result[i] + v1[i][j]*v2[j];
+			result[i] = result[i] + v1[i][j] * v2[j];
 		}
 	}
 	return result;
 }
 
+// Function to multiply a vector by a scalar.
 std::vector<float> ConstraintSolver::multiply_vector_by_scalar(std::vector<float> v,
-															   float s) {
+	float s) {
 	std::vector<float> result = std::vector<float>(v.size());
 	for (int i = 0; i < v.size(); i++) {
-		result[i] = v[i]*s;
+		result[i] = v[i] * s;
 	}
 	return result;
 }
 
+// Function to subtract two vectors.
 std::vector<float> ConstraintSolver::subtract_vector_from_vector(std::vector<float> v1,
-																 std::vector<float> v2) {
+	std::vector<float> v2) {
 	std::vector<float> result = std::vector<float>(v1.size());
 	for (int i = 0; i < v1.size(); i++) {
 		result[i] = v1[i] - v2[i];
@@ -49,18 +52,20 @@ std::vector<float> ConstraintSolver::subtract_vector_from_vector(std::vector<flo
 	return result;
 }
 
+// Function to multiply a matrix by a scalar.
 std::vector<std::vector<float>> ConstraintSolver::multiply_matrix_by_scalar(std::vector<std::vector<
 	float>> v, float s) {
 	std::vector<std::vector<float>>
 		result = std::vector<std::vector<float>>(v.size(), std::vector<float>(v[0].size()));
 	for (int i = 0; i < v.size(); i++) {
 		for (int j = 0; j < v[0].size(); j++) {
-			result[i][j] = v[i][j]*s;
+			result[i][j] = v[i][j] * s;
 		}
 	}
 	return result;
 }
 
+// Function to subtract two matrices.
 std::vector<std::vector<float>> ConstraintSolver::subtract_matrix_from_matrix(std::vector<std::vector<
 	float>> v1, std::vector<std::vector<
 	float>> v2) {
@@ -76,6 +81,7 @@ std::vector<std::vector<float>> ConstraintSolver::subtract_matrix_from_matrix(st
 	return result;
 }
 
+// Function to add two matrices.
 std::vector<std::vector<float>> ConstraintSolver::add_matrix_to_matrix(std::vector<std::vector<
 	float>> v1, std::vector<std::vector<
 	float>> v2) {
@@ -91,16 +97,16 @@ std::vector<std::vector<float>> ConstraintSolver::add_matrix_to_matrix(std::vect
 	return result;
 }
 
-void ConstraintSolver::solve(std::vector<Particle *> pVector,
-							 std::vector<Constraint *> cVector,
-							 float Ks,
-							 float Kd) {
+void ConstraintSolver::solve(std::vector<Particle*> pVector,
+	std::vector<Constraint*> cVector,
+	float Ks,
+	float Kd) {
 	if (!cVector.empty()) {
 		int dimensions = 3;
 		// Velocity vector
-		std::vector<float> q_dot = std::vector<float>(pVector.size()*3, 0);
+		std::vector<float> q_dot = std::vector<float>(pVector.size() * 3, 0);
 		// Force vector
-		std::vector<float> Q = std::vector<float>(pVector.size()*3, 0);
+		std::vector<float> Q = std::vector<float>(pVector.size() * 3, 0);
 		// Constraint vector
 		std::vector<float> C = std::vector<float>(cVector.size(), 0);
 		// Jacobian of C * q
@@ -108,32 +114,32 @@ void ConstraintSolver::solve(std::vector<Particle *> pVector,
 
 		// Mass matrix
 		std::vector<std::vector<float>> M =
-			std::vector<std::vector<float>>(pVector.size()*3,
-											std::vector<float>(pVector.size()*3, 0));
+			std::vector<std::vector<float>>(pVector.size() * 3,
+				std::vector<float>(pVector.size() * 3, 0));
 		// Inverse mass matrix
 		std::vector<std::vector<float>> W =
-			std::vector<std::vector<float>>(pVector.size()*3,
-											std::vector<float>(pVector.size()*3, 0));
+			std::vector<std::vector<float>>(pVector.size() * 3,
+				std::vector<float>(pVector.size() * 3, 0));
 		// Jacobian of constraint vector
 		std::vector<std::vector<float>> J =
 			std::vector<std::vector<float>>(cVector.size(),
-											std::vector<float>(pVector.size()*3, 0));
+				std::vector<float>(pVector.size() * 3, 0));
 		// Transposition of J
 		std::vector<std::vector<float>> J_T =
-			std::vector<std::vector<float>>(pVector.size()*3,
-											std::vector<float>(cVector.size(), 0));
+			std::vector<std::vector<float>>(pVector.size() * 3,
+				std::vector<float>(cVector.size(), 0));
 		// Time derivative of the Jacobian
 		std::vector<std::vector<float>> J_dot =
 			std::vector<std::vector<float>>(cVector.size(),
-											std::vector<float>(pVector.size()*3, 0));
+				std::vector<float>(pVector.size() * 3, 0));
 
 		// Fill matrices and vectors for all particles
-		for (int i = 0; i < pVector.size()*dimensions; i += dimensions) {
+		for (int i = 0; i < pVector.size() * dimensions; i += dimensions) {
 			for (int j = 0; j < 3; j++) {
-				M[i + j][i + j] = pVector[i/dimensions]->m_Mass;
-				W[i + j][i + j] = 1/pVector[i/dimensions]->m_Mass;
-				Q[i + j] = pVector[i/dimensions]->m_Force[j];
-				q_dot[i + j] = pVector[i/dimensions]->m_Velocity[j];
+				M[i + j][i + j] = pVector[i / dimensions]->m_Mass;
+				W[i + j][i + j] = 1 / pVector[i / dimensions]->m_Mass;
+				Q[i + j] = pVector[i / dimensions]->m_Force[j];
+				q_dot[i + j] = pVector[i / dimensions]->m_Velocity[j];
 			}
 		}
 
@@ -143,7 +149,7 @@ void ConstraintSolver::solve(std::vector<Particle *> pVector,
 			C_dot[i] = cVector[i]->m_C_dot();
 			std::vector<Vec3f> j = cVector[i]->m_j();
 			std::vector<Vec3f> j_dot = cVector[i]->m_j_dot();
-			std::vector<Particle *> constraint_particles = cVector[i]->get_particles();
+			std::vector<Particle*> constraint_particles = cVector[i]->get_particles();
 			for (int k = 0; k < constraint_particles.size(); k++) {
 				for (int l = 0; l < dimensions; l++) {
 					J_dot[i][constraint_particles[k]->m_Index * dimensions + l] = j_dot[k][l];
@@ -215,7 +221,7 @@ void ConstraintSolver::solve(std::vector<Particle *> pVector,
 		// Apply constraint force
 		for (int i = 0; i < pVector.size(); i++) {
 			for (int j = 0; j < dimensions; j++) {
-				pVector[i]->m_Force[j] += Q_hat[i*dimensions + j];
+				pVector[i]->m_Force[j] += Q_hat[i * dimensions + j];
 			}
 		}
 	}

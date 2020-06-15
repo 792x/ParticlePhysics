@@ -2,11 +2,11 @@
 #include "../forces/Force.h"
 #include "../objects/SolidObject.h"
 #include "../objects/Cloth.h"
+
 class ObjectForce :
 	public Force
 {
 public:
-
 	ObjectForce(std::vector<Particle*> pVector, std::vector<SolidObject*> soVector);
 	void apply() override;
 	void draw() override;
@@ -17,4 +17,3 @@ public:
 private:
 	Vec3f collision_force;
 };
-

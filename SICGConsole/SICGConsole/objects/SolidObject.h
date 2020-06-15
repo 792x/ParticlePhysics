@@ -1,16 +1,16 @@
 #pragma once
-#include "Object.h"
-#include <Eigen/Dense>
-#ifdef __APPLE__
 
+#ifdef __APPLE__
 #include "../include/linux/gfx/vec3.h"
 #include "../include/linux/gfx/mat3.h"
-
 #else
 #include "..\include\gfx\vec3.h"
 #include "..\include\gfx\mat3.h"
 #endif
+
+#include <Eigen/Dense>
 #include <vector>
+#include "Object.h"
 
 using namespace Eigen;
 using namespace std;
@@ -40,15 +40,15 @@ public:
 	Vec3f bot_left_pos; // bottom left position i.e. origin
 	float p_mass; //practicle mass
 	float dist = 0.5; // distance between each particles
-																																		  //constat
+
 	Matrix3f Ibody, Ibodyinv;
 
-	//state varaibles
+	//state variables
 	//Vec3f x; //position of ridgid body
 	Vec3f P, L;
 	Matrix3f R;
 
-	//Dervied quantities
+	//Derived quantities
 	Matrix3f Iinv;
 	Vec3f v, omega; //v(t), w(t)
 

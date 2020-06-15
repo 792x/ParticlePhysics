@@ -9,16 +9,17 @@
 #include "MouseForce.h"
 #include "../solvers/ConstraintSolver.h"
 
-MouseForce::MouseForce(Particle *p, Vec3f &mouse, double ks, double kd) : m_p(p), m_mloc(mouse), m_ks(ks), m_kd(kd) {}
+MouseForce::MouseForce(Particle* p, Vec3f& mouse, double ks, double kd) : m_p(p), m_mloc(mouse), m_ks(ks), m_kd(kd) {}
 
-void MouseForce::set_mouse(const Vec3f &mouse) {
+void MouseForce::set_mouse(const Vec3f& mouse) {
 	m_mloc = mouse;
 }
 
-void MouseForce::target(std::vector<Particle *> particles) {
+void MouseForce::target(std::vector<Particle*> particles) {
 
 }
 
+// Apply the mouse force.
 void MouseForce::apply() {
 	Vec3f x = (m_p->m_Position - m_mloc);
 	Vec3f v = (m_p->m_Velocity);

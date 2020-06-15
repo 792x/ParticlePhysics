@@ -1,17 +1,14 @@
 #pragma once
 
 #ifdef __APPLE__
-
 #include "../include/linux/gfx/vec3.h"
-
 #else
-
 #include "..\include\gfx\vec3.h"
 #endif
 
 class Particle {
-  public:
-	Particle(const Vec3f &constructPos, float mass, int index, bool drawable=1, Vec3f col = Vec3f(1.f, 1.f, 1.f));
+public:
+	Particle(const Vec3f& constructPos, float mass, int index, bool drawable = 1, Vec3f col = Vec3f(1.f, 1.f, 1.f));
 	Particle();
 	virtual ~Particle() = default;
 

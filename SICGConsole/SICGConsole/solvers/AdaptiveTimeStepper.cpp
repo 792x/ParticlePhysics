@@ -3,14 +3,15 @@
 #include "AdaptiveTimeStepper.h"
 #include "../forces/SpringForce.h"
 
-AdaptiveTimeStepper::AdaptiveTimeStepper(float c_dt){
+AdaptiveTimeStepper::AdaptiveTimeStepper(float c_dt) {
 	total_step_dt = c_dt;
-	min_dt = c_dt/512; // allows a maximum of 512 intermediate steps
+	min_dt = c_dt / 512; // allows a maximum of 512 intermediate steps
 	max_dt = c_dt; // makes AdaptiveTimeStepper useful for resolving instabilities when the constant timestep is too big
 	dt = max_dt;
 	num_succesful_steps = 0;
 }
 
+// Reset the adaptive time stepping.
 void AdaptiveTimeStepper::reset(std::vector<Force*> fVector) {
 	num_succesful_steps = 0;
 	for (Force* f : fVector) {
@@ -21,8 +22,9 @@ void AdaptiveTimeStepper::reset(std::vector<Force*> fVector) {
 	}
 }
 
+// Do the next step in the simulation.
 void AdaptiveTimeStepper::simulation_step(std::vector<Particle*> pVector, std::vector<Force*> fVector, std::vector<Constraint*> cVector, Solver* solver) {
-	
+
 	float current_step_dt = 0; // variable to keep track of current timestep time 
 
 	while (current_step_dt < total_step_dt) {// Check if the dt of the current is smaller than the target.
@@ -43,7 +45,8 @@ void AdaptiveTimeStepper::simulation_step(std::vector<Particle*> pVector, std::v
 			num_succesful_steps++;
 			current_step_dt += dt;
 			printf("Current dt: %f\n", dt);
-		} else { // if the deformations are too big, undo the step by the solver and decrease the timestep
+		}
+		else { // if the deformations are too big, undo the step by the solver and decrease the timestep
 			undo_solver_step(pVector);
 			num_succesful_steps = 0;
 			dt = 0.5 * dt;
@@ -69,6 +72,7 @@ bool AdaptiveTimeStepper::minor_deformation_check(std::vector<Force*> fVector) {
 	return true;
 }
 
+// Update the deformations of the springs.
 void AdaptiveTimeStepper::spring_deformation_update(std::vector<Force*> fVector) {
 	for (Force* f : fVector) {
 		SpringForce* sf = dynamic_cast<SpringForce*>(f);

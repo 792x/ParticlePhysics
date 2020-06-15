@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\s144740\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\s160261\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,6 +153,7 @@
     <ClInclude Include="forces\Force.h" />
     <ClInclude Include="forces\GravityForce.h" />
     <ClInclude Include="forces\MouseForce.h" />
+    <ClInclude Include="forces\ObjectForce.h" />
     <ClInclude Include="forces\SpringForce.h" />
     <ClInclude Include="forces\ContactForce.h" />
     <ClInclude Include="GL\fgl.h" />
@@ -175,13 +176,11 @@
     <ClInclude Include="include\gfx\vec2.h" />
     <ClInclude Include="include\gfx\vec3.h" />
     <ClInclude Include="include\gfx\vec4.h" />
-    <ClInclude Include="ObjectForce.h" />
     <ClInclude Include="objects\Cloth.h" />
     <ClInclude Include="objects\Hair.h" />
     <ClInclude Include="objects\Object.h" />
     <ClInclude Include="objects\Particle.h" />
     <ClInclude Include="objects\SolidObject.h" />
-    <ClInclude Include="RigidObject.h" />
     <ClInclude Include="solvers\AdaptiveTimeStepper.h" />
     <ClInclude Include="solvers\BasicVerlet.h" />
     <ClInclude Include="solvers\ConstraintSolver.h" />
@@ -199,16 +198,14 @@
     <ClCompile Include="forces\AngularSpringForce.cpp" />
     <ClCompile Include="forces\GravityForce.cpp" />
     <ClCompile Include="forces\MouseForce.cpp" />
+    <ClCompile Include="forces\ObjectForce.cpp" />
     <ClCompile Include="forces\SpringForce.cpp" />
     <ClCompile Include="forces\ContactForce.cpp" />
-    <ClCompile Include="ObjectForce.cpp" />
     <ClCompile Include="objects\Cloth.cpp" />
     <ClCompile Include="objects\Hair.cpp" />
     <ClCompile Include="objects\Particle.cpp" />
     <ClCompile Include="objects\SolidObject.cpp" />
-    <ClCompile Include="objects\Object.cpp" />
     <ClCompile Include="ParticleToy.cpp" />
-    <ClCompile Include="RigidObject.cpp" />
     <ClCompile Include="solvers\AdaptiveTimeStepper.cpp" />
     <ClCompile Include="solvers\BasicVerlet.cpp" />
     <ClCompile Include="solvers\ConstraintSolver.cpp" />

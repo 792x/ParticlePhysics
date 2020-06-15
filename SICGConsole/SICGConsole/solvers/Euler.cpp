@@ -1,26 +1,25 @@
 #include "Euler.h"
-#include "linearSolver.h"
 #include <Eigen/IterativeLinearSolvers>
 #include "ConstraintSolver.h"
 #include "../forces/SpringForce.h"
 
 Euler::Euler(Euler::TYPE type) : type(type) {}
 
-void Euler::simulation_step(std::vector<Particle *> pVector,
-							std::vector<Force *> fVector,
-							std::vector<Constraint *> cVector,
-							float dt) {
+void Euler::simulation_step(std::vector<Particle*> pVector,
+	std::vector<Force*> fVector,
+	std::vector<Constraint*> cVector,
+	float dt) {
 
 	// Compute forces + constraints
 	compute_forces(fVector);
 	compute_constraints(pVector, cVector);
 
-	if (type==impl) {
-		int dimensions = 3*pVector.size();
+	if (type == impl) {
+		int dimensions = 3 * pVector.size();
 		// Mass matrix
 		std::vector<std::vector<float>>
 			M = std::vector<std::vector<float>>(dimensions,
-												std::vector<float>(dimensions, 0));
+				std::vector<float>(dimensions, 0));
 		std::vector<double> dv(dimensions, 0);
 		std::vector<double> dx(dimensions, 0);
 		std::vector<double> rhs(dimensions, 0);
@@ -28,8 +27,8 @@ void Euler::simulation_step(std::vector<Particle *> pVector,
 		// Fill mass matrix
 		for (int i = 0; i < dimensions; i++) {
 			for (int j = 0; j < dimensions; j++) {
-				if (i==j) {
-					M[i][j] = pVector[i/3]->m_Mass;
+				if (i == j) {
+					M[i][j] = pVector[i / 3]->m_Mass;
 				}
 			}
 		}
@@ -78,13 +77,9 @@ void Euler::simulation_step(std::vector<Particle *> pVector,
 		}
 
 		for (int i = 0; i < dimensions; i += 3) {
-			rhs[i] += dt*pVector[i/3]->m_Force[0];
-			rhs[i + 1] += dt*pVector[i/3]->m_Force[1];
+			rhs[i] += dt * pVector[i / 3]->m_Force[0];
+			rhs[i + 1] += dt * pVector[i / 3]->m_Force[1];
 		}
-
-		// Only used for provided linear solver
-		// implicitMatrix M_I(&M);
-		// int max_steps = 1000;
 
 		// Populate eigen matrix and vector to use the eigen solver
 		Eigen::MatrixXf eigen_M = Eigen::MatrixXf(dimensions, dimensions);
@@ -110,29 +105,30 @@ void Euler::simulation_step(std::vector<Particle *> pVector,
 
 		// Update velocities and positions
 		for (int i = 0; i < dimensions; i += 3) {
-			dx[i] = (pVector[i/3]->m_Velocity[0] + eigen_dv[i])*dt;
-			dx[i + 1] = (pVector[i/3]->m_Velocity[1] + eigen_dv[i + 1])*dt;
+			dx[i] = (pVector[i / 3]->m_Velocity[0] + eigen_dv[i]) * dt;
+			dx[i + 1] = (pVector[i / 3]->m_Velocity[1] + eigen_dv[i + 1]) * dt;
 		}
 
 		Vec3f newPosition, newVelocity;
 		for (int i = 0; i < pVector.size(); i++) {
-			newPosition = pVector[i]->m_Position + Vec3f(dx[i*3], dx[i*3 + 1], 0);
-			newVelocity = pVector[i]->m_Velocity + Vec3f(eigen_dv[i*3], eigen_dv[i*3 + 1], 0);
+			newPosition = pVector[i]->m_Position + Vec3f(dx[i * 3], dx[i * 3 + 1], 0);
+			newVelocity = pVector[i]->m_Velocity + Vec3f(eigen_dv[i * 3], eigen_dv[i * 3 + 1], 0);
 			pVector[i]->next_state(newPosition, newVelocity);
 		}
 
-	} else {
+	}
+	else {
 		// loop through all the particles
-		for (auto &i : pVector) {
+		for (auto& i : pVector) {
 			Vec3f initPos = i->m_Position;
 			Vec3f initVel = i->m_Velocity;
-			Vec3f initAcc = i->m_Force/i->m_Mass;
+			Vec3f initAcc = i->m_Force / i->m_Mass;
 
-			Vec3f newVelocity = initVel + initAcc*dt;
-			Vec3f newPosition = initPos + initVel*dt;
+			Vec3f newVelocity = initVel + initAcc * dt;
+			Vec3f newPosition = initPos + initVel * dt;
 
-			if (type==semi) {
-				newPosition = initPos + newVelocity*dt;
+			if (type == semi) {
+				newPosition = initPos + newVelocity * dt;
 			}
 
 			i->next_state(newPosition, newVelocity);
