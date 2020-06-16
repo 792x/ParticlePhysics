@@ -600,9 +600,10 @@ int main(int argc, char** argv) {
 	printf("\t Switch between adaptive time stepping and constant time stepping by using the + and the - keys\n");
 	printf("\t Dump frames by pressing the 'd' key\n");
 	printf("\t Quit by pressing the 'q' key\n");
+	printf("\t Press 'j' to show default\n");
 	printf("\t Press 'o' to show cloth\n");
 	printf("\t Press 'h' to show hair\n");
-	printf("\t Press 'j' to show default\n");
+	printf("\t Press 'r' to show rotate\n");
 
 	dsim = 0;
 	dump_frames = 0;
