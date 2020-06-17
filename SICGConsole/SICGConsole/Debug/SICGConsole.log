@@ -1,25 +1,17 @@
-﻿  ParticleToy.cpp
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(28,33): warning C4305: “初始化”: 从“double”到“float”截断
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(28,73): warning C4305: “初始化”: 从“double”到“float”截断
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(30,20): warning C4305: “初始化”: 从“double”到“float”截断
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(30,34): warning C4305: “初始化”: 从“double”到“float”截断
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(31,33): warning C4305: “参数”: 从“double”到“T”截断
+﻿  Cloth.cpp
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(52,17): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(59,17): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(66,17): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(73,17): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(80,17): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(82,11): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(87,17): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(89,11): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(100,41): warning C4305: “参数”: 从“double”到“T”截断
           with
           [
               T=float
           ]
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(32,32): warning C4305: “参数”: 从“double”到“T”截断
-          with
-          [
-              T=float
-          ]
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(33,34): warning C4305: “初始化”: 从“double”到“float”截断
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Hair.h(38,54): warning C4305: “初始化”: 从“double”到“float”截断
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(194,20): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(204,20): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(214,20): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(327,17): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(336,36): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(341,10): warning C4018: “<”: 有符号/无符号不匹配
-L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\ParticleToy.cpp(358,29): warning C4018: “<”: 有符号/无符号不匹配
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(103,55): warning C4244: “参数”: 从“double”转换到“const float”，可能丢失数据
+L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\objects\Cloth.cpp(105,69): warning C4244: “参数”: 从“double”转换到“const float”，可能丢失数据
   SICGConsole.vcxproj -> L:\learning\academy\TUeM1\Q4\Simulation\project_git\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\Debug\SICGConsole.exe

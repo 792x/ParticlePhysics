@@ -97,7 +97,7 @@ void Cloth::addForces(vector<Particle*> ps, vector<Force*>& fs) {
 void Cloth::addConstraints(vector<Particle*> ps, vector<Constraint*>& cs) {
 	double r = 0.03f;
 	Vec3f o_pos = this->bot_left_pos;
-	const Vec3f mini_offset(0.0, 0.02, 0.0);
+	const Vec3f mini_offset(0.0, 0.03, 0.0);
 
 	auto c_left = new CircularWireConstraint(ps[xn * yn + (ps.size() - this->particles.size()) - xn],
 		o_pos + Vec3f(0, dist * (yn - 1), 0) + mini_offset, r);

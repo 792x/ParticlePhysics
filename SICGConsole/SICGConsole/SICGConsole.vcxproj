@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\s160261\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>L:\learning\academy\TUeM1\Q4\Simulation\eigen\eigen-eigen-94875feeeeb9;C:\Users\s160261\Documents\GitHub\2IMV15-Simulation-in-Computer-Graphics\SICGConsole\SICGConsole\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
