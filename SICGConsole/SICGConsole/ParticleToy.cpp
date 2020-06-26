@@ -318,7 +318,7 @@ static void get_from_UI() {
 
 			// check if a particle is selected
 			if (dist < 0.003) {
-				fVector.push_back(new MouseForce(pVector[i], mouse_position, 100000, 100));
+				fVector.push_back(new MouseForce(pVector[i], mouse_position, 1000, 100));
 				break; // make sure only one particle can be selected
 			}
 		}
